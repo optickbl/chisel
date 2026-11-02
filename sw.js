@@ -1,6 +1,6 @@
 // Chisel offline cache. The page is fetched fresh when online (so updates arrive) and served from the cache when offline.
-const CACHE = 'chisel-809f1483bc', FONTS = 'chisel-fonts';
-const CORE = ['./', './index.html', './three.min.js', './manifest.webmanifest', './icon-180.png', './icon-192.png', './icon-512.png'];
+const CACHE = 'chisel-76040f3928', FONTS = 'chisel-fonts';
+const CORE = ['./', './index.html', './three.min.js', './manifest.webmanifest', './icon-180.png', './icon-192.png', './icon-512.png', './dynapuff-latin-400-normal.woff2', './dynapuff-latin-500-normal.woff2', './dynapuff-latin-600-normal.woff2', './dynapuff-latin-700-normal.woff2', './nunito-latin-400-normal.woff2', './nunito-latin-500-normal.woff2', './nunito-latin-600-normal.woff2', './nunito-latin-700-normal.woff2', './nunito-latin-800-normal.woff2', './nunito-latin-900-normal.woff2'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE && k !== FONTS).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {

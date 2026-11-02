@@ -20,11 +20,7 @@
 <body>
 <title>Chisel</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap">
+<style>@font-face{font-family:'DynaPuff';font-style:normal;font-weight:400;font-display:swap;src:url(dynapuff-latin-400-normal.woff2) format('woff2')}@font-face{font-family:'DynaPuff';font-style:normal;font-weight:500;font-display:swap;src:url(dynapuff-latin-500-normal.woff2) format('woff2')}@font-face{font-family:'DynaPuff';font-style:normal;font-weight:600;font-display:swap;src:url(dynapuff-latin-600-normal.woff2) format('woff2')}@font-face{font-family:'DynaPuff';font-style:normal;font-weight:700;font-display:swap;src:url(dynapuff-latin-700-normal.woff2) format('woff2')}@font-face{font-family:'Nunito';font-style:normal;font-weight:400;font-display:swap;src:url(nunito-latin-400-normal.woff2) format('woff2')}@font-face{font-family:'Nunito';font-style:normal;font-weight:500;font-display:swap;src:url(nunito-latin-500-normal.woff2) format('woff2')}@font-face{font-family:'Nunito';font-style:normal;font-weight:600;font-display:swap;src:url(nunito-latin-600-normal.woff2) format('woff2')}@font-face{font-family:'Nunito';font-style:normal;font-weight:700;font-display:swap;src:url(nunito-latin-700-normal.woff2) format('woff2')}@font-face{font-family:'Nunito';font-style:normal;font-weight:800;font-display:swap;src:url(nunito-latin-800-normal.woff2) format('woff2')}@font-face{font-family:'Nunito';font-style:normal;font-weight:900;font-display:swap;src:url(nunito-latin-900-normal.woff2) format('woff2')}</style>
 <script id="three-js" async src="three.min.js"></script>
 <style>
 :root{
@@ -60,9 +56,9 @@
   --rose:#CC8E9A;
   --scrim:rgba(70,12,30,.38);
   --shadow:0 18px 44px rgba(110,20,45,.18);
-  --f-display:"Big Shoulders Display","Big Shoulders","Oswald","Arial Narrow",system-ui,sans-serif;
-  --f-body:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  --f-inscr:"Cinzel","Trajan Pro",Georgia,"Times New Roman",serif;
+  --f-display:"DynaPuff","Nunito",ui-rounded,"Arial Rounded MT Bold",system-ui,sans-serif;
+  --f-body:"Nunito",ui-rounded,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-inscr:"DynaPuff","Nunito",ui-rounded,system-ui,sans-serif;
   --r:12px;
   color-scheme:light;
 }
@@ -80,7 +76,7 @@ p{margin:0}
 /* header */
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);display:flex;align-items:center;justify-content:space-between;gap:10px;padding-block:12px 10px;border-bottom:1px solid var(--line)}
 .brand{display:flex;flex-direction:column;min-width:0;text-decoration:none}
-.wordmark{font-family:var(--f-inscr);font-weight:700;font-size:20px;letter-spacing:.24em;line-height:1}
+.wordmark{font-family:var(--f-inscr);font-weight:700;font-size:27px;letter-spacing:-.01em;line-height:1}
 .season{font-size:12px;color:var(--muted);margin-top:5px}
 .top-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
 .sync{font-size:12px;color:var(--fg-2);display:inline-flex;align-items:center;gap:6px;padding:4px 9px;border:1px solid var(--line);border-radius:999px;white-space:nowrap}
@@ -96,9 +92,9 @@ p{margin:0}
 #v-train{padding-bottom:84px}
 #checkin{scroll-margin-top:84px}
 .eyebrow{font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.h1{font-family:var(--f-display);font-weight:800;font-size:36px;line-height:.95;text-transform:uppercase;margin:6px 0 0;text-wrap:balance}
-.h2{font-family:var(--f-display);font-weight:800;font-size:25px;line-height:1.02;text-transform:uppercase;margin:6px 0 0;text-wrap:balance}
-.h3{font-family:var(--f-display);font-weight:800;font-size:20px;line-height:1.1;text-transform:uppercase;letter-spacing:.02em;margin:0;text-wrap:balance}
+.h1{font-family:var(--f-display);font-weight:700;font-size:33px;line-height:1.05;letter-spacing:-.01em;margin:6px 0 0;text-wrap:balance}
+.h2{font-family:var(--f-display);font-weight:700;font-size:24px;line-height:1.1;margin:6px 0 0;text-wrap:balance}
+.h3{font-family:var(--f-display);font-weight:700;font-size:19px;line-height:1.15;margin:0;text-wrap:balance}
 .muted{color:var(--muted)}
 .meta{color:var(--fg-2);font-size:14.5px;margin-top:6px}
 .lede{color:var(--fg-2);font-size:15.5px;max-width:62ch}
@@ -113,7 +109,7 @@ p{margin:0}
 .tag{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 7px;border-radius:6px;background:var(--surface-2);color:var(--fg-2);white-space:nowrap}
 .tag.gold{background:var(--accent-wash);color:var(--accent)}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 18px;border-radius:10px;border:1px solid var(--line-2);background:var(--surface-2);font-weight:600;text-decoration:none;font-size:16px;text-align:center}
-.btn-gold{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-family:var(--f-display);font-weight:800;font-size:20px;letter-spacing:.06em;text-transform:uppercase}
+.btn-gold{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-family:var(--f-display);font-weight:700;font-size:19px;letter-spacing:0}
 .btn-block{width:100%}
 .btn-sm{min-height:38px;padding:0 13px;font-size:14.5px}
 .btn-danger{border-color:var(--bad);color:var(--bad);background:transparent}
@@ -134,7 +130,7 @@ details > summary{cursor:pointer}
 .slab canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1;display:block}
 .slab-in{padding:18px 18px 16px;display:flex;flex-direction:column;gap:10px}
 .slab .eyebrow{color:var(--slab-fg-2);text-shadow:0 0 10px var(--halo)}
-.rank{font-family:var(--f-inscr);font-weight:700;font-size:clamp(21px,6.6vw,27px);letter-spacing:.12em;line-height:1.12;text-transform:uppercase;text-shadow:0 0 14px var(--halo),0 0 3px var(--halo);text-wrap:balance;overflow-wrap:break-word}
+.rank{font-family:var(--f-inscr);font-weight:700;font-size:clamp(23px,7vw,29px);letter-spacing:0;line-height:1.08;text-shadow:0 0 14px var(--halo),0 0 3px var(--halo);text-wrap:balance;overflow-wrap:break-word}
 .rank-line{color:var(--slab-fg-2);font-size:14.5px;text-shadow:0 0 10px var(--halo),0 0 2px var(--halo)}
 .slab-top{display:flex;align-items:stretch;gap:6px}
 .slab-eb{display:flex;flex-direction:column;gap:3px}
@@ -143,8 +139,8 @@ details > summary{cursor:pointer}
 .slab-statue img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:50% 100%;display:block;filter:drop-shadow(0 8px 12px rgba(40,6,18,.35))}
 .slab-statue img:not([src]){display:none}
 .lv{display:flex;align-items:baseline;gap:6px;font-family:var(--f-display);line-height:.82;text-shadow:0 0 18px var(--halo)}
-.lv-k{font-weight:800;font-size:22px;color:var(--slab-fg-2);letter-spacing:.08em}
-.lv-n{font-weight:900;font-size:78px}
+.lv-k{font-weight:700;font-size:22px;color:var(--slab-fg-2);letter-spacing:0}
+.lv-n{font-weight:700;font-size:72px}
 .lv-meta{font-size:14px;color:var(--slab-fg-2);text-shadow:0 0 10px var(--halo),0 0 2px var(--halo);margin-top:2px}
 .lv-meta b{font-family:var(--f-display);font-weight:800;font-size:24px;color:var(--slab-fg)}
 .xpbar{height:10px;border-radius:999px;background:var(--accent-track);overflow:hidden}
@@ -191,7 +187,7 @@ details > summary{cursor:pointer}
 .viz img:not([src]){display:none}
 .viz canvas{touch-action:pan-y}
 .viz-cap{position:absolute;z-index:1;left:10px;bottom:10px;font-size:12px;font-weight:700;letter-spacing:.02em;padding:5px 10px;border-radius:999px;background:var(--fg);color:var(--on-accent);pointer-events:none;white-space:nowrap}
-.vz-tempo{position:absolute;z-index:1;left:10px;top:10px;font-family:var(--f-display);font-size:16px;font-weight:800;letter-spacing:.05em;line-height:1;text-transform:uppercase;padding:6px 11px 5px;border-radius:999px;background:var(--stage-pill);color:var(--fg);pointer-events:none;white-space:nowrap}
+.vz-tempo{position:absolute;z-index:1;left:10px;top:10px;font-family:var(--f-display);font-size:16px;font-weight:800;letter-spacing:0;line-height:1;padding:6px 11px 5px;border-radius:999px;background:var(--stage-pill);color:var(--fg);pointer-events:none;white-space:nowrap}
 .viz.off{cursor:default;aspect-ratio:auto;min-height:44px}
 .viz.off .viz-cap{position:static;display:inline-block;margin:10px}
 .vz-top{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:40px}
@@ -298,7 +294,7 @@ details > summary{cursor:pointer}
 .sum-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;width:100%}
 .sum-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--line);font-size:15px;color:var(--fg-2)}
 .sum-list li b{font-family:var(--f-display);font-weight:800;font-size:19px;color:var(--fg);font-variant-numeric:tabular-nums;white-space:nowrap}
-.sum-total{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--f-display);font-weight:900;font-size:32px;width:100%;text-transform:uppercase}
+.sum-total{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--f-display);font-weight:700;font-size:30px;width:100%}
 .sum-total span:last-child{color:var(--accent)}
 .copybox{width:100%;height:160px;border-radius:10px;border:1px solid var(--line-2);background:var(--field);padding:10px;font:12px/1.4 ui-monospace,Menlo,Consolas,monospace;color:var(--fg-2);resize:vertical}
 
@@ -350,7 +346,7 @@ details > summary{cursor:pointer}
 .tlist{list-style:none;margin:0;padding:0}
 .tlist li{display:grid;grid-template-columns:92px minmax(0,1fr);gap:12px;padding:9px 0;border-top:1px solid var(--line);font-size:15px;color:var(--fg-2)}
 .tlist li:first-child{border-top:0}
-.tlist li b{color:var(--fg);font-family:var(--f-display);font-weight:800;font-size:17px;text-transform:uppercase}
+.tlist li b{color:var(--fg);font-family:var(--f-display);font-weight:700;font-size:17px}
 
 /* forms */
 .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px;align-items:end}
@@ -435,7 +431,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:now
 <div class="app">
   <header class="top" id="top">
     <a class="brand" href="#today" aria-label="Chisel, go to Today">
-      <span class="wordmark">CHISEL</span>
+      <span class="wordmark">chisel</span>
       <span class="season" id="hdrSeason">Week 1</span>
     </a>
     <div class="top-actions">
@@ -548,6 +544,8 @@ const EX = {
   smith_rdl:       { n: 'Smith machine Romanian deadlift', m: 'legs', k: 'mc', inc: 5, cue: 'Same hip hinge as the barbell version, bar on its track.', q: 'smith machine romanian deadlift form' },
   leg_press:       { n: 'Leg press', m: 'legs', k: 'mc', inc: 5, cue: 'Feet shoulder width. Lower until your knees pass 90° with your lower back on the pad.', q: 'leg press form' },
   leg_curl:        { n: 'Lying leg curl', m: 'legs', k: 'mc', inc: 2.5, cue: 'Hips pressed into the pad. Curl all the way, lower slowly.', q: 'lying leg curl form' },
+  back_ext:        { n: '45° back extension', m: 'legs', k: 'bw', inc: 2.5, cue: 'Hip bones just above the pad. Lower slowly, then squeeze your glutes until your body is in one line. Hold a plate for weight.', q: '45 degree back extension glutes form' },
+  leg_ext:         { n: 'Leg extension', m: 'legs', k: 'mc', inc: 2.5, cue: 'Knees lined up with the machine’s pivot. Kick up to straight, squeeze for a second, lower slowly.', q: 'leg extension machine form' },
   seated_leg_curl: { n: 'Seated leg curl', m: 'legs', k: 'mc', inc: 2.5, cue: 'Lean slightly forward for a bigger hamstring stretch.', q: 'seated leg curl form' },
   calf_raise:      { n: 'Standing calf raise machine', m: 'legs', k: 'mc', inc: 5, cue: 'Pause 1 second in the bottom stretch, rise all the way up.', q: 'standing calf raise machine form' },
   lp_calf:         { n: 'Calf press on leg press', m: 'legs', k: 'mc', inc: 5, cue: 'Balls of your feet on the platform edge, full stretch every rep.', q: 'calf press on leg press form' },
@@ -585,9 +583,9 @@ const MISSIONS = [
   { id: 'C', dow: 6, day: 'Saturday', code: 'Lower + Arms', short: 'Legs', name: 'Legs, Arms & Abs', mins: 70,
     focus: [['Legs', 0], ['Biceps', 1], ['Triceps', 0], ['Side delts', 1], ['Abs', 0]],
     slots: [
-      { id: 'C1', ex: 'squat', alts: ['hack_squat'], sets: 3, lo: 6, hi: 8, rest: 150 },
-      { id: 'C2', ex: 'rdl', alts: ['smith_rdl'], sets: 3, lo: 8, hi: 10, rest: 150 },
-      { id: 'C3', ex: 'leg_press', alts: ['hack_squat'], sets: 2, lo: 10, hi: 12, rest: 120 },
+      { id: 'C1', ex: 'hack_squat', alts: ['leg_press'], sets: 3, lo: 8, hi: 10, rest: 150 },
+      { id: 'C2', ex: 'back_ext', alts: ['seated_leg_curl'], sets: 3, lo: 10, hi: 15, rest: 90 },
+      { id: 'C3', ex: 'leg_press', alts: ['leg_ext'], sets: 2, lo: 10, hi: 12, rest: 120 },
       { id: 'C4', ex: 'leg_curl', alts: ['seated_leg_curl'], sets: 2, lo: 10, hi: 12, rest: 90 },
       { id: 'C5', ex: 'calf_raise', alts: ['lp_calf'], sets: 3, lo: 10, hi: 15, rest: 60 },
       { id: 'C6', ex: 'incline_db_curl', alts: ['preacher_curl'], sets: 3, lo: 10, hi: 12, rest: 75, od: 1, pair: 'C7', tech: 'myo' },
@@ -642,7 +640,7 @@ const ACH = [
   { id: 'pr100',     n: 'Unbreakable',      t: 3, i: 'bolt',   d: 'Set 100 personal records.' },
   { id: 'bench60',   n: 'One Plate',        t: 2, i: 'plate',  d: 'Bench press 60 kg for a set of 6.' },
   { id: 'bwbench',   n: 'Bodyweight Bench', t: 2, i: 'plate',  d: 'Bench your bodyweight for a set of 6.' },
-  { id: 'squat100',  n: 'Two Plates Deep',  t: 3, i: 'plate',  d: 'Squat 100 kg for a set of 6.' },
+  { id: 'squat100',  n: 'Two Plates Deep',  t: 3, i: 'plate',  d: 'Hack squat 100 kg for a set of 6.' },
   { id: 'atlas',     n: 'Atlas',            t: 2, i: 'globe',  d: 'Lift 100,000 kg in total.' },
   { id: 'oracle',    n: 'The Oracle Sees',  t: 1, i: 'eye',    d: 'Do 4 weekly check-ins.' },
   { id: 'asclepius', n: 'Asclepius',        t: 1, i: 'staff',  d: 'Finish a full Recovery week.' },
@@ -816,7 +814,7 @@ function evalAch(sessions, info, weeks, fullWeeks, checkins){
         const wt = +x.w || 0, r = +x.r;
         vol += wt * r; if (!A.atlas && vol >= 100000) A.atlas = s.date;
         if (!A.bench60 && (exId === 'bench' || exId === 'smith_bench') && wt >= 60 && r >= 6) A.bench60 = s.date;
-        if (!A.squat100 && exId === 'squat' && wt >= 100 && r >= 6) A.squat100 = s.date;
+        if (!A.squat100 && (exId === 'hack_squat' || exId === 'squat') && wt >= 100 && r >= 6) A.squat100 = s.date;
         if (!A.bwbench && exId === 'bench' && r >= 6){ const bw = bodyweightOn(s.date, checkins); if (bw && wt >= bw) A.bwbench = s.date; }
       }
     }
@@ -915,7 +913,7 @@ const VIZ = {
   incline_db_curl: { p: 'inclinecurl' }, preacher_curl: { p: 'preacher' },
   cable_crunch: { p: 'crunch' }, machine_crunch: { p: 'crunch', v: 'machine' },
   squat: { p: 'squat' }, hack_squat: { p: 'hack' }, rdl: { p: 'hinge' }, smith_rdl: { p: 'hinge', smith: 1 },
-  leg_press: { p: 'legpress' }, lp_calf: { p: 'legpress', v: 'calf' }, leg_curl: { p: 'legcurl' }, seated_leg_curl: { p: 'seatcurl' },
+  leg_press: { p: 'legpress' }, lp_calf: { p: 'legpress', v: 'calf' }, leg_curl: { p: 'legcurl' }, seated_leg_curl: { p: 'seatcurl' }, back_ext: { p: 'backext' }, leg_ext: { p: 'legext' },
   calf_raise: { p: 'calf' }, hanging_leg_raise: { p: 'hang' }, captains_chair: { p: 'captain' },
   __statue: { p: 'statue' }
 };
@@ -958,7 +956,7 @@ const WORKS = {
   hanging_leg_raise: W(['abs'], ['obliques', 'forearms']), captains_chair: W(['abs'], ['obliques']),
   squat: W(['quads', 'glutes'], ['hamstrings', 'lowerBack']), hack_squat: W(['quads', 'glutes'], ['hamstrings']), leg_press: W(['quads', 'glutes'], ['hamstrings']),
   rdl: W(['hamstrings', 'glutes'], ['lowerBack', 'forearms']), smith_rdl: W(['hamstrings', 'glutes'], ['lowerBack']),
-  leg_curl: W(['hamstrings'], ['calves']), seated_leg_curl: W(['hamstrings'], ['calves']),
+  leg_curl: W(['hamstrings'], ['calves']), seated_leg_curl: W(['hamstrings'], ['calves']), back_ext: W(['glutes', 'hamstrings'], ['lowerBack']), leg_ext: W(['quads']),
   calf_raise: W(['calves']), lp_calf: W(['calves'])
 };
 const worksOf = ex => WORKS[ex] || W([]);
@@ -1092,54 +1090,63 @@ const Viz = (() => {
     const N = (c, r, k) => ({ t: 'e', c, r, part: null, k, rz: 0, neg: 1 });          // carved away (eye sockets)
     const both = (fn) => [fn(1), fn(-1)];
     const torso = [
-      E([0, .36, -.016], [.148, .118, .1], null, .04), E([0, .262, -.006], [.128, .12, .094], null, .04),
-      E([0, .16, .002], [.116, .12, .084], null, .04), E([0, .02, -.008], [.138, .1, .094], null, .045),
-      C([0, .45, -.018], [0, .6, -.006], .07, .055, null, .03),
-      E([0, .69, -.008], [.078, .098, .092], null, .02), E([0, .642, .028], [.064, .068, .068], null, .03),
-      E([0, .605, .034], [.058, .036, .056], null, .02), E([0, .588, .07], [.027, .022, .02], null, .014),
-      E([0, .694, .07], [.056, .016, .022], null, .012), C([0, .677, .087], [0, .647, .099], .006, .011, null, .008),
-      ...both(s => E([s * .046, .653, .058], [.02, .014, .016], null, .015)),
-      ...both(s => E([s * .078, .66, -.004], [.009, .025, .016], null, .008)),
-      ...both(s => E([s * .138, .39, -.006], [.036, .055, .045], null, .03)),
-      ...both(s => E([s * .074, .32, .075], [.088, .062, .046], 'pecL', .02, s * .18)),
-      ...both(s => E([s * .08, .382, .066], [.072, .034, .034], 'pecU', .02, -s * .25)),
-      ...both(s => E([s * .078, .476, -.035], [.072, .042, .05], 'traps', .035, -s * .42)),
-      E([0, .37, -.089], [.108, .078, .034], 'upperBack', .025),
-      ...both(s => E([s * .121, .29, -.046], [.052, .14, .075], 'lats', .025, -s * .22)),
-      ...both(s => E([s * .102, .14, .034], [.034, .076, .05], 'obliques', .022)),
-      ...both(s => E([s * .034, .135, -.07], [.03, .11, .03], 'lowerBack', .02)),
-      ...[.236, .176, .116].flatMap(y => both(s => E([s * .034, y, .081], [.031, .026, .018], 'abs', .009))),
-      E([0, .062, .078], [.052, .036, .016], 'abs', .012),
-      ...both(s => E([s * .066, -.032, -.068], [.074, .08, .056], 'glutes', .025)),
-      ...both(s => N([s * .031, .672, .086], [.019, .012, .02], .01))
+      E([0, .36, -.016], [.146, .118, .1], null, .04), E([0, .262, -.006], [.126, .12, .094], null, .04),
+      E([0, .16, .002], [.114, .12, .084], null, .04), E([0, .02, -.008], [.136, .1, .094], null, .045),
+      C([0, .45, -.018], [0, .6, -.008], .068, .057, null, .03),
+      ...both(s => C([s * .046, .64, -.01], [s * .016, .5, .045], .015, .013, null, .022)),
+      ...both(s => C([s * .02, .5, .03], [s * .055, .432, .052], .013, .011, null, .02)),               // collarbones
+      ...both(s => E([s * .136, .39, -.006], [.034, .052, .044], null, .03)),
+      ...both(s => E([s * .074, .318, .074], [.088, .06, .042], 'pecL', .022, s * .18)),
+      ...both(s => E([s * .08, .382, .064], [.07, .032, .03], 'pecU', .022, -s * .25)),
+      ...both(s => E([s * .078, .476, -.035], [.07, .04, .048], 'traps', .035, -s * .42)),
+      E([0, .37, -.088], [.106, .076, .032], 'upperBack', .026),
+      ...both(s => E([s * .12, .29, -.046], [.05, .138, .072], 'lats', .026, -s * .22)),
+      ...both(s => E([s * .102, .14, .032], [.032, .074, .048], 'obliques', .024)),
+      ...both(s => E([s * .034, .135, -.07], [.03, .11, .028], 'lowerBack', .022)),
+      ...[.236, .176, .116].flatMap(y => both(s => E([s * .033, y, .079], [.03, .025, .014], 'abs', .012))),
+      E([0, .062, .076], [.05, .034, .014], 'abs', .014),
+      ...both(s => E([s * .066, -.032, -.066], [.07, .078, .05], 'glutes', .026)),
+      // head: skull, face, jaw, features
+      E([0, .703, -.016], [.081, .092, .098], null, .03), E([0, .655, .03], [.066, .08, .074], null, .03),
+      E([0, .607, .04], [.056, .04, .056], null, .025), E([0, .588, .07], [.026, .022, .02], null, .015),
+      E([0, .694, .075], [.056, .015, .02], null, .014), C([0, .68, .092], [0, .65, .103], .007, .012, null, .012),
+      ...both(s => E([s * .011, .646, .099], [.009, .006, .008], null, .006)),
+      ...both(s => E([s * .046, .65, .06], [.02, .015, .016], null, .016)),
+      ...both(s => E([s * .079, .665, -.006], [.008, .024, .016], null, .012)),
+      ...both(s => N([s * .031, .676, .094], [.019, .009, .009], .012)),
+      ...both(s => E([s * .031, .673, .085], [.016, .0092, .011], null, .005)),
+      E([0, .623, .086], [.018, .0055, .008], null, .01), E([0, .611, .084], [.015, .006, .008], null, .01),
+      N([0, .6175, .094], [.016, .0012, .004], .004)
     ];
     // limbs are drawn for the right side (lateral = +x) and mirrored for the left
     const ua = [
-      C([0, 0, 0], [0, .29, 0], .052, .04, null, .02), E([0, 0, 0], [.058, .058, .058], null, .02),
-      E([.05, .056, 0], [.042, .086, .05], 'dSide', .026), E([.022, .045, .05], [.04, .076, .036], 'dFront', .024), E([.022, .045, -.05], [.04, .076, .036], 'dRear', .024), E([.03, .13, 0], [.024, .045, .03], 'dSide', .022),
-      E([0, .155, .032], [.041, .09, .039], 'biceps', .016), E([.026, .222, .012], [.024, .045, .028], 'biceps', .014),
-      E([.006, .13, -.035], [.045, .104, .041], 'triceps', .016), E([0, .29, -.008], [.042, .042, .042], null, .02)
+      C([0, 0, 0], [0, .29, 0], .05, .039, null, .02), E([0, 0, 0], [.056, .056, .056], null, .02),
+      E([.047, .058, 0], [.038, .082, .046], 'dSide', .028), E([.02, .047, .048], [.036, .072, .033], 'dFront', .026), E([.02, .047, -.048], [.036, .072, .033], 'dRear', .026), E([.028, .13, 0], [.022, .045, .028], 'dSide', .024),
+      E([0, .155, .03], [.039, .088, .037], 'biceps', .018), E([.024, .222, .012], [.022, .043, .026], 'biceps', .016),
+      E([.006, .13, -.034], [.043, .1, .039], 'triceps', .018), E([0, .29, -.008], [.04, .04, .04], null, .02)
     ];
     const fa = [
-      C([0, 0, 0], [0, .262, 0], .04, .026, null, .02), E([0, 0, -.012], [.038, .038, .038], null, .02),
-      E([0, .075, .012], [.05, .09, .041], 'forearms', .018), E([0, .085, -.012], [.043, .08, .034], 'forearms', .018),
-      E([0, .3, 0], [.034, .05, .026], null, .012), E([0, .318, .016], [.035, .032, .025], null, .01), C([.022, .284, .02], [.008, .314, .035], .012, .01, null, .008)
+      C([0, 0, 0], [0, .262, 0], .039, .025, null, .02), E([0, 0, -.012], [.037, .037, .037], null, .02),
+      E([0, .075, .012], [.048, .088, .039], 'forearms', .018), E([0, .085, -.012], [.041, .078, .032], 'forearms', .018),
+      E([0, .297, -.004], [.036, .046, .02], null, .012),
+      ...[-.026, -.009, .009, .026].map((x, i) => E([x, .336 - Math.abs(i - 1.5) * .003, .012], [.0095, .017, .017], null, .006)),
+      C([.026, .282, .02], [.01, .312, .034], .012, .01, null, .008)
     ];
     const th = [
-      C([0, 0, 0], [0, .44, 0], .082, .05, null, .025), E([0, 0, 0], [.075, .075, .075], null, .025),
-      E([.035, .23, .014], [.048, .17, .052], 'quads', .02), E([0, .2, .045], [.042, .17, .036], 'quads', .02), E([-.032, .34, .03], [.04, .075, .04], 'quads', .018),
-      E([0, .21, -.036], [.066, .182, .05], 'hams', .02), E([-.04, .13, 0], [.042, .12, .05], null, .025),
+      C([0, 0, 0], [0, .44, 0], .08, .05, null, .025), E([0, 0, 0], [.073, .073, .073], null, .025),
+      E([.035, .23, .014], [.046, .17, .05], 'quads', .022), E([0, .2, .045], [.04, .17, .034], 'quads', .022), E([-.032, .34, .03], [.038, .075, .038], 'quads', .02),
+      E([0, .21, -.036], [.064, .18, .048], 'hams', .022), E([-.04, .13, 0], [.04, .12, .048], null, .025),
       E([0, .44, .006], [.046, .046, .048], null, .02), E([0, .426, .044], [.024, .028, .013], null, .012)
     ];
     const sh = [
-      C([0, 0, 0], [0, .43, 0], .048, .03, null, .02), E([0, .02, 0], [.047, .04, .047], null, .02),
-      E([-.022, .12, -.036], [.034, .1, .04], 'calves', .016), E([.022, .11, -.03], [.03, .085, .035], 'calves', .016), E([0, .2, -.025], [.04, .1, .03], 'calves', .02),
-      E([.018, .14, .026], [.02, .1, .02], null, .015), E([0, .43, 0], [.034, .034, .034], null, .015), ...both(s => E([s * .03, .43, 0], [.014, .02, .016], null, .01))
+      C([0, 0, 0], [0, .43, 0], .047, .029, null, .02), E([0, .02, 0], [.046, .04, .046], null, .02),
+      E([-.022, .12, -.035], [.033, .1, .038], 'calves', .018), E([.022, .11, -.03], [.029, .085, .033], 'calves', .018), E([0, .2, -.025], [.038, .1, .03], 'calves', .02),
+      E([.018, .14, .026], [.02, .1, .02], null, .015), E([0, .43, 0], [.033, .033, .033], null, .015), ...both(s => E([s * .03, .43, 0], [.014, .02, .016], null, .01))
     ];
     // foot: y = up, z = toes; the sole is cut flat .074 below the ankle so standing feet sit exactly on the floor
     const ft = [
       E([0, -.034, -.03], [.032, .04, .042], null, .015), E([0, -.04, .055], [.041, .034, .088], null, .02),
-      E([0, -.054, .14], [.04, .02, .037], null, .015), E([0, -.016, .03], [.034, .022, .05], null, .02)
+      E([0, -.054, .14], [.04, .02, .037], null, .015), E([0, -.016, .03], [.034, .022, .05], null, .02), E([.006, -.06, .168], [.034, .014, .02], null, .012)
     ];
     return { torso, ua, fa, th, sh, ft, cut: { ft: -.074 } };
   })();
@@ -1260,7 +1267,7 @@ const Viz = (() => {
     for (let i = 0; i < idx.length; i += 3){ const t = idx[i + 1]; idx[i + 1] = idx[i + 2]; idx[i + 2] = t; }
     return { pos, nor, idx, W: g.W, nv: g.nv };
   }
-  const FIG_H = { torso: .008, ua: .0065, fa: .0055, th: .0075, sh: .007, ft: .005 };
+  const FIG_H = { torso: .0068, ua: .0065, fa: .0055, th: .0075, sh: .007, ft: .005 };
   function buildFigData(){ const out = {}; for (const k of ['torso', 'ua', 'fa', 'th', 'sh', 'ft']) out[k] = sculpt(SEG[k], { h: FIG_H[k], cut: SEG.cut[k], parts: SEG_PARTS[k] }); return out; }
   let figP = null, FIG = null;
   // carving the meshes takes about a second, so a background worker does it while three.js loads
@@ -1741,8 +1748,8 @@ const Viz = (() => {
       const pul = V(0, 2.05, .84);
       return { cam: { az: 70, el: 12, d: 4.3, t: [0, .76, .28] }, thumbP: .7, tempo: ['Crunch', 'Rise'],
         build(c){ const stk = c.stack(0, 1.02, 2.1); const pm = c.pulley(pul); c.box([0, .015, -.1], [.5, .03, .76], M.pad); return { stk, r: c.rope(), cab: c.cable(pm) }; },
-        pose(p){ const th = mix(18, 74, p) * D; const P = V(0, .56, mix(.06, -.04, p)); const U = V(0, Math.cos(th), Math.sin(th)), F = V(0, -Math.sin(th), Math.cos(th)); const B = fr(P, U, F); return { P, U, F, hands: [B.at(.15, .63, .04), B.at(-.15, .63, .04)], ePole: [B.at(.3, .25, .35), B.at(-.3, .25, .35)], feet: sym(.12, .2, -.36), kPole: sym(.14, -.4, .9), fDir: [NV(0, -1, -.2), NV(0, -1, -.2)], fUp: [V(0, 0, 1), V(0, 0, 1)], hc: B.at(0, .665, .012) }; },
-        update(p, b, d, s){ const knot = s.hc.clone().addScaledVector(pul.clone().sub(s.hc).normalize(), .22); d.r.set(b.H[0], b.H[1], knot); d.cab.set(pul, knot); d.stk.set(cableLift(d, 0, pul.distanceTo(knot))); } };
+        pose(p){ const th = mix(18, 74, p) * D; const P = V(0, .56, mix(.06, -.04, p)); const U = V(0, Math.cos(th), Math.sin(th)), F = V(0, -Math.sin(th), Math.cos(th)); const B = fr(P, U, F); return { P, U, F, hands: [B.at(.165, .63, .04), B.at(-.165, .63, .04)], ePole: [B.at(.3, .25, .35), B.at(-.3, .25, .35)], feet: sym(.12, .2, -.36), kPole: sym(.14, -.4, .9), fDir: [NV(0, -1, -.2), NV(0, -1, -.2)], fUp: [V(0, 0, 1), V(0, 0, 1)], hc: B.at(0, .665, .012) }; },
+        update(p, b, d, s){ const knot = s.hc.clone().addScaledVector(pul.clone().sub(s.hc).normalize(), .25); d.r.set(b.H[0], b.H[1], knot); d.cab.set(pul, knot); d.stk.set(cableLift(d, 0, pul.distanceTo(knot))); } };
     },
     squat(){
       return { cam: { az: 40, el: 14, d: 4.4, t: [0, .86, -.08] }, thumbP: .3, tempo: ['Stand up', 'Sit down'],
@@ -1793,6 +1800,34 @@ const Viz = (() => {
         build(c){ c.box([0, .465, .03], [.44, .08, .46], M.pad); c.boxB(B.at(0, .33, -.175), [.44, .74, .08], B.L, B.U, B.F); c.box([0, .23, 0], [.1, .46, .1]); c.box([0, .692, .35], [.46, .07, .14], M.pad); c.rod([-.23, .692, .35], [-.5, .692, -.06], .022, M.frame); const stk = c.stack(-.7, -.1, 1.6); return { stk, roll: c.dynRod(.05, M.pad), arm: [c.dynRod(.024), c.dynRod(.024)] }; },
         pose(p){ const a = mix(16, 98, p) * D, f = (80 - mix(16, 98, p)) * D, fd = V(0, Math.sin(f), Math.cos(f)); return { P, U, F, hands: sym(.31, .56, .08), ePole: sym(.55, .65, -.2), feet: K.map(k => k.clone().addScaledVector(shin(a), .43)), kPole: sym(.12, 1.25, .5), fDir: [fd, fd] }; },
         update(p, b, d){ const K = mid(b.K[0], b.K[1]), A2 = mid(b.An[0], b.An[1]); const dir = A2.clone().sub(K).normalize(); const nrm = V(0, -dir.z, dir.y); const cen = A2.clone().addScaledVector(dir, -.04).addScaledVector(nrm, .08); d.roll.set(cen.clone().setX(.24), cen.clone().setX(-.24)); d.arm[0].set(K.clone().setX(.26), cen.clone().setX(.26)); d.arm[1].set(K.clone().setX(-.26), cen.clone().setX(-.26)); d.stk.set(p * .18); } };
+    },
+    // 45° hyperextension: legs locked on the bench, the torso hinges at the hips, a plate held to the chest
+    backext(){
+      const d = NV(0, 1, 1), n = NV(0, -1, 1), H0 = V(0, .92, .1), ank = sym(.11, H0.y - .855 * d.y, H0.z - .855 * d.z);
+      const tor = th => { const g = (45 - th) * D; return { U: V(0, Math.sin(g), Math.cos(g)), F: V(0, -Math.cos(g), Math.sin(g)) }; };
+      const padC = H0.clone().addScaledVector(d, -.17).addScaledVector(n, .148), plat = mid(ank[0], ank[1]).addScaledVector(d, -.094).addScaledVector(n, .07);
+      return { cam: { az: 78, el: 8, d: 4.3, t: [0, .7, .1] }, thumbP: .7, tempo: ['Rise', 'Lower'],
+        build(c){
+          c.boxB(padC, [.42, .08, .28], V(1, 0, 0), n, d.clone().negate(), M.pad);
+          c.boxB(plat, [.4, .04, .3], V(1, 0, 0), d.clone().negate(), n.clone().negate(), M.frame);
+          c.rod(mid(ank[0], ank[1]).addScaledVector(d, .06).addScaledVector(n, -.075).setX(.2), mid(ank[0], ank[1]).addScaledVector(d, .06).addScaledVector(n, -.075).setX(-.2), .045, M.pad);
+          const railA = plat.clone().addScaledVector(n, .08), railB = padC.clone().addScaledVector(n, .06).addScaledVector(d, -.12);
+          c.rod(railA, railB, .03, M.frame); c.rod(railB.clone().setY(0), railB, .03, M.frame); c.rod(railA.clone().setY(0), railA, .03, M.frame);
+          c.box([0, .02, railA.z], [.5, .04, .08]); c.box([0, .02, railB.z], [.5, .04, .08]); c.rod([0, .03, railA.z], [0, .03, railB.z], .025, M.frame);
+          return { plate: c.dynRod(.1, M.plate), hub: c.dynRod(.03, M.metal) };
+        },
+        pose(p){ const { U, F } = tor(mix(72, -4, p)); const P = H0.clone().addScaledVector(U, .03); const B = fr(P, U, F);
+          return { P, U, F, hands: [B.at(.115, .34, .205), B.at(-.115, .34, .205)], grip: U, ePole: [B.at(.45, .15, .15), B.at(-.45, .15, .15)], feet: ank, kPole: sym(.12, H0.y - .45, H0.z + .2), fDir: [n, n], fUp: [d, d], B }; },
+        update(p, b, d2, s){ const c0 = s.B.at(0, .34, .21); d2.plate.set(c0.clone().addScaledVector(s.F, -.015), c0.clone().addScaledVector(s.F, .015)); d2.hub.set(c0.clone().addScaledVector(s.F, -.02), c0.clone().addScaledVector(s.F, .02)); } };
+    },
+    // seated leg extension: thighs pinned, shins swing up about the knee, roller on the front of the ankles
+    legext(){
+      const P = V(0, .612, -.05), U = NV(0, 1, -.15), F = NV(0, .15, 1), B = fr(P, U, F); const K = sym(.095, .582, .394);
+      const shin = a => V(0, -Math.sin(a), Math.cos(a)), front = a => V(0, Math.cos(a), Math.sin(a));
+      return { cam: { az: 76, el: 12, d: 4.0, t: [0, .64, .3] }, thumbP: .7, tempo: ['Kick up', 'Lower'],
+        build(c){ c.box([0, .465, .03], [.44, .08, .46], M.pad); c.boxB(B.at(0, .33, -.175), [.44, .74, .08], B.L, B.U, B.F); c.box([0, .23, 0], [.1, .46, .1]); for (const x of [.31, -.31]) c.box([x, .53, .02], [.04, .04, .26], M.metal); const stk = c.stack(-.7, -.1, 1.6); c.pulley([.3, .582, .394]); c.pulley([-.3, .582, .394]); return { stk, roll: c.dynRod(.05, M.pad), arm: [c.dynRod(.024), c.dynRod(.024)] }; },
+        pose(p){ const a = mix(94, 6, p) * D, fd = front(a).multiplyScalar(Math.cos(12 * D)).addScaledVector(shin(a), Math.sin(12 * D)).normalize(); return { P, U, F, hands: sym(.31, .56, .02), grip: V(0, 0, 1), ePole: sym(.55, .65, -.2), feet: K.map(k => k.clone().addScaledVector(shin(a), .43)), kPole: sym(.12, 1.25, .5), fDir: [fd, fd], fUp: [shin(a).negate(), shin(a).negate()] }; },
+        update(p, b, d){ const K = mid(b.K[0], b.K[1]), A2 = mid(b.An[0], b.An[1]); const dir = A2.clone().sub(K).normalize(); const fr2 = V(0, dir.z, -dir.y); const cen = A2.clone().addScaledVector(dir, -.05).addScaledVector(fr2, .085); d.roll.set(cen.clone().setX(.24), cen.clone().setX(-.24)); d.arm[0].set(V(.27, .582, .394), cen.clone().setX(.27)); d.arm[1].set(V(-.27, .582, .394), cen.clone().setX(-.27)); d.stk.set(p * .18); } };
     },
     calf(){
       let base = null;
@@ -2669,7 +2704,7 @@ function renderPlan(){
     ${missionsHTML}
     <section class="card"><h2 class="h3">How to train</h2><div class="prose mt10">
       <p><b>Effort.</b> Reps in reserve means how many more reps you could have done. Most growth comes from sets that end 0–3 reps short of failure. Your phase tells you how close to go.</p>
-      <p><b>Progression.</b> Every exercise has a rep range, like 6–8. Keep the same weight until you hit 8 on every set, then add the smallest step: 2.5 kg on most lifts, 5 kg on squats, RDLs and leg press, the next dumbbell for curls. The Train tab does this math for you.</p>
+      <p><b>Progression.</b> Every exercise has a rep range, like 6–8. Keep the same weight until you hit 8 on every set, then add the smallest step: 2.5 kg on most lifts, 5 kg on hack squats and the leg press, the next dumbbell for curls. The Train tab does this math for you.</p>
       <p><b>Form.</b> About 2 seconds down, full range, no bouncing. If form breaks, the set is over. Check the 3D demo before any new exercise.</p>
       <p><b>Rest.</b> 2–3 minutes on the big lifts, 60–90 seconds on isolation. The timer starts when you log a set. Paired exercises alternate with shorter rest.</p>
       <p><b>Missed a day.</b> Do the next mission on your next free day and keep the order A, B, C. Never two missions on one day. A 4th session in a week earns no XP.</p>
@@ -2963,7 +2998,7 @@ function planDocHTML(){
 <div class="box"><b>Schedule:</b> Monday Mission A · Thursday Mission B · Saturday Mission C. Rest on the other days. Missed a day? Do the next mission on your next free day and keep the order.</div>
 ${missions}
 <h2>Phases</h2><ul><li><b>Weeks 1–2 · Calibration:</b> ${e(PHASES.cal.rir)}</li><li><b>Weeks 3–8 · Build:</b> ${e(PHASES.build.rir)}</li><li><b>Week 9 · Recovery:</b> ${e(PHASES.rec.rir)}</li><li><b>Weeks 10–12 · Overdrive:</b> ${e(PHASES.od.rir)}</li><li>After week 12 the cycle repeats: 6 Build, 1 Recovery, 3 Overdrive.</li></ul>
-<h2>Rules</h2><ul><li><b>Progression:</b> same weight until every set hits the top of the rep range, then add the smallest step (2.5 kg; 5 kg on squats, RDLs and leg press).</li><li><b>Form:</b> about 2 seconds down, full range, no bouncing.</li><li><b>Warm-up:</b> 5 minutes easy cardio, then 2–3 lighter sets of your first lift.</li><li><b>Pain:</b> sharp or joint pain means stop and swap the exercise.</li></ul>
+<h2>Rules</h2><ul><li><b>Progression:</b> same weight until every set hits the top of the rep range, then add the smallest step (2.5 kg; 5 kg on hack squats and the leg press).</li><li><b>Form:</b> about 2 seconds down, full range, no bouncing.</li><li><b>Warm-up:</b> 5 minutes easy cardio, then 2–3 lighter sets of your first lift.</li><li><b>Pain:</b> sharp or joint pain means stop and swap the exercise.</li></ul>
 <h2>Weekly check-in</h2><p>Same time each week, ideally first thing in the morning. Weight, waist at the navel, shoulders at the widest point. Track shoulders ÷ waist toward the classical 1.618.</p>
 </body></html>`;
 }

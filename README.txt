@@ -15,5 +15,5 @@ Moving your log from the Claude version:
 - In Claude: open Chisel > Vault > Export save file.
 - In the new app: Vault > Load a save file, and pick that file.
 
-Updating later: upload the new index.html over the old one. The app picks it up the next time it opens online.
+Updating later: upload all the files from the new folder over the old ones. The app picks it up the next time it opens online.
 On a computer you can also just double-click index.html.
