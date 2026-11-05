@@ -267,7 +267,7 @@ details > summary{cursor:pointer}
 
 /* rest bar */
 .restbar{position:fixed;left:0;right:0;bottom:calc(64px + env(safe-area-inset-bottom,0px));z-index:25;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));pointer-events:none}
-.restbar-in{pointer-events:auto;max-width:528px;margin:0 auto 8px;background:var(--raised);border:1px solid var(--line-2);border-radius:14px;box-shadow:var(--shadow);padding:10px 10px 12px 14px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;position:relative;overflow:hidden}
+.restbar-in{pointer-events:auto;max-width:528px;margin:0 auto 8px;background:var(--raised);border:1px solid var(--line-2);border-radius:14px;box-shadow:var(--shadow);padding:10px 10px 12px 14px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px 18px;position:relative;overflow:hidden}
 .rest-k{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .rest-t{font-family:var(--f-display);font-weight:900;font-size:34px;line-height:1;font-variant-numeric:tabular-nums}
 .rest-sub{font-size:13px;color:var(--fg-2);min-width:0;line-height:1.3}
@@ -276,6 +276,32 @@ details > summary{cursor:pointer}
 .rest-line{position:absolute;left:0;bottom:0;height:3px;background:var(--accent);width:0}
 .restbar.go .restbar-in{border-color:var(--accent)}
 .restbar.go .rest-t{color:var(--accent)}
+.rest-open{border:0;background:none;padding:0;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;position:relative}
+.rest-open::after{content:"";position:absolute;inset:-8px -6px}
+.rest-open .rest-k{display:flex;align-items:center;gap:5px}
+.rest-open .rest-ex{width:12px;height:12px;flex-shrink:0}
+
+/* full-screen rest timer */
+.restfs{position:fixed;inset:0;z-index:41;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:calc(20px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));animation:fsin .22s ease-out}
+@keyframes fsin{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
+.restfs-x{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));right:max(14px,env(safe-area-inset-right,0px));width:46px;height:46px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--fg-2);display:grid;place-items:center;padding:0}
+.restfs-x svg{width:22px;height:22px}
+.restfs-k{font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.ring{position:relative;width:min(78vw,46vh,340px);aspect-ratio:1}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg);display:block}
+.ring-bg{fill:none;stroke:var(--accent-track);stroke-width:12}
+.ring-fg{fill:none;stroke:var(--accent);stroke-width:12;stroke-linecap:round;transition:stroke-dashoffset .25s linear}
+.ring-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.restfs-t{font-family:var(--f-display);font-weight:800;font-size:clamp(56px,19vw,96px);line-height:1;font-variant-numeric:tabular-nums}
+.restfs-p{font-size:15px;font-weight:700;color:var(--fg-2);font-variant-numeric:tabular-nums}
+.restfs-sub{font-size:16px;color:var(--fg-2);text-align:center;max-width:32ch;min-height:1.4em;text-wrap:balance}
+.restfs-btns{display:flex;gap:10px;width:100%;max-width:360px}
+.restfs-btns button{flex:1;min-height:56px;border-radius:14px;border:1px solid var(--line-2);background:var(--surface-2);font-weight:800;font-size:18px}
+.restfs-btns button.skip{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-family:var(--f-display)}
+.restfs.go .restfs-t,.restfs.go .restfs-k{color:var(--accent)}
+.restfs.go .ring{animation:gopulse 1s ease-in-out infinite}
+@keyframes gopulse{50%{transform:scale(1.03)}}
+@media (prefers-reduced-motion: reduce){.restfs,.restfs.go .ring{animation:none}.ring-fg{transition:none}}
 
 /* tabs */
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:26;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
@@ -451,7 +477,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:now
 
 <div class="restbar" id="restBar" hidden>
   <div class="restbar-in">
-    <div><div class="rest-k" id="restK">Rest</div><div class="rest-t" id="restT">2:00</div></div>
+    <button type="button" class="rest-open" data-act="rest-full" aria-label="Open the timer full screen"><div class="rest-k"><span id="restK">Rest</span><svg class="rest-ex" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg></div><div class="rest-t" id="restT">2:00</div></button>
     <div class="rest-sub" id="restSub"></div>
     <div class="rest-btns">
       <button type="button" data-act="rest-add" data-s="-15" aria-label="15 seconds less">−15</button>
@@ -459,6 +485,19 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:now
       <button type="button" data-act="rest-skip">Skip</button>
     </div>
     <i class="rest-line" id="restLine"></i>
+  </div>
+</div>
+
+<div class="restfs" id="restFs" role="dialog" aria-modal="true" aria-label="Rest timer" hidden>
+  <button type="button" class="restfs-x" data-act="rest-min" aria-label="Shrink the timer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+  <div class="restfs-k" id="restFsK">Rest</div>
+  <div class="ring"><svg viewBox="0 0 200 200" aria-hidden="true"><circle class="ring-bg" cx="100" cy="100" r="90"/><circle class="ring-fg" id="restRing" cx="100" cy="100" r="90" stroke-dasharray="565.49" stroke-dashoffset="0"/></svg>
+    <div class="ring-c"><div class="restfs-t" id="restFsT" aria-live="off">2:00</div><div class="restfs-p" id="restFsP">100% left</div></div></div>
+  <div class="restfs-sub" id="restFsSub"></div>
+  <div class="restfs-btns">
+    <button type="button" data-act="rest-add" data-s="-15" aria-label="15 seconds less">−15</button>
+    <button type="button" data-act="rest-add" data-s="15" aria-label="15 seconds more">+15</button>
+    <button type="button" class="skip" data-act="rest-skip">Skip</button>
   </div>
 </div>
 
@@ -556,7 +595,8 @@ const EX = {
   hanging_leg_raise: { n: 'Hanging leg raise', m: 'core', k: 'bw', inc: 0, cue: 'Hang still, curl your hips up as your legs rise. No swinging. Bent knees is fine to start.', q: 'hanging leg raise form' },
   captains_chair:  { n: "Captain's chair knee raise", m: 'core', k: 'bw', inc: 0, cue: 'Back against the pad, knees to chest, lower slowly.', q: 'captains chair knee raise form' }
 };
-const MISSIONS = [
+// the plan before 6 Nov 2026 (3-set version). Sessions logged then are still scored and shown with it, so history and XP never change.
+const LEGACY_MISSIONS = [
   { id: 'A', dow: 1, day: 'Monday', code: 'Upper A', short: 'Chest', name: 'Chest & Shoulders', mins: 65,
     focus: [['Chest', 1], ['Side delts', 1], ['Triceps', 0], ['Lats', 0]],
     slots: [
@@ -594,16 +634,58 @@ const MISSIONS = [
       { id: 'C9', ex: 'hanging_leg_raise', alts: ['captains_chair'], sets: 3, lo: 10, hi: 15, rest: 60, pair: 'C8' }
     ] }
 ];
+const MISSIONS = [
+  { id: 'A', dow: 1, day: 'Monday', code: 'Upper A', short: 'Chest', name: 'Chest & Shoulders', mins: 45,
+    focus: [['Chest', 1], ['Side delts', 1], ['Triceps', 0], ['Lats', 0]],
+    slots: [
+      { id: 'A1', ex: 'bench', alts: ['smith_bench', 'chest_press'], sets: 2, lo: 6, hi: 8, rest: 150 },
+      { id: 'A2', ex: 'incline_machine', alts: ['incline_smith', 'incline_bb'], sets: 2, lo: 6, hi: 8, rest: 120 },
+      { id: 'A3', ex: 'lat_pulldown', alts: ['pullup', 'close_pulldown'], sets: 2, lo: 6, hi: 8, rest: 120 },
+      { id: 'A4', ex: 'shoulder_press', alts: ['smith_ohp'], sets: 2, lo: 6, hi: 8, rest: 120 },
+      { id: 'A5', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 6, hi: 8, rest: 90, tech: 'drop' },
+      { id: 'A6', ex: 'pec_deck', alts: ['cable_fly'], sets: 2, lo: 6, hi: 8, rest: 90 },
+      { id: 'A7', ex: 'rope_pushdown', alts: ['bar_pushdown'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'A8', tech: 'drop' },
+      { id: 'A8', ex: 'hammer_curl', alts: ['rope_hammer'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'A7' }
+    ] },
+  { id: 'B', dow: 4, day: 'Thursday', code: 'Upper B', short: 'Back', name: 'Back & Arms', mins: 40,
+    focus: [['Upper chest', 1], ['Lats', 0], ['Biceps', 1], ['Rear delts', 0], ['Side delts', 1]],
+    slots: [
+      { id: 'B1', ex: 'incline_bb', alts: ['incline_smith', 'incline_machine'], sets: 2, lo: 6, hi: 8, rest: 150 },
+      { id: 'B2', ex: 'close_pulldown', alts: ['lat_pulldown', 'pullup'], sets: 2, lo: 6, hi: 8, rest: 120 },
+      { id: 'B3', ex: 'machine_row', alts: ['bb_row', 'cable_row'], sets: 2, lo: 6, hi: 8, rest: 120 },
+      { id: 'B4', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'B5' },
+      { id: 'B5', ex: 'face_pull', alts: ['reverse_pec'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'B4' },
+      { id: 'B6', ex: 'ez_curl', alts: ['bb_curl', 'cable_curl'], sets: 2, lo: 6, hi: 8, rest: 90, tech: 'myo' },
+      { id: 'B7', ex: 'cable_crunch', alts: ['machine_crunch'], sets: 2, lo: 6, hi: 8, rest: 75 }
+    ] },
+  { id: 'C', dow: 6, day: 'Saturday', code: 'Lower + Arms', short: 'Legs', name: 'Legs, Arms & Abs', mins: 35,
+    focus: [['Legs', 0], ['Biceps', 1], ['Triceps', 0], ['Side delts', 1], ['Abs', 0]],
+    slots: [
+      { id: 'C1', ex: 'hack_squat', alts: ['leg_press'], sets: 2, lo: 6, hi: 8, rest: 150 },
+      { id: 'C2', ex: 'back_ext', alts: ['seated_leg_curl'], sets: 2, lo: 6, hi: 8, rest: 120 },
+      { id: 'C3', ex: 'incline_db_curl', alts: ['preacher_curl'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'C4', tech: 'myo' },
+      { id: 'C4', ex: 'overhead_ext', alts: ['skullcrusher'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'C3' },
+      { id: 'C5', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'C6', tech: 'partials' },
+      { id: 'C6', ex: 'hanging_leg_raise', alts: ['captains_chair'], sets: 2, lo: 6, hi: 8, rest: 75, pair: 'C5' }
+    ] }
+];
 const MISSION_BY_ID = {};
 const SLOT_BY_ID = {};
 MISSIONS.forEach(m => { MISSION_BY_ID[m.id] = m; m.slots.forEach(s => { s.mission = m.id; SLOT_BY_ID[s.id] = s; }); });
+const LEGACY_BY_ID = {}, LEGACY_SLOT_BY_ID = {};
+LEGACY_MISSIONS.forEach(m => { LEGACY_BY_ID[m.id] = m; m.slots.forEach(s => { s.mission = m.id; LEGACY_SLOT_BY_ID[s.id] = s; }); });
+// sessions started on this plan carry pv: 2; older sessions keep their original plan
+const PLAN_V = 2;
+const isLegacy = s => !!s && !(s.pv >= PLAN_V);
+const slotsOf = s => (isLegacy(s) ? LEGACY_BY_ID : MISSION_BY_ID)[s.m].slots;
+const slotById = (id, s) => (isLegacy(s) ? LEGACY_SLOT_BY_ID : SLOT_BY_ID)[id];
 const SCHEDULE = { 1: 'A', 4: 'B', 6: 'C' };
 
 const PHASES = {
   cal:   { n: 'Calibration', rir: 'Stop every set with 2–3 reps left in the tank.', note: 'Learn the lifts and find your working weights. Strength climbs fast in these weeks.' },
   build: { n: 'Build', rir: 'Stop 1–2 reps short of failure. On the last set of isolation moves, go to failure.', note: 'Beat the logbook: one more rep or a little more weight than last time.' },
   rec:   { n: 'Recovery', rir: 'Half the sets, same weights, about 3 reps left in the tank.', note: 'A deload. Joints and nerves catch up and you come back stronger.' },
-  od:    { n: 'Overdrive', rir: '1–2 reps short on compounds. One extra lateral raise set each day. Use unlocked techniques on last sets.', note: 'Recovery week reset you. Push hard for three weeks.' }
+  od:    { n: 'Overdrive', rir: '1–2 reps short on compounds. Use unlocked techniques on last sets.', note: 'Recovery week reset you. Push hard for three weeks.' }
 };
 function phaseOf(week){ if (week <= 2) return 'cal'; const c = (week - 3) % 10; return c <= 5 ? 'build' : (c === 6 ? 'rec' : 'od'); }
 function seasonOf(week){ return week <= 12 ? 1 : 2 + Math.floor((week - 13) / 10); }
@@ -682,6 +764,14 @@ function P(){
   if (!p.swaps || typeof p.swaps !== 'object') p.swaps = {};
   return p;
 }
+// Saturday lost three leg slots in plan 2, so saved swaps for the arm and ab slots move to their new numbers
+function migratePlan(){
+  const p = P(); if (p.plan >= PLAN_V) return false;
+  const old = p.swaps || {}, sw = {}, moved = { C6: 'C3', C7: 'C4', C8: 'C5', C9: 'C6' };
+  for (const [k, v] of Object.entries(old)){ if (k.charAt(0) !== 'C') sw[k] = v; else if (moved[k]) sw[moved[k]] = v; else if (k === 'C1' || k === 'C2') sw[k] = v; }
+  p.swaps = sw; p.plan = PLAN_V;
+  return true;
+}
 const monthId = date => 'm-' + date.slice(0, 7);
 function monthDoc(date, create){
   const id = monthId(date);
@@ -706,7 +796,7 @@ function allCheckins(){
 }
 function weekNum(date){ return Math.max(1, Math.floor(daysBetween(mondayOf(P().startDate), mondayOf(date)) / 7) + 1); }
 function currentEx(slotId, s){
-  const slot = SLOT_BY_ID[slotId];
+  const slot = slotById(slotId, s);
   const rec = s && s.sets && s.sets[slotId];
   if (rec && rec.ex && EX[rec.ex]) return rec.ex;
   const sw = P().swaps[slotId];
@@ -746,7 +836,7 @@ function compute(){
     const earning = !perDay[s.date] && (perWeek[wk] || 0) < 3;
     let planned = 0, done = 0, any = false;
     const prs = [], ready = [], credit = {};
-    for (const slot of mission.slots){
+    for (const slot of slotsOf(s)){
       const p = plannedSets(slot, ph); planned += p;
       const rec = s.sets && s.sets[slot.id]; if (!rec) continue;
       const exId = EX[rec.ex] ? rec.ex : slot.ex; const ex = EX[exId];
@@ -807,7 +897,7 @@ function evalAch(sessions, info, weeks, fullWeeks, checkins){
   const seasonEnd = addDays(mondayOf(P().startDate), 84);
   for (const s of sessions){
     const i = info[s.id]; if (!i || i.empty) continue;
-    for (const slot of MISSION_BY_ID[s.m].slots){
+    for (const slot of slotsOf(s)){
       const rec = s.sets && s.sets[slot.id]; if (!rec) continue;
       const exId = EX[rec.ex] ? rec.ex : slot.ex;
       for (const x of doneSets(rec)){
@@ -838,7 +928,7 @@ function lastRecord(exId, beforeDate){
   const ss = allSessions(); let fallback = null;
   for (let k = ss.length - 1; k >= 0; k--){
     const s = ss[k]; if (s.date >= beforeDate) continue;
-    for (const sl of MISSION_BY_ID[s.m].slots){
+    for (const sl of slotsOf(s)){
       const rec = s.sets && s.sets[sl.id]; if (!rec || (EX[rec.ex] ? rec.ex : sl.ex) !== exId) continue;
       const ds = doneSets(rec); if (!ds.length) continue;
       const ph = PHASES[s.ph] ? s.ph : phaseOf(weekNum(s.date));
@@ -854,10 +944,11 @@ function suggestion(slot, exId, ph){
   if (!L) return { w: null, text: ex.k === 'bw' ? `First time: do as many clean reps as you can, up to ${slot.hi}.` : `First time: pick a weight you could lift about ${slot.hi + 2} times. Do ${slot.lo}–${slot.hi} reps and stop with 2–3 left.` };
   const reps = L.sets.map(x => x.r).join(', ');
   const topW = L.sets[0].w;
-  const allTop = L.sets.length >= L.planned && L.sets.slice(0, L.planned).every(x => x.r >= L.hi);
+  const n = Math.min(L.planned, slot.sets);
+  const allTop = L.sets.length >= n && L.sets.slice(0, n).every(x => x.r >= slot.hi);
   const last = ex.k === 'bw' ? `Last time: ${reps} reps${topW ? ` with +${fmtKg(topW)} kg` : ''}` : `Last time: ${fmtKg(topW)} kg × ${reps}`;
   if (ph === 'rec') return { w: topW || null, last, text: `Recovery week: same weight, half the sets, stop 3 reps short.` };
-  if (ex.k === 'bw') return allTop ? { w: topW || null, last, up: true, text: `You hit ${L.hi}+ every set. Slow the reps down or add a little weight.` } : { w: topW || null, last, text: `Beat ${reps} reps.` };
+  if (ex.k === 'bw') return allTop ? { w: topW || null, last, up: true, text: `You hit ${slot.hi}+ every set. Slow the reps down or add a little weight.` } : { w: topW || null, last, text: `Beat ${reps} reps.` };
   if (allTop){ const nw = Math.round((topW + ex.inc) * 4) / 4; return { w: nw, last, up: true, text: `Add weight: ${fmtKg(nw)} kg${ex.k === 'mc' || ex.k === 'cb' ? ' (or the next pin)' : ''}. You hit the top of the range.` }; }
   return { w: topW, last, text: `Same weight. Beat ${reps} reps.` };
 }
@@ -1045,9 +1136,10 @@ const Viz = (() => {
           cyl: new T.CylinderGeometry(1, 1, 1, 18), sph: new T.SphereGeometry(1, 26, 16), box: new T.BoxGeometry(1, 1, 1),
           disc: new T.CylinderGeometry(1, 1, 1, 32), hex: new T.CylinderGeometry(1, 1, 1, 6), ring: new T.TorusGeometry(1, .08, 8, 32), plane: new T.PlaneGeometry(1, 1)
         };
-        FIG = figGeos(fd);
+        FIG = figGeos(fd); FIGSig = figPSig;
         thumbStage = mkStage(THUMB_W, THUMB_H, true);
         ok3d = !!thumbStage;
+        if (ok3d && FIGSig !== growSig) setTimeout(regrow, 0);
       } catch (e) { ok3d = false; }
       return ok3d;
     })();
@@ -1150,6 +1242,32 @@ const Viz = (() => {
     ];
     return { torso, ua, fa, th, sh, ft, cut: { ft: -.074 } };
   })();
+  /* growth: every muscle shape is sculpted at a size set by its muscle group's level (0 = untrained and skinny, 1 = the full physique) */
+  const PART_GROUP = { forearms: 'biceps' }; for (const gk in GROUP_PARTS) for (const pt of GROUP_PARTS[gk]) PART_GROUP[pt] = gk;
+  const SEG_GROUPS = { torso: ['chest', 'back', 'core'], ua: ['delts', 'biceps', 'triceps'], fa: ['biceps'], th: ['legs'], sh: ['legs'], ft: [] };
+  const GROW_KEYS = Object.keys(GROUP_PARTS);
+  let growth = {}, growSig = '';
+  const growOf = (g, k) => clamp(+g[k] || 0, 0, 1);
+  function grownSeg(g){
+    const out = { cut: SEG.cut };
+    for (const k of ['torso', 'ua', 'fa', 'th', 'sh', 'ft']){
+      const gs = SEG_GROUPS[k], avg = gs.length ? gs.reduce((a, x) => a + growOf(g, x), 0) / gs.length : 1;
+      out[k] = SEG[k].map((sh, i) => {
+        if (sh.part){
+          // muscles: skinny is about 45% as thick; length shrinks less so the shape stays a muscle, not a dot
+          // skinny muscles are thin, sit closer to the bone and melt softly into the body instead of showing as lumps
+          const t = growOf(g, PART_GROUP[sh.part]), f = (sh.part === 'abs' ? .15 : .3) + (sh.part === 'abs' ? .85 : .7) * t, fl = .7 + .3 * t, pull = k === 'torso' ? .86 + .14 * t : .72 + .28 * t, kk = sh.k * (1.5 - .5 * t);
+          if (sh.t === 'e'){ const r = sh.r, L = Math.max(r[0], r[1], r[2]); return { ...sh, c: [sh.c[0] * pull, sh.c[1], sh.c[2] * pull], r: r.map(x => x === L ? x * fl : x * f), k: kk }; }
+          return { ...sh, ra: sh.ra * f, rb: sh.rb * f, k: kk };
+        }
+        // under the muscles: a skinny frame has a narrower ribcage and waist and thinner limbs
+        if (k === 'torso' && i < 4){ const b = .9 + .1 * avg, bz = .86 + .14 * avg; return { ...sh, r: [sh.r[0] * b, sh.r[1], sh.r[2] * bz] }; }
+        if (k !== 'torso' && k !== 'ft' && i === 0 && sh.t === 'c'){ const b = .84 + .16 * avg; return { ...sh, ra: sh.ra * b, rb: sh.rb * b }; }
+        return sh;
+      });
+    }
+    return out;
+  }
   const SEG_PARTS = { torso: ['pecL', 'pecU', 'traps', 'upperBack', 'lats', 'lowerBack', 'abs', 'obliques', 'glutes'], ua: ['dFront', 'dSide', 'dRear', 'biceps', 'triceps'], fa: ['forearms'], th: ['quads', 'hams'], sh: ['calves'], ft: [] };
 
   // signed distance helpers (iq): ellipsoid approximation and rounded cone
@@ -1268,19 +1386,20 @@ const Viz = (() => {
     return { pos, nor, idx, W: g.W, nv: g.nv };
   }
   const FIG_H = { torso: .0068, ua: .0065, fa: .0055, th: .0075, sh: .007, ft: .005 };
-  function buildFigData(){ const out = {}; for (const k of ['torso', 'ua', 'fa', 'th', 'sh', 'ft']) out[k] = sculpt(SEG[k], { h: FIG_H[k], cut: SEG.cut[k], parts: SEG_PARTS[k] }); return out; }
-  let figP = null, FIG = null;
+  function buildFigData(seg){ const out = {}; for (const k of ['torso', 'ua', 'fa', 'th', 'sh', 'ft']) out[k] = sculpt(seg[k], { h: FIG_H[k], cut: seg.cut[k], parts: SEG_PARTS[k] }); return out; }
+  let figP = null, figPSig = '', FIG = null, FIGSig = '';
   // carving the meshes takes about a second, so a background worker does it while three.js loads
   function figData(){
-    if (figP) return figP;
+    if (figP && figPSig === growSig) return figP;
+    const seg = grownSeg(growth); figPSig = growSig;
     figP = new Promise(res => {
       let settled = false;
       const done = d => { if (!settled){ settled = true; res(d); } };
-      const local = () => { if (settled) return; try { done(buildFigData()); } catch (e) { done(null); } };
+      const local = () => { if (settled) return; try { done(buildFigData(seg)); } catch (e) { done(null); } };
       try {
         const src = [prepShape, sdShape, sculpt, buildFigData].map(f => f.toString()).join('\n') +
-          `\nconst smin = ${smin.toString()};\nconst SEG = ${JSON.stringify(SEG)};\nconst SEG_PARTS = ${JSON.stringify(SEG_PARTS)};\nconst FIG_H = ${JSON.stringify(FIG_H)};\n` +
-          'onmessage = () => { const d = buildFigData(); const tr = []; for (const k in d) tr.push(d[k].pos.buffer, d[k].nor.buffer, d[k].idx.buffer, d[k].W.buffer); postMessage(d, tr); };';
+          `\nconst smin = ${smin.toString()};\nconst SEG = ${JSON.stringify(seg)};\nconst SEG_PARTS = ${JSON.stringify(SEG_PARTS)};\nconst FIG_H = ${JSON.stringify(FIG_H)};\n` +
+          'onmessage = () => { const d = buildFigData(SEG); const tr = []; for (const k in d) tr.push(d[k].pos.buffer, d[k].nor.buffer, d[k].idx.buffer, d[k].W.buffer); postMessage(d, tr); };';
         const url = URL.createObjectURL(new Blob([src], { type: 'text/javascript' }));
         const w = new Worker(url);
         const end = () => { try { w.terminate(); } catch (e) {} try { URL.revokeObjectURL(url); } catch (e) {} };
@@ -1339,11 +1458,20 @@ const Viz = (() => {
     const g = new T.Group(), torso = new T.Group(); g.add(torso);
     const mats = { torso: figMat(), ua: figMat(), fa: figMat(), th: figMat(), sh: figMat(), ft: figMat() };
     const mk = (geo, mat, parent) => { const m = new T.Mesh(geo, mat); m.castShadow = true; m.receiveShadow = true; (parent || g).add(m); return m; };
-    mk(FIG.torso, mats.torso, torso);
+    const tm = mk(FIG.torso, mats.torso, torso);
     const arms = [0, 1].map(i => ({ ua: mk(FIG.ua[i], mats.ua), fa: mk(FIG.fa[i], mats.fa) }));
     const legs = [0, 1].map(i => ({ th: mk(FIG.th[i], mats.th), sh: mk(FIG.sh[i], mats.sh), ft: mk(FIG.ft, mats.ft) }));
-    return { g, torso, arms, legs, mats, prim: null };
+    const f = { g, torso, arms, legs, mats, prim: null, tm };
+    FIGS.push(f);
+    return f;
   }
+  const FIGS = [];
+  function reshape(f){
+    f.tm.geometry = FIG.torso;
+    f.arms.forEach((a, i) => { a.ua.geometry = FIG.ua[i]; a.fa.geometry = FIG.fa[i]; });
+    f.legs.forEach((l, i) => { l.th.geometry = FIG.th[i]; l.sh.geometry = FIG.sh[i]; l.ft.geometry = FIG.ft; });
+  }
+  function disposeGeos(G0){ if (!G0) return; const seen = new Set(); const d = g => { if (g && !seen.has(g)){ seen.add(g); g.dispose(); } }; for (const k in G0) [].concat(G0[k]).forEach(d); }
   // fn(part) → [primary, secondary, statue level] for every muscle slot of every segment
   function setSlots(f, fn){
     for (const k in f.mats){
@@ -2001,11 +2129,33 @@ const Viz = (() => {
     live.el = null; live.ex = null; live.drag = null;
   }
   window.addEventListener('resize', () => { if (live.el) size(); });
+  // a muscle levelled up: carve the new body in the background, then swap it into every stage and redo the pictures
+  let regrowing = false;
+  async function regrow(){
+    if (regrowing) return; regrowing = true;
+    try {
+      while (FIGSig !== growSig){
+        const fd = await figData(); const sig = figPSig;
+        if (!fd || !T) break;
+        const old = FIG; FIG = figGeos(fd); FIGSig = sig;
+        FIGS.forEach(reshape); disposeGeos(old);
+      }
+      for (const k in thumbs) delete thumbs[k];
+      statue = { sig: '', front: '', back: '' };
+      hydrate();
+    } finally { regrowing = false; }
+  }
   return {
     hydrate, play, stop, ensure,
     cached: ex => thumbs[ex] || '',
     statueCached: k => statue[k] || '',
     setLevels(lv){ const sig = JSON.stringify(lv); if (sig === levelsSig) return; levels = lv; levelsSig = sig; if (liveStage && liveStage.cur === '__statue') paintLevels(liveStage.fig, lv); },
+    setGrowth(g){
+      const o = {}; for (const k of GROW_KEYS) o[k] = Math.round(growOf(g, k) * 100) / 100;
+      const sig = JSON.stringify(o); if (sig === growSig) return; growth = o; growSig = sig;
+      if (!FIG) return;            // not built yet: the first build already uses it
+      regrow();
+    },
     failed: () => ok3d === false,
     dragged(){ const m = live.moved; live.moved = false; return m; },
     liveSheet: () => !!live.el
@@ -2241,12 +2391,13 @@ function confirmSheet({ title, body, ok, danger, onOk }){
 /* exercise viewer: the live 3D demo plus everything needed to do the lift; flips through the mission */
 let vctx = null;
 function viewerList(slotId, from){
-  const sl = SLOT_BY_ID[slotId]; if (!sl) return null;
-  const mm = MISSION_BY_ID[sl.mission]; const s = from === 'train' ? getSession(todayStr(), mm.id) : null;
-  return mm.slots.map(x => ({ ex: currentEx(x.id, s), slot: x.id }));
+  const m = String(slotId || '').charAt(0); if (!MISSION_BY_ID[m]) return null;
+  const s = from === 'train' ? getSession(todayStr(), m) : null;
+  const slots = s ? slotsOf(s) : MISSION_BY_ID[m].slots; if (!slots.some(x => x.id === slotId)) return null;
+  return slots.map(x => ({ ex: currentEx(x.id, s), slot: x.id }));
 }
 function viewerHTML(){
-  const it = vctx.list[vctx.i]; const ex = EX[it.ex]; const sl = it.slot ? SLOT_BY_ID[it.slot] : null; const n = vctx.list.length;
+  const it = vctx.list[vctx.i]; const ex = EX[it.ex]; const sl = it.slot ? (SLOT_BY_ID[it.slot] || LEGACY_SLOT_BY_ID[it.slot]) : null; const n = vctx.list.length;
   const w = worksOf(it.ex); const names = ids => ids.map(id => esc(MPARTS[id].n)).join(' · ');
   const ph = sl ? (() => { const s = vctx.from === 'train' ? getSession(todayStr(), sl.mission) : null; return s && PHASES[s.ph] ? s.ph : phaseOf(weekNum(todayStr())); })() : null;
   return `${vizStageHTML(it.ex, ex.n)}
@@ -2277,6 +2428,9 @@ function stepViewer(d){
 }
 const STONE = '#EDE9E3', CARVED = '#8E1B40';
 function mixHex(a, b, t){ const x = hexRgb(a), y = hexRgb(b); return '#' + x.map((v, i) => Math.round(v + (y[i] - v) * t).toString(16).padStart(2, '0')).join(''); }
+// body size per muscle group: skinny at muscle level 1, the full physique at level 11 (roughly 230–280 logged sets for that muscle)
+const GROW_FULL = 11;
+function growthLevels(){ const g = {}; for (const k in MUSCLES) g[k] = clamp((mLevel(G.muscleXP[k]) - 1) / (GROW_FULL - 1), 0, 1); return g; }
 function statueLevels(){ const lv = {}; for (const k in MUSCLES) lv[k] = Math.round(Math.sqrt(clamp((mLevel(G.muscleXP[k]) - 1) / 12, 0, 1)) * 6) / 6; return lv; }
 function openStatue(){
   const lv = statueLevels(); Viz.setLevels(lv);
@@ -2320,7 +2474,7 @@ function upcoming(t, done){
   return null;
 }
 function focusChips(mm){ return mm.focus.map(([n, f]) => `<span class="chip${f ? ' focus' : ''}">${esc(n)}</span>`).join(''); }
-function missionLine(mm, ph){ const sets = mm.slots.reduce((a, s) => a + plannedSets(s, ph), 0); return `${mm.slots.length} exercises · ${sets} sets · about ${mm.mins} min`; }
+function missionLine(mm, ph, slots){ slots = slots || mm.slots; const sets = slots.reduce((a, s) => a + plannedSets(s, ph), 0); return `${slots.length} exercises · ${sets} sets · about ${mm.mins} min`; }
 function unlocked(key){ const sk = SKILLS.find(s => s.key === key); return sk && G.level >= sk.lv; }
 
 /* ---------- views ---------- */
@@ -2459,7 +2613,8 @@ function renderTrain(){
   const s = getSession(t, m); const info = s ? G.info[s.id] : null;
   const wk = weekNum(t); const ph = s && PHASES[s.ph] ? s.ph : phaseOf(wk);
   const doneWk = missionsDoneThisWeek(t);
-  const planned = mm.slots.reduce((a, sl) => a + plannedSets(sl, ph), 0);
+  const slots = s ? slotsOf(s) : mm.slots;
+  const planned = slots.reduce((a, sl) => a + plannedSets(sl, ph), 0);
   const done = info && !info.empty ? info.done : 0;
   const others = todaySessions().filter(x => x.m !== m);
   const wkCount = allSessions().filter(x => mondayOf(x.date) === mondayOf(t) && x.date !== t && G.info[x.id] && !G.info[x.id].empty).length;
@@ -2474,7 +2629,7 @@ function renderTrain(){
     <header>
       <div class="eyebrow">Mission ${mm.id} · ${mm.day}</div>
       <h1 class="h1">${esc(mm.name)}</h1>
-      <p class="meta">Week ${wk} · ${PHASES[ph].n} · ${missionLine(mm, ph)}</p>
+      <p class="meta">Week ${wk} · ${PHASES[ph].n} · ${missionLine(mm, ph, slots)}</p>
     </header>
     <div class="notice"><b>${PHASES[ph].n}.</b> ${esc(PHASES[ph].note)} ${esc(PHASES[ph].rir)}</div>
     ${warn}
@@ -2484,7 +2639,7 @@ function renderTrain(){
       <li>First lift: 2–3 lighter ramp-up sets. About 50% × 8, 70% × 5, 85% × 2.</li>
       <li>Then your working sets. Log only those.</li>
     </ol></details>
-    <ol class="exlist">${mm.slots.map(sl => exCardHTML(sl, s, ph)).join('')}</ol>
+    <ol class="exlist">${slots.map(sl => exCardHTML(sl, s, ph)).join('')}</ol>
     ${info && !info.empty && info.complete ? `<div class="notice good"><b>Mission complete.</b> ${info.flawless ? 'Every planned set done.' : 'Finish the last sets for the Flawless bonus, or call it here.'}</div>` : ''}
     <button class="btn btn-gold btn-block" data-act="finish">${info && !info.empty && info.complete ? 'View mission summary' : 'Finish mission'}</button>
     <p class="muted" style="font-size:13px;text-align:center">Sets save as you log them. You can close the app mid-workout.</p>`;
@@ -2544,11 +2699,11 @@ function exCardHTML(sl, s, ph){
 }
 function ensureSession(date, m){
   const md = monthDoc(date, true); const id = `${date}-${m}`;
-  if (!md.sessions[id]) md.sessions[id] = { id, date, m, ph: phaseOf(weekNum(date)), st: Date.now(), sets: {} };
+  if (!md.sessions[id]) md.sessions[id] = { id, date, m, pv: PLAN_V, ph: phaseOf(weekNum(date)), st: Date.now(), sets: {} };
   return md.sessions[id];
 }
 function slotRec(s, slotId){
-  if (!s.sets[slotId]) s.sets[slotId] = { ex: currentEx(slotId, null), s: [] };
+  if (!s.sets[slotId]) s.sets[slotId] = { ex: currentEx(slotId, isLegacy(s) ? s : null), s: [] };
   return s.sets[slotId];
 }
 function onSetInput(input){
@@ -2563,7 +2718,7 @@ function onSetInput(input){
 }
 function onCheck(btn){
   const card = btn.closest('.ex'); const row = btn.closest('.set'); const slotId = card.dataset.slot; const i = +row.dataset.i;
-  const sl = SLOT_BY_ID[slotId]; const t = todayStr();
+  const t = todayStr(); const sl = slotById(slotId, getSession(t, state.trainM)); if (!sl) return;
   const wIn = row.querySelector('.in-w'), rIn = row.querySelector('.in-r');
   const w = parseNum(wIn.value), r = parseNum(rIn.value);
   const s0 = getSession(t, state.trainM);
@@ -2595,7 +2750,7 @@ function onCheck(btn){
   const doneCount = doneSets(rec).length; const p = plannedSets(sl, info.ph);
   let nextTxt = '';
   if (doneCount < p) nextTxt = sl.pair ? `Next: ${EX[currentEx(sl.pair, s)].n}, then set ${doneCount + 1}` : `Next: ${ex.n}, set ${doneCount + 1}`;
-  else { const mm = MISSION_BY_ID[state.trainM]; const idx = mm.slots.findIndex(x => x.id === slotId); const nx = mm.slots.slice(idx + 1).find(x => doneSets(s.sets[x.id]).length < plannedSets(x, info.ph)); nextTxt = nx ? `Next: ${EX[currentEx(nx.id, s)].n}` : ''; }
+  else { const sls = slotsOf(s); const idx = sls.findIndex(x => x.id === slotId); const nx = sls.slice(idx + 1).find(x => doneSets(s.sets[x.id]).length < plannedSets(x, info.ph)); nextTxt = nx ? `Next: ${EX[currentEx(nx.id, s)].n}` : ''; }
   if (!info.flawless) startRest(sl.pair ? Math.max(45, Math.round(sl.rest * 0.6)) : sl.rest, nextTxt);
   else stopRest();
   afterChange(prev);
@@ -2606,6 +2761,7 @@ function afterChange(prev){
   const newAch = ACH.filter(a => G.ach[a.id] && !prev.ach[a.id]);
   newAch.forEach((a, k) => setTimeout(() => { toast(`<span>${TIER_NAME[a.t]} badge · <strong>${esc(a.n)}</strong></span><b>+${TIER_XP[a.t]}</b>`, true); sfx.pr(); }, 500 + k * 400));
   if (G.level > prev.level) setTimeout(() => showLevelUp(prev.level, G.level), 700);
+  Viz.setGrowth(growthLevels());
   renderHeader();
 }
 function showLevelUp(from, to){
@@ -2642,24 +2798,39 @@ function showSummary(sid, celebrate){
 
 /* rest timer */
 const rest = { end: 0, total: 0, timer: 0, goTimer: 0 };
+const RING_C = 565.49;
 function startRest(sec, sub){
   rest.total = sec; rest.end = Date.now() + sec * 1000;
-  const bar = $('#restBar'); bar.hidden = false; bar.classList.remove('go');
+  const bar = $('#restBar'); bar.hidden = false; bar.classList.remove('go'); $('#restFs').classList.remove('go');
   $('#restK').textContent = 'Rest'; $('#restSub').textContent = sub || '';
+  $('#restFsK').textContent = 'Rest'; $('#restFsSub').textContent = sub || '';
   clearTimeout(rest.goTimer); clearTimeout(rest.timer); tickRest();
 }
 function tickRest(){
   const left = Math.max(0, rest.end - Date.now());
-  $('#restT').textContent = restLabel(Math.ceil(left / 1000));
-  $('#restLine').style.width = (100 - left / (rest.total * 1000) * 100).toFixed(1) + '%';
+  const frac = rest.total > 0 ? clamp(left / (rest.total * 1000), 0, 1) : 0;
+  const label = restLabel(Math.ceil(left / 1000));
+  $('#restT').textContent = label; $('#restFsT').textContent = label;
+  $('#restLine').style.width = ((1 - frac) * 100).toFixed(1) + '%';
+  $('#restRing').style.strokeDashoffset = (RING_C * (1 - frac)).toFixed(2);
+  $('#restFsP').textContent = `${Math.ceil(frac * 100)}% left`;
   if (left <= 0){
     const bar = $('#restBar'); bar.classList.add('go'); $('#restK').textContent = 'Go'; $('#restT').textContent = '0:00';
+    $('#restFs').classList.add('go'); $('#restFsK').textContent = 'Rest over'; $('#restFsT').textContent = 'Go'; $('#restFsP').textContent = 'Next set';
     sfx.rest(); if (navigator.vibrate) try { navigator.vibrate([120, 80, 120]); } catch (e) {}
     rest.goTimer = setTimeout(stopRest, 6000); return;
   }
   rest.timer = setTimeout(tickRest, 250);
 }
-function stopRest(){ clearTimeout(rest.timer); clearTimeout(rest.goTimer); const bar = $('#restBar'); if (bar) bar.hidden = true; }
+function stopRest(){ clearTimeout(rest.timer); clearTimeout(rest.goTimer); const bar = $('#restBar'); if (bar) bar.hidden = true; restFull(false); }
+function restFull(on){
+  const fs = $('#restFs'); if (!fs) return;
+  if (on && $('#restBar').hidden) return;
+  if (on === !fs.hidden) return;
+  fs.hidden = !on;
+  if (on){ rest.back = document.activeElement; const b = fs.querySelector('.skip'); if (b) b.focus(); }
+  else if (rest.back && document.contains(rest.back)){ try { rest.back.focus({ preventScroll: true }); } catch (e) {} rest.back = null; }
+}
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible'){ if (!$('#restBar').hidden && !$('#restBar').classList.contains('go')){ clearTimeout(rest.timer); tickRest(); } if (state.view === 'train') wantWake(true); } });
 
 /* wake lock */
@@ -2742,7 +2913,7 @@ function renderProgress(){
   const lastBoth = cis.filter(c => +c.waist > 0 && +c.shoulders > 0).pop();
   const slv = statueLevels(); Viz.setLevels(slv);
   const muscleRows = Object.entries(MUSCLES).map(([k, m]) => { const mx = G.muscleXP[k]; const lv = mLevel(mx); const a = mxpFor(lv), b = mxpFor(lv + 1); const pct = clamp((mx - a) / Math.max(1, b - a), 0, 1); return `<div class="mrow${m.f ? '' : ' nf'}"><span class="m-n"><i class="sw" style="background:${mixHex(STONE, CARVED, slv[k])}" aria-hidden="true"></i>${esc(m.n)}</span><span class="m-l">Lv ${lv}</span><div class="bar" role="progressbar" aria-label="${esc(m.n)}: level ${lv}, ${Math.round(pct * 100)}% to the next" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(pct * 100)}"><i style="width:${(pct * 100).toFixed(1)}%"></i></div><span class="m-s">${fmt(mx / 10)} sets${m.f ? ' · focus' : ''}</span></div>`; }).join('');
-  const recIds = []; MISSIONS.forEach(mm => mm.slots.forEach(sl => [sl.ex, ...sl.alts].forEach(a => { if (G.bests[a] && !recIds.includes(a)) recIds.push(a); })));
+  const recIds = []; [...MISSIONS, ...LEGACY_MISSIONS].forEach(mm => mm.slots.forEach(sl => [sl.ex, ...sl.alts].forEach(a => { if (G.bests[a] && !recIds.includes(a)) recIds.push(a); })));
   const records = recIds.map(id => { const b = G.bests[id]; const e = EX[id]; return `<li><span class="rc-n">${esc(e.n)}<small>${shortDate(b.date)}${e.k === 'bw' ? '' : ` · est. max ${fmtKg(Math.round(b.e * 2) / 2)} kg`}</small></span><b class="rc-v">${e.k === 'bw' ? `${b.r} reps${b.w ? ` +${fmtKg(b.w)}` : ''}` : `${fmtKg(b.w)} × ${b.r}`}</b></li>`; }).join('');
   const sess = allSessions().filter(s => G.info[s.id] && !G.info[s.id].empty).reverse();
   const shown = state.showAllHist ? sess : sess.slice(0, 8);
@@ -2793,7 +2964,7 @@ function renderProgress(){
 }
 function historyItem(s){
   const i = G.info[s.id]; const mm = MISSION_BY_ID[s.m];
-  const lines = mm.slots.map(sl => { const rec = s.sets && s.sets[sl.id]; const ds = doneSets(rec); if (!ds.length) return ''; const e = EX[EX[rec.ex] ? rec.ex : sl.ex]; return `<div><b>${esc(e.n)}</b> · ${ds.map(x => e.k === 'bw' ? `${x.r}${+x.w ? ` (+${fmtKg(x.w)})` : ''}` : `${fmtKg(x.w)}×${x.r}`).join(', ')}</div>`; }).join('');
+  const lines = slotsOf(s).map(sl => { const rec = s.sets && s.sets[sl.id]; const ds = doneSets(rec); if (!ds.length) return ''; const e = EX[EX[rec.ex] ? rec.ex : sl.ex]; return `<div><b>${esc(e.n)}</b> · ${ds.map(x => e.k === 'bw' ? `${x.r}${+x.w ? ` (+${fmtKg(x.w)})` : ''}` : `${fmtKg(x.w)}×${x.r}`).join(', ')}</div>`; }).join('');
   return `<li><details><summary><span class="h-t">${prettyDate(s.date)} · Mission ${s.m}<small>${i.done}/${i.planned} sets${i.prs.length ? ` · ${i.prs.length} PR${i.prs.length > 1 ? 's' : ''}` : ''}${i.earning ? '' : ' · bonus, no XP'}</small></span><span class="h-xp">+${fmt(i.xp)}</span></summary>
     <div class="h-body">${lines}<div class="btn-row mt6"><button class="btn btn-sm" data-act="summary" data-sid="${s.id}">Summary</button><button class="btn btn-sm btn-danger" data-act="del-session" data-sid="${s.id}">Delete</button></div></div></details></li>`;
 }
@@ -2879,7 +3050,7 @@ function mdLite(t){
 function oracleContext(){
   const t = todayStr(); const wk = weekNum(t); const ph = phaseOf(wk); const from = addDays(t, -28);
   const ss = allSessions().filter(s => s.date >= from && G.info[s.id] && !G.info[s.id].empty);
-  const lines = ss.map(s => { const mm = MISSION_BY_ID[s.m]; const parts = mm.slots.map(sl => { const rec = s.sets && s.sets[sl.id]; const ds = doneSets(rec); if (!ds.length) return null; return `${EX[EX[rec.ex] ? rec.ex : sl.ex].n} ${ds.map(x => `${fmtKg(+x.w || 0)}x${x.r}`).join(' ')} (target ${sl.lo}-${sl.hi})`; }).filter(Boolean); return `${s.date} Mission ${s.m}: ${parts.join('; ')}`; });
+  const lines = ss.map(s => { const mm = MISSION_BY_ID[s.m]; const parts = slotsOf(s).map(sl => { const rec = s.sets && s.sets[sl.id]; const ds = doneSets(rec); if (!ds.length) return null; return `${EX[EX[rec.ex] ? rec.ex : sl.ex].n} ${ds.map(x => `${fmtKg(+x.w || 0)}x${x.r}`).join(' ')} (target ${sl.lo}-${sl.hi})`; }).filter(Boolean); return `${s.date} Mission ${s.m}: ${parts.join('; ')}`; });
   const recs = Object.entries(G.bests).map(([id, b]) => `${EX[id].n} ${fmtKg(b.w)}x${b.r}`).join('; ');
   const ci = allCheckins().slice(-8).map(c => `${c.date}: ${[c.weight && c.weight + ' kg', c.waist && 'waist ' + c.waist + ' cm', c.shoulders && 'shoulders ' + c.shoulders + ' cm'].filter(Boolean).join(', ')}`).join('\n');
   const program = MISSIONS.map(mm => `Mission ${mm.id} (${mm.day}): ` + mm.slots.map(sl => `${EX[currentEx(sl.id, null)].n} ${plannedSets(sl, ph)}x${sl.lo}-${sl.hi}`).join(', ')).join('\n');
@@ -2983,7 +3154,7 @@ async function offerFile(filename, data, mime){
 function exportSave(){ offerFile(`chisel-save-${todayStr()}.json`, JSON.stringify({ app: 'chisel', v: 1, exported: new Date().toISOString(), docs }, null, 1), 'application/json'); }
 function exportCSV(){
   const rows = [['date', 'week', 'mission', 'exercise', 'set', 'kg', 'reps', 'est_max_kg']];
-  for (const s of allSessions()){ for (const sl of MISSION_BY_ID[s.m].slots){ const rec = s.sets && s.sets[sl.id]; if (!rec) continue; const e = EX[EX[rec.ex] ? rec.ex : sl.ex]; (rec.s || []).forEach((x, i) => { if (x && x.d && +x.r > 0) rows.push([s.date, weekNum(s.date), s.m, e.n, i + 1, +x.w || 0, +x.r, e.k === 'bw' ? '' : round1((+x.w || 0) * (1 + x.r / 30))]); }); } }
+  for (const s of allSessions()){ for (const sl of slotsOf(s)){ const rec = s.sets && s.sets[sl.id]; if (!rec) continue; const e = EX[EX[rec.ex] ? rec.ex : sl.ex]; (rec.s || []).forEach((x, i) => { if (x && x.d && +x.r > 0) rows.push([s.date, weekNum(s.date), s.m, e.n, i + 1, +x.w || 0, +x.r, e.k === 'bw' ? '' : round1((+x.w || 0) * (1 + x.r / 30))]); }); } }
   const csv = rows.map(r => r.map(v => { const t = String(v); return /[",\n]/.test(t) ? `"${t.replace(/"/g, '""')}"` : t; }).join(',')).join('\n');
   offerFile(`chisel-log-${todayStr()}.csv`, csv, 'text/csv');
 }
@@ -3016,7 +3187,7 @@ const actions = {
   'statue-open': () => openStatue(),
   swap: a => { state.swapOpen = state.swapOpen === a.dataset.slot ? null : a.dataset.slot; const y = window.scrollY; renderTrain(); window.scrollTo(0, y); },
   pswap: a => { state.planSwap = state.planSwap === a.dataset.slot ? null : a.dataset.slot; const y = window.scrollY; renderPlan(); window.scrollTo(0, y); if (state.planSwap){ const sel = $('#psw-' + state.planSwap); if (sel) sel.focus(); } },
-  addset: a => { const t = todayStr(); const s = ensureSession(t, state.trainM); const rec = slotRec(s, a.dataset.slot); const p = plannedSets(SLOT_BY_ID[a.dataset.slot], PHASES[s.ph] ? s.ph : phaseOf(weekNum(t))); while (rec.s.length < p) rec.s.push({}); rec.s.push({}); touch(monthId(t)); const y = window.scrollY; renderTrain(); window.scrollTo(0, y); },
+  addset: a => { const t = todayStr(); const s = ensureSession(t, state.trainM); const sl = slotById(a.dataset.slot, s); if (!sl) return; const rec = slotRec(s, a.dataset.slot); const p = plannedSets(sl, PHASES[s.ph] ? s.ph : phaseOf(weekNum(t))); while (rec.s.length < p) rec.s.push({}); rec.s.push({}); touch(monthId(t)); const y = window.scrollY; renderTrain(); window.scrollTo(0, y); },
   finish: () => { const t = todayStr(); const s = getSession(t, state.trainM); const i = s && G.info[s.id]; if (!i || i.empty){ toast('Log at least one set first.'); return; } if (!s.fin){ s.fin = Date.now(); touch(monthId(t)); } stopRest(); showSummary(s.id, false); },
   summary: a => showSummary(a.dataset.sid, false),
   'save-checkin': () => saveCheckin(),
@@ -3032,8 +3203,10 @@ const actions = {
   'reset-cancel': () => { state.resetArm = false; renderVault(); },
   'reset-go': () => { const old = Object.keys(docs); const keepName = P().name; docs = {}; const p = P(); p.name = keepName; for (const k of old) if (k !== 'profile') deleteCloudDoc(k); touch('profile'); state.resetArm = false; G = compute(); renderVault(); toast('Progress reset. Level 1 again.'); },
   sound: () => { const p = P(); p.sound = !p.sound; touch('profile'); renderHeader(); if (p.sound) sfx.tap(); },
-  'rest-add': a => { rest.end += (+a.dataset.s) * 1000; rest.total = Math.max(rest.total, (rest.end - Date.now()) / 1000); clearTimeout(rest.timer); tickRest(); },
+  'rest-add': a => { if (Date.now() >= rest.end){ if (+a.dataset.s > 0) startRest(+a.dataset.s, $('#restSub').textContent); return; } rest.end += (+a.dataset.s) * 1000; rest.total = Math.max(rest.total, (rest.end - Date.now()) / 1000); clearTimeout(rest.timer); tickRest(); },
   'rest-skip': () => stopRest(),
+  'rest-full': () => restFull(true),
+  'rest-min': () => restFull(false),
   close: a => { const then = a && a.dataset && a.dataset.then; closeSheet(); if (then && state.view !== then) location.hash = then; },
   'sheet-ok': () => { const sh = $('#sheet'); const f = sh._onOk; sh._onOk = null; closeSheet(); if (f) f(); },
   'copy-box': () => { const box = $('#copybox'); if (!box) return; const done = () => toast('Copied'); try { navigator.clipboard.writeText(box.value).then(done, () => { box.select(); }); } catch (e) { box.select(); } }
@@ -3057,6 +3230,7 @@ document.addEventListener('change', e => {
   else if (el.matches('.in-w, .in-r')){ const prev = G; G = compute(); afterChange(prev); }
 });
 document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && !$('#restFs').hidden){ restFull(false); return; }
   if (e.key === 'Escape' && !$('#overlay').hidden) closeSheet();
   if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && vctx && !$('#overlay').hidden && !(e.target.matches && e.target.matches('input,textarea,select'))){ e.preventDefault(); stepViewer(e.key === 'ArrowRight' ? 1 : -1); }
   if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('.viz[role="button"]')){ e.preventDefault(); Viz.play(e.target); }
@@ -3124,7 +3298,7 @@ function applyImport(nd){
     else continue;
     dirty.add(k);
   }
-  P(); docs.profile._t = now; dirty.add('profile');
+  P(); migratePlan(); docs.profile._t = now; dirty.add('profile');
   for (const k of old) if (!docs[k]) deleteCloudDoc(k);
   saveLocal(); flush(); const prev = G; G = compute(); renderView(state.view); afterChange(prev); toast('Save loaded');
 }
@@ -3145,7 +3319,9 @@ async function initCaps(){
 }
 function start(data){
   loadLocal(); P();
+  if (migratePlan()) touch('profile');
   G = compute();
+  Viz.setGrowth(growthLevels());
   buildChrome();
   if (data && data.trainM && MISSION_BY_ID[data.trainM]){ state.trainM = data.trainM; state.trainFor = todayStr(); }
   const v = (data && (VIEWS.includes(data.view) || ALIASES[data.view])) ? data.view : routeFromHash();
