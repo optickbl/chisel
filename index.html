@@ -135,9 +135,10 @@ details > summary{cursor:pointer}
 .slab-top{display:flex;align-items:stretch;gap:6px}
 .slab-eb{display:flex;flex-direction:column;gap:3px}
 .slab-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px}
-.slab-statue{position:relative;flex:0 0 40%;max-width:170px;min-height:170px;margin:-12px -10px -6px 0;padding:0;border:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.slab-statue img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:50% 100%;display:block;filter:drop-shadow(0 8px 12px rgba(40,6,18,.35))}
-.slab-statue img:not([src]){display:none}
+.slab-statue{position:relative;flex:0 0 36%;max-width:150px;min-height:190px;align-self:stretch;margin:-8px -6px -2px 0;padding:0;border:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent;display:flex;flex-direction:column;align-items:center;gap:4px}
+.slab-statue img{flex:1 1 0;min-height:0;width:100%;object-fit:contain;object-position:50% 100%;display:block}
+.slab-stage{font-family:var(--f-display);font-weight:700;font-size:14.5px;line-height:1.1;text-align:center;color:var(--slab-fg);text-shadow:0 0 10px var(--halo),0 0 2px var(--halo)}
+.slab-stage small{display:block;font-family:var(--f-body);font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--slab-fg-2);margin-bottom:2px}
 .lv{display:flex;align-items:baseline;gap:6px;font-family:var(--f-display);line-height:.82;text-shadow:0 0 18px var(--halo)}
 .lv-k{font-weight:700;font-size:22px;color:var(--slab-fg-2);letter-spacing:0}
 .lv-n{font-weight:700;font-size:72px}
@@ -210,6 +211,29 @@ details > summary{cursor:pointer}
 .statue-pics img:not([src]){display:none}
 .statue-pics small{position:absolute;left:8px;bottom:8px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--stage-pill);color:var(--fg)}
 .sp-note{font-size:13.5px;color:var(--muted);margin:0 0 6px}
+.stage-pics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%;padding:0;border:0;background:none;cursor:pointer;margin:2px 0 10px;-webkit-tap-highlight-color:transparent}
+.stage-pics .sp{position:relative;display:block;aspect-ratio:3/4;border-radius:10px;overflow:hidden;background:linear-gradient(180deg,var(--stage-top),var(--stage-bot))}
+.stage-pics img{position:absolute;left:0;right:0;top:6%;bottom:2%;width:100%;height:92%;object-fit:contain;display:block}
+.stage-pics .next img{opacity:.55;filter:saturate(.7)}
+.stage-pics small{position:absolute;left:8px;bottom:8px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--stage-pill);color:var(--fg)}
+.stage-now{display:flex;flex-direction:column;gap:2px;margin-bottom:8px}
+.stage-k{font-family:var(--f-display);font-weight:700;font-size:20px;line-height:1.15}
+.stage-prog{margin-bottom:10px}
+.m-head{font-family:var(--f-display);font-weight:700;font-size:16px;margin:6px 0 8px}
+.st-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px 6px}
+.st-cell{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;padding:4px 2px 6px;border-radius:10px;border:1px solid transparent}
+.st-cell img{width:100%;aspect-ratio:209/530;object-fit:contain;display:block;opacity:.45}
+.st-cell b{font-family:var(--f-display);font-weight:800;font-size:15px;line-height:1;margin-top:2px;color:var(--muted)}
+.st-cell span{font-size:11.5px;line-height:1.15;color:var(--muted);font-weight:600}
+.st-cell.done img{opacity:.8}
+.st-cell.done b,.st-cell.done span{color:var(--fg-2)}
+.st-cell.cur{background:var(--accent-wash);border-color:var(--accent)}
+.st-cell.cur img{opacity:1}
+.st-cell.cur b,.st-cell.cur span{color:var(--accent)}
+.st-mus{list-style:none;margin:0;padding:0}
+.st-mus li{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:8px 0;border-top:1px solid var(--line);font-size:15px}
+.st-mus li:first-child{border-top:0}
+.st-mus b{font-weight:700;color:var(--fg);text-align:right}
 
 /* train */
 .seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px}
@@ -681,6 +705,28 @@ const slotsOf = s => (isLegacy(s) ? LEGACY_BY_ID : MISSION_BY_ID)[s.m].slots;
 const slotById = (id, s) => (isLegacy(s) ? LEGACY_SLOT_BY_ID : SLOT_BY_ID)[id];
 const SCHEDULE = { 1: 'A', 4: 'B', 6: 'C' };
 
+/* ---------- body stages: the 10 pictures, Very Skinny → Max Muscular ---------- */
+const STAGES = [
+  { n: 'Very Skinny', d: 'Minimal muscle mass' },
+  { n: 'Skinny', d: 'Low muscle mass' },
+  { n: 'Lean', d: 'Some muscle definition' },
+  { n: 'Lean Athletic', d: 'Noticeable muscle, still lean' },
+  { n: 'Athletic', d: 'Balanced build with clear muscle' },
+  { n: 'Athletic +', d: 'More muscle and width' },
+  { n: 'Muscular', d: 'Well-developed and defined' },
+  { n: 'Muscular +', d: 'Greater size and density' },
+  { n: 'Very Muscular', d: 'High muscle mass and definition' },
+  { n: 'Max Muscular', d: 'Fully developed, aesthetic physique' }
+];
+// A muscle reaches stage 10 after about 130 weeks of every planned set for it (2½ years), stage 7 after about 58 (1–1½ years).
+// Its weekly planned sets come from the program, so a muscle trained less often is not left behind.
+const STAGE_WEEKS = 130;
+const WEEKLY_SETS = (() => { const w = {}; for (const k in MUSCLES) w[k] = 0; MISSIONS.forEach(m => m.slots.forEach(sl => { w[EX[sl.ex].m] += sl.sets; })); return w; })();
+function muscleStage(mxp, k){ const wk = Math.max(0, +mxp || 0) / (10 * Math.max(1, WEEKLY_SETS[k] || 1)); return Math.min(10, 1 + 9 * Math.sqrt(wk / STAGE_WEEKS)); }
+function stagesFrom(muscleXP){ const per = {}; let sum = 0, n = 0; for (const k in MUSCLES){ per[k] = muscleStage(muscleXP[k], k); sum += per[k]; n++; } return { per, body: n ? sum / n : 1 }; }
+function stageOf(v){ const n = clamp(Math.floor(v + 1e-9), 1, 10); return { n, name: STAGES[n - 1].n, desc: STAGES[n - 1].d, frac: n >= 10 ? 1 : clamp(v - n, 0, 1) }; }
+const stageImg = n => `stage-${clamp(n, 1, 10)}.webp`;
+
 const PHASES = {
   cal:   { n: 'Calibration', rir: 'Stop every set with 2–3 reps left in the tank.', note: 'Learn the lifts and find your working weights. Strength climbs fast in these weeks.' },
   build: { n: 'Build', rir: 'Stop 1–2 reps short of failure. On the last set of isolation moves, go to failure.', note: 'Beat the logbook: one more rep or a little more weight than last time.' },
@@ -889,7 +935,7 @@ function compute(){
   const curWk = mondayOf(today);
   let streak = 0, w = fullWeeks.has(curWk) ? curWk : addDays(curWk, -7);
   while (fullWeeks.has(w)){ streak++; w = addDays(w, -7); }
-  return { xp, level: levelFromXP(xp), ev, bests, info, weeks, fullWeeks, muscleXP, prTotal, volume, missions, setsTotal, ach, streak };
+  return { xp, level: levelFromXP(xp), ev, bests, info, weeks, fullWeeks, muscleXP, stages: stagesFrom(muscleXP), prTotal, volume, missions, setsTotal, ach, streak };
 }
 function evalAch(sessions, info, weeks, fullWeeks, checkins){
   const A = {};
@@ -1052,6 +1098,8 @@ const WORKS = {
 };
 const worksOf = ex => WORKS[ex] || W([]);
 // game muscle groups → statue regions (Progress muscle map)
+// the figure's look: light-blue skin and navy shorts, sampled from the reference picture
+const SKIN = '#A9CDEB', CLOTH = '#435C77';
 const GROUP_PARTS = { delts: ['dFront', 'dSide', 'dRear'], chest: ['pecL', 'pecU'], biceps: ['biceps'], triceps: ['triceps'], back: ['lats', 'upperBack', 'traps', 'lowerBack'], core: ['abs', 'obliques'], legs: ['quads', 'hams', 'glutes', 'calves'] };
 
 const Viz = (() => {
@@ -1154,16 +1202,16 @@ const Viz = (() => {
     r.outputEncoding = T.sRGBEncoding; r.setPixelRatio(1); r.setSize(w, h, false);
     r.shadowMap.enabled = true; r.shadowMap.type = T.PCFSoftShadowMap;
     const scene = new T.Scene(); scene.background = M.bg;
-    scene.add(new T.HemisphereLight(C('#FFF4E8'), C('#B98572'), .55));
+    scene.add(new T.HemisphereLight(C('#F4F8FF'), C('#9AA3B2'), .62));
     // lights hang on a rig that turns with each exercise's default camera, so every demo is lit the same way
     const rig = new T.Group(); scene.add(rig);
     // the key light is split in two so shadows soften to a third of its strength instead of going black
-    const key = new T.DirectionalLight(C('#FFF6EC'), .92); key.position.set(-2.4, 4.6, 3.2); key.castShadow = true;
+    const key = new T.DirectionalLight(C('#FFFFFF'), .86); key.position.set(-2.4, 4.6, 3.2); key.castShadow = true;
     key.shadow.mapSize.set(1024, 1024); const sc = key.shadow.camera; sc.left = -2.4; sc.right = 2.4; sc.top = 2.6; sc.bottom = -1.8; sc.near = .5; sc.far = 14;
     key.shadow.bias = -.0004; key.shadow.normalBias = .009;
     rig.add(key); rig.add(key.target);
-    const keySoft = new T.DirectionalLight(C('#FFF6EC'), .4); keySoft.position.copy(key.position); rig.add(keySoft); rig.add(keySoft.target);
-    const fill = new T.DirectionalLight(C('#FFE2C8'), .32); fill.position.set(3, 1.4, 2.6); rig.add(fill); rig.add(fill.target);
+    const keySoft = new T.DirectionalLight(C('#FFFFFF'), .38); keySoft.position.copy(key.position); rig.add(keySoft); rig.add(keySoft.target);
+    const fill = new T.DirectionalLight(C('#EEF4FF'), .34); fill.position.set(3, 1.4, 2.6); rig.add(fill); rig.add(fill.target);
     const rim = new T.DirectionalLight(C('#FFFFFF'), .9); rim.position.set(1.6, 3.2, -4); rig.add(rim); rig.add(rim.target);
     const cam = new T.PerspectiveCamera(30, w / h, .05, 60);
     const ground = new T.Mesh(GEO.plane, M.ground); ground.rotation.x = -Math.PI / 2; ground.scale.set(14, 14, 1); ground.receiveShadow = true; scene.add(ground);
@@ -1199,16 +1247,14 @@ const Viz = (() => {
       E([0, .062, .076], [.05, .034, .014], 'abs', .014),
       ...both(s => E([s * .066, -.032, -.066], [.07, .078, .05], 'glutes', .026)),
       // head: skull, face, jaw, features
-      E([0, .703, -.016], [.081, .092, .098], null, .03), E([0, .655, .03], [.066, .08, .074], null, .03),
+      E([0, .712, -.012], [.075, .1, .094], null, .03), E([0, .655, .03], [.066, .08, .074], null, .03),
       E([0, .607, .04], [.056, .04, .056], null, .025), E([0, .588, .07], [.026, .022, .02], null, .015),
       E([0, .694, .075], [.056, .015, .02], null, .014), C([0, .68, .092], [0, .65, .103], .007, .012, null, .012),
-      ...both(s => E([s * .011, .646, .099], [.009, .006, .008], null, .006)),
       ...both(s => E([s * .046, .65, .06], [.02, .015, .016], null, .016)),
-      ...both(s => E([s * .079, .665, -.006], [.008, .024, .016], null, .012)),
-      ...both(s => N([s * .031, .676, .094], [.019, .009, .009], .012)),
-      ...both(s => E([s * .031, .673, .085], [.016, .0092, .011], null, .005)),
-      E([0, .623, .086], [.018, .0055, .008], null, .01), E([0, .611, .084], [.015, .006, .008], null, .01),
-      N([0, .6175, .094], [.016, .0012, .004], .004)
+      ...both(s => E([s * .078, .664, -.006], [.006, .02, .013], null, .012)),
+      ...both(s => N([s * .03, .672, .1], [.02, .011, .012], .022)),                                    // soft eye hollows
+      // shorts: loose and boxy like the reference, cut flat at the waistband and the crotch
+      { ...E([0, -.03, -.012], [.156, .16, .126], 'shorts', .03), cloth: 1, yMax: .06, yMin: -.12 }
     ];
     // limbs are drawn for the right side (lateral = +x) and mirrored for the left
     const ua = [
@@ -1228,7 +1274,8 @@ const Viz = (() => {
       C([0, 0, 0], [0, .44, 0], .08, .05, null, .025), E([0, 0, 0], [.073, .073, .073], null, .025),
       E([.035, .23, .014], [.046, .17, .05], 'quads', .022), E([0, .2, .045], [.04, .17, .034], 'quads', .022), E([-.032, .34, .03], [.038, .075, .038], 'quads', .02),
       E([0, .21, -.036], [.064, .18, .048], 'hams', .022), E([-.04, .13, 0], [.04, .12, .048], null, .025),
-      E([0, .44, .006], [.046, .046, .048], null, .02), E([0, .426, .044], [.024, .028, .013], null, .012)
+      E([0, .44, .006], [.046, .046, .048], null, .02), E([0, .426, .044], [.024, .028, .013], null, .012),
+      { ...C([0, -.06, 0], [0, .24, 0], .094, .1, 'shorts', .02), cloth: 1, yMax: .24 }               // shorts leg, hem a little above mid-thigh
     ];
     const sh = [
       C([0, 0, 0], [0, .43, 0], .047, .029, null, .02), E([0, .02, 0], [.046, .04, .046], null, .02),
@@ -1246,29 +1293,60 @@ const Viz = (() => {
   const PART_GROUP = { forearms: 'biceps' }; for (const gk in GROUP_PARTS) for (const pt of GROUP_PARTS[gk]) PART_GROUP[pt] = gk;
   const SEG_GROUPS = { torso: ['chest', 'back', 'core'], ua: ['delts', 'biceps', 'triceps'], fa: ['biceps'], th: ['legs'], sh: ['legs'], ft: [] };
   const GROW_KEYS = Object.keys(GROUP_PARTS);
-  let growth = {}, growSig = '';
+  // the demo figure is always built at stage 7 (the sculpt as drawn); your own progress is shown with the stage pictures
+  let growth = Object.fromEntries(Object.keys(GROUP_PARTS).map(k => [k, 6 / 9])), growSig = JSON.stringify(growth);
   const growOf = (g, k) => clamp(+g[k] || 0, 0, 1);
+  // g[group] = 0 … 1 across the 10 stages (0 = Very Skinny, 2/3 = Muscular, 1 = Max Muscular).
+  // u runs 0 → 1 up to stage 7 (the sculpt as drawn) and 1 → 2 from stage 7 to 10.
+  const T7 = 6 / 9;
+  const DEPTH_Z = new Set(['pecL', 'pecU', 'abs', 'upperBack', 'lowerBack', 'glutes']);
+  const JOINTS = { ua: [1, 9], fa: [1], th: [1, 7], sh: [1, 6] };
+  const uOf = t => t <= T7 ? t / T7 : 1 + (t - T7) / (1 - T7);
+  const lo1 = u => Math.min(u, 1), hi1 = u => Math.max(0, u - 1);
   function grownSeg(g){
     const out = { cut: SEG.cut };
     for (const k of ['torso', 'ua', 'fa', 'th', 'sh', 'ft']){
-      const gs = SEG_GROUPS[k], avg = gs.length ? gs.reduce((a, x) => a + growOf(g, x), 0) / gs.length : 1;
+      const gs = SEG_GROUPS[k], avg = gs.length ? uOf(gs.reduce((a, x) => a + growOf(g, x), 0) / gs.length) : 1;
       out[k] = SEG[k].map((sh, i) => {
-        if (sh.part){
-          // muscles: skinny is about 45% as thick; length shrinks less so the shape stays a muscle, not a dot
-          // skinny muscles are thin, sit closer to the bone and melt softly into the body instead of showing as lumps
-          const t = growOf(g, PART_GROUP[sh.part]), f = (sh.part === 'abs' ? .15 : .3) + (sh.part === 'abs' ? .85 : .7) * t, fl = .7 + .3 * t, pull = k === 'torso' ? .86 + .14 * t : .72 + .28 * t, kk = sh.k * (1.5 - .5 * t);
-          if (sh.t === 'e'){ const r = sh.r, L = Math.max(r[0], r[1], r[2]); return { ...sh, c: [sh.c[0] * pull, sh.c[1], sh.c[2] * pull], r: r.map(x => x === L ? x * fl : x * f), k: kk }; }
-          return { ...sh, ra: sh.ra * f, rb: sh.rb * f, k: kk };
+        if (sh.cloth){
+          // shorts stay loose; they widen a little with the hips and thighs underneath
+          const b = k === 'th' ? .86 + .14 * lo1(avg) + .12 * hi1(avg) : .9 + .1 * lo1(avg) + .06 * hi1(avg);
+          return sh.t === 'e' ? { ...sh, r: [sh.r[0] * b, sh.r[1], sh.r[2] * b] } : { ...sh, ra: sh.ra * b, rb: sh.rb * b };
         }
-        // under the muscles: a skinny frame has a narrower ribcage and waist and thinner limbs
-        if (k === 'torso' && i < 4){ const b = .9 + .1 * avg, bz = .86 + .14 * avg; return { ...sh, r: [sh.r[0] * b, sh.r[1], sh.r[2] * bz] }; }
-        if (k !== 'torso' && k !== 'ft' && i === 0 && sh.t === 'c'){ const b = .84 + .16 * avg; return { ...sh, ra: sh.ra * b, rb: sh.rb * b }; }
+        if (sh.part){
+          // muscles grow mostly in depth (away from the bone), a little in breadth and length, so they never balloon
+          const u = uOf(growOf(g, PART_GROUP[sh.part]));
+          const P0 = { abs: .12, pecL: .14, pecU: .14, forearms: .3 }[sh.part] ?? .2;
+          const P1 = { traps: .5, lats: .4, dSide: .3, obliques: .05, forearms: .08, abs: .15, pecL: .22, pecU: .22, biceps: .32, triceps: .32 }[sh.part] ?? .28;
+          const fd = P0 + (1 - P0) * lo1(u) + P1 * hi1(u);
+          const fb = .62 + .38 * lo1(u) + .1 * hi1(u), fl = .8 + .2 * lo1(u) + .04 * hi1(u);
+          const kk = sh.k * ((sh.part === 'abs' ? 2.8 : 1.6) - (sh.part === 'abs' ? 1.8 : .6) * lo1(u));
+          if (sh.t !== 'e') return { ...sh, ra: sh.ra * fd, rb: sh.rb * fd, k: kk };
+          const r = sh.r, c = sh.c.slice();
+          const depthAx = k === 'torso' ? (DEPTH_Z.has(sh.part) ? 2 : sh.part === 'traps' ? 1 : 0) : (Math.abs(c[0]) > Math.abs(c[2]) ? 0 : 2);
+          let lenAx = 0; for (const ax of [0, 1, 2]) if (ax !== depthAx && r[ax] > r[lenAx === depthAx ? (depthAx + 1) % 3 : lenAx]) lenAx = ax; if (lenAx === depthAx) lenAx = (depthAx + 1) % 3;
+          const nr = r.map((x, ax) => x * (ax === depthAx ? fd : ax === lenAx ? fl : fb));
+          const pull = k === 'torso' ? .9 + .1 * lo1(u) + .03 * hi1(u) : .8 + .2 * lo1(u) + .04 * hi1(u);
+          if (depthAx !== 1) c[depthAx] *= pull;
+          return { ...sh, c, r: nr, k: kk };
+        }
+        // the frame under the muscles: narrow ribcage, waist and limbs when skinny
+        if (k === 'torso' && i < 4){ const b = .84 + .16 * lo1(avg), bz = .86 + .14 * lo1(avg); return { ...sh, r: [sh.r[0] * b, sh.r[1], sh.r[2] * bz] }; }
+        const nk = uOf(growOf(g, 'back')), nb = .72 + .28 * lo1(nk) + .12 * hi1(nk);
+        if (k === 'torso' && i === 4) return { ...sh, ra: sh.ra * nb, rb: sh.rb * nb };                                        // neck
+        if (k === 'torso' && (i === 5 || i === 6)) return { ...sh, a: [sh.a[0] * nb, sh.a[1], sh.a[2]], b: [sh.b[0] * nb, sh.b[1], sh.b[2]], ra: sh.ra * (.6 + .4 * lo1(nk)), rb: sh.rb * (.6 + .4 * lo1(nk)), k: sh.k * 1.4 };   // neck tendons
+        if (k === 'torso' && (i === 9 || i === 10)){ const d = uOf(growOf(g, 'delts')), b = .8 + .2 * lo1(d); return { ...sh, c: [sh.c[0] * (.9 + .1 * lo1(d)), sh.c[1] - .012 * (1 - lo1(d)), sh.c[2]], r: sh.r.map(x => x * b) }; }   // shoulder caps slope down when skinny
+        if (k !== 'torso' && k !== 'ft' && sh.t === 'c' && i === 0){
+          const B = { ua: [.62, .05], fa: [.66, .04], th: [.74, .05], sh: [.8, .05] }[k];
+          const b = B[0] + (1 - B[0]) * lo1(avg) + B[1] * hi1(avg); return { ...sh, ra: sh.ra * b, rb: sh.rb * b };
+        }
+        if (k !== 'torso' && k !== 'ft' && sh.t === 'e' && JOINTS[k] && JOINTS[k].includes(i)){ const b = .8 + .2 * lo1(avg); return { ...sh, r: sh.r.map(x => x * b) }; }   // elbows and knees stay in proportion
         return sh;
       });
     }
     return out;
   }
-  const SEG_PARTS = { torso: ['pecL', 'pecU', 'traps', 'upperBack', 'lats', 'lowerBack', 'abs', 'obliques', 'glutes'], ua: ['dFront', 'dSide', 'dRear', 'biceps', 'triceps'], fa: ['forearms'], th: ['quads', 'hams'], sh: ['calves'], ft: [] };
+  const SEG_PARTS = { torso: ['pecL', 'pecU', 'traps', 'upperBack', 'lats', 'lowerBack', 'abs', 'obliques', 'glutes', 'shorts'], ua: ['dFront', 'dSide', 'dRear', 'biceps', 'triceps'], fa: ['forearms'], th: ['quads', 'hams', 'shorts'], sh: ['calves'], ft: [] };
 
   // signed distance helpers (iq): ellipsoid approximation and rounded cone
   function prepShape(s){
@@ -1303,6 +1381,8 @@ const Viz = (() => {
     return (Math.sqrt(x2 * a2 * il2) + yy * rr) * il2 - r1;
   }
   const smin = (a, b, k) => { const h = Math.max(k - Math.abs(a - b), 0) / k; return Math.min(a, b) - h * h * k * .25; };
+  // a shape can be cut flat above yMax / below yMin (the shorts' waistband, crotch and hems)
+  function sdClip(s, x, y, z){ let d = sdShape(s, x, y, z); if (s.yMax != null) d = Math.max(d, y - s.yMax); if (s.yMin != null) d = Math.max(d, s.yMin - y); return d; }
 
   // builds one segment: surface nets over a grid, normals from the field, per-vertex muscle weights (up to 12 parts)
   function sculpt(shapes, opts){
@@ -1311,9 +1391,15 @@ const Viz = (() => {
     const lo = [0, 1, 2].map(i => Math.min(...S.map(s => s.lo[i])) - .03), hi = [0, 1, 2].map(i => Math.max(...S.map(s => s.hi[i])) + .03);
     if (cut != null) lo[1] = Math.max(lo[1], cut - 2 * h);
     const nx = Math.ceil((hi[0] - lo[0]) / h) + 1, ny = Math.ceil((hi[1] - lo[1]) / h) + 1, nz = Math.ceil((hi[2] - lo[2]) / h) + 1;
+    // cloth shapes blend with each other softly, then sit on the body with an almost sharp seam
     const field = (list, x, y, z) => {
-      let d = 1e9;
-      for (let i = 0; i < list.length; i++){ const s = list[i]; const di = sdShape(s, x, y, z); if (s.neg){ if (d < 1e8) d = -smin(-d, di, s.k); } else d = d > 1e8 ? di : smin(d, di, s.k); }
+      let d = 1e9, dc = 1e9;
+      for (let i = 0; i < list.length; i++){
+        const s = list[i]; const di = sdClip(s, x, y, z);
+        if (s.cloth){ dc = dc > 1e8 ? di : smin(dc, di, s.k); continue; }
+        if (s.neg){ if (d < 1e8) d = -smin(-d, di, s.k); } else d = d > 1e8 ? di : smin(d, di, s.k);
+      }
+      if (dc < 1e8) d = d > 1e8 ? dc : smin(d, dc, .0035);
       if (cut != null) d = Math.max(d, cut - y);
       return d;
     };
@@ -1372,7 +1458,7 @@ const Viz = (() => {
       let gx = field(near, x + eps, y, z) - field(near, x - eps, y, z), gy = field(near, x, y + eps, z) - field(near, x, y - eps, z), gz = field(near, x, y, z + eps) - field(near, x, y, z - eps);
       const gl = Math.hypot(gx, gy, gz) || 1; nor[i * 3] = gx / gl; nor[i * 3 + 1] = gy / gl; nor[i * 3 + 2] = gz / gl;
       if (!parts.length) continue;
-      let dmin = 1e9; const ds = S.map(s => { const d = sdShape(s, x, y, z); if (!s.neg && d < dmin) dmin = d; return d; });
+      let dmin = 1e9; const ds = S.map(s => { const d = sdClip(s, x, y, z); if (!s.neg && d < dmin) dmin = d; return d; });
       wSum.fill(0); let tot = 0;
       for (let j = 0; j < S.length; j++){ if (S[j].neg) continue; const w = Math.exp(-(ds[j] - dmin) / tau); tot += w; if (slotOf[j] >= 0) wSum[slotOf[j]] += w; }
       for (let j = 0; j < 12; j++) W[i * 12 + j] = Math.round(255 * Math.min(1, wSum[j] / tot));
@@ -1397,7 +1483,7 @@ const Viz = (() => {
       const done = d => { if (!settled){ settled = true; res(d); } };
       const local = () => { if (settled) return; try { done(buildFigData(seg)); } catch (e) { done(null); } };
       try {
-        const src = [prepShape, sdShape, sculpt, buildFigData].map(f => f.toString()).join('\n') +
+        const src = [prepShape, sdShape, sdClip, sculpt, buildFigData].map(f => f.toString()).join('\n') +
           `\nconst smin = ${smin.toString()};\nconst SEG = ${JSON.stringify(seg)};\nconst SEG_PARTS = ${JSON.stringify(SEG_PARTS)};\nconst FIG_H = ${JSON.stringify(FIG_H)};\n` +
           'onmessage = () => { const d = buildFigData(SEG); const tr = []; for (const k in d) tr.push(d[k].pos.buffer, d[k].nor.buffer, d[k].idx.buffer, d[k].W.buffer); postMessage(d, tr); };';
         const url = URL.createObjectURL(new Blob([src], { type: 'text/javascript' }));
@@ -1427,36 +1513,36 @@ const Viz = (() => {
   }
   // limbs are carved for the right side; index 0 (the figure's left) gets the mirror image
   function figGeos(d){ return { torso: toGeo(d.torso), ua: [toGeo(d.ua, true), toGeo(d.ua)], fa: [toGeo(d.fa, true), toGeo(d.fa)], th: [toGeo(d.th, true), toGeo(d.th)], sh: [toGeo(d.sh, true), toGeo(d.sh)], ft: toGeo(d.ft) }; }
-  // marble stone whose muscles blush red: per-vertex muscle weights × per-muscle levels, marble veins mapped from three sides
+  // light-blue matte skin with navy shorts, like the reference figure; in exercise demos the worked muscles glow red
   function figMat(){
-    const C = h => new T.Color(h).convertSRGBToLinear(), v4 = () => [new T.Vector4(), new T.Vector4(), new T.Vector4()];
-    const u = { uP: { value: v4() }, uS: { value: v4() }, uL: { value: v4() }, uGlow: { value: .2 }, uPump: { value: 0 }, uMarble: { value: M.marble },
-      uStone: { value: C('#EDE9E3') }, uRose: { value: C('#CC8E9A') }, uRed: { value: C('#8E1B40') }, uEm: { value: C('#A3234B') } };
-    const m = new T.MeshStandardMaterial({ color: 0xffffff, roughness: .45, metalness: 0 });
+    const C = h => new T.Color(h).convertSRGBToLinear(), v4 = () => [new T.Vector4(0, 0, 0, 0), new T.Vector4(0, 0, 0, 0), new T.Vector4(0, 0, 0, 0)];
+    const u = { uP: { value: v4() }, uS: { value: v4() }, uL: { value: v4() }, uC: { value: v4() }, uGlow: { value: .2 }, uPump: { value: 0 },
+      uSkin: { value: C(SKIN) }, uCloth: { value: C(CLOTH) }, uRose: { value: C('#D79AAB') }, uRed: { value: C('#8E1B40') }, uEm: { value: C('#A3234B') } };
+    const m = new T.MeshStandardMaterial({ color: 0xffffff, roughness: .58, metalness: 0 });
     m.onBeforeCompile = sh => {
       Object.assign(sh.uniforms, u);
-      sh.vertexShader = 'attribute vec4 aW0;\nattribute vec4 aW1;\nattribute vec4 aW2;\nuniform vec4 uP[3];\nuniform vec4 uS[3];\nuniform vec4 uL[3];\nuniform float uPump;\nvarying vec3 vH;\nvarying vec3 vOP;\nvarying vec3 vON;\n' +
+      sh.vertexShader = 'attribute vec4 aW0;\nattribute vec4 aW1;\nattribute vec4 aW2;\nuniform vec4 uP[3];\nuniform vec4 uS[3];\nuniform vec4 uL[3];\nuniform vec4 uC[3];\nuniform float uPump;\nvarying vec3 vH;\nvarying float vC;\n' +
         sh.vertexShader.replace('#include <begin_vertex>', [
           'vH = vec3(dot(aW0, uP[0]) + dot(aW1, uP[1]) + dot(aW2, uP[2]), dot(aW0, uS[0]) + dot(aW1, uS[1]) + dot(aW2, uS[2]), dot(aW0, uL[0]) + dot(aW1, uL[1]) + dot(aW2, uL[2]));',
-          'vOP = position; vON = normal;',
-          'vec3 transformed = position + normal * (uPump * clamp(vH.x, 0.0, 1.0) * 0.006);'].join('\n'));
-      sh.fragmentShader = 'uniform sampler2D uMarble;\nuniform vec3 uStone;\nuniform vec3 uRose;\nuniform vec3 uRed;\nuniform vec3 uEm;\nuniform float uGlow;\nvarying vec3 vH;\nvarying vec3 vOP;\nvarying vec3 vON;\n' +
+          'vC = clamp(dot(aW0, uC[0]) + dot(aW1, uC[1]) + dot(aW2, uC[2]), 0.0, 1.0);',
+          'vec3 transformed = position + normal * (uPump * clamp(vH.x, 0.0, 1.0) * (1.0 - vC) * 0.006);'].join('\n'));
+      sh.fragmentShader = 'uniform vec3 uSkin;\nuniform vec3 uCloth;\nuniform vec3 uRose;\nuniform vec3 uRed;\nuniform vec3 uEm;\nuniform float uGlow;\nvarying vec3 vH;\nvarying float vC;\n' +
         sh.fragmentShader.replace('#include <map_fragment>', [
-          'vec3 bw = pow(abs(normalize(vON)), vec3(4.0)); bw /= (bw.x + bw.y + bw.z);',
-          'vec3 mp = vOP * 2.6;',
-          'vec3 mt = texture2D(uMarble, mp.yz).rgb * bw.x + texture2D(uMarble, mp.zx).rgb * bw.y + texture2D(uMarble, mp.xy).rgb * bw.z;',
-          'vec3 col = mix(uStone, uRose, clamp(vH.y, 0.0, 1.0));',
+          'float cl = smoothstep(0.35, 0.65, vC);',
+          'vec3 col = mix(uSkin, uRose, clamp(vH.y, 0.0, 1.0) * 0.8);',
           'col = mix(col, uRed, clamp(max(vH.x, vH.z), 0.0, 1.0));',
-          'diffuseColor.rgb = col * pow(mt, vec3(2.2));'].join('\n'))
-        .replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\ntotalEmissiveRadiance += uEm * uGlow * clamp(vH.x, 0.0, 1.0);');
+          'diffuseColor.rgb = mix(col, uCloth, cl);'].join('\n'))
+        .replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\nroughnessFactor = mix(roughnessFactor, 0.94, cl);')
+        .replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\ntotalEmissiveRadiance += uEm * uGlow * clamp(vH.x, 0.0, 1.0) * (1.0 - cl);');
     };
-    m.customProgramCacheKey = () => 'chisel-figure';
+    m.customProgramCacheKey = () => 'chisel-figure-2';
     m.userData.u = u;
     return m;
   }
   function makeFigure(){
     const g = new T.Group(), torso = new T.Group(); g.add(torso);
     const mats = { torso: figMat(), ua: figMat(), fa: figMat(), th: figMat(), sh: figMat(), ft: figMat() };
+    for (const k in mats){ const j = SEG_PARTS[k].indexOf('shorts'); if (j >= 0) mats[k].userData.u.uC.value[j >> 2]['xyzw'[j & 3]] = 1; }
     const mk = (geo, mat, parent) => { const m = new T.Mesh(geo, mat); m.castShadow = true; m.receiveShadow = true; (parent || g).add(m); return m; };
     const tm = mk(FIG.torso, mats.torso, torso);
     const arms = [0, 1].map(i => ({ ua: mk(FIG.ua[i], mats.ua), fa: mk(FIG.fa[i], mats.fa) }));
@@ -1490,10 +1576,8 @@ const Viz = (() => {
     setSlots(f, pt => [prim.has(pt) ? 1 : 0, sec.has(pt) ? 1 : 0, 0]);
     f.prim = prim;
   }
-  function paintLevels(f, lv){
-    const lvl = {};
-    for (const gk in GROUP_PARTS){ const k = Math.round(clamp(+lv[gk] || 0, 0, 1) * 6) / 6; for (const pt of GROUP_PARTS[gk]) lvl[pt] = k; }
-    setSlots(f, pt => [0, 0, lvl[pt] || 0]);
+  function paintLevels(f){
+    setSlots(f, () => [0, 0, 0]);
     f.prim = null;
   }
   /*</figure>*/
@@ -1976,12 +2060,16 @@ const Viz = (() => {
         build(c){ c.box([0, 1.32, -.2], [.4, .9, .08], M.pad); for (const x of [.25, -.25]){ c.box([x, 1.27, .06], [.1, .06, .38], M.pad); c.box([x, .64, -.2], [.06, 1.28, .06]); c.rod([x, 1.28, .26], [x, 1.42, .26], .018); } return {}; },
         pose(p){ const fd = mixV(fdA, fdB, p).normalize(); return { P: V(0, 1.18, -.02), U: NV(0, 1, -.06 * p), F: NV(0, .06 * p, 1), hands: sym(.25, 1.36, .26), ePole: sym(.27, 1.15, -.3), feet: [mixV(V(.08, .34, .02), V(.09, .86, .46), p), mixV(V(-.08, .34, .02), V(-.09, .86, .46), p)], kPole: sym(.12, 1.6, 1.2), fDir: [fd, fd] }; } };
     },
-    // the lifter's own statue on a plinth, for the Progress muscle map
+    // the lifter's own figure, standing like the reference picture, for Today and Progress
     statue(){
-      const y0 = .24;
-      return { cam: { az: 0, el: 4, d: 4.7, t: [0, 1.12, 0] }, still: .5,
-        build(c){ c.box([0, y0 / 2 - .015, 0], [.66, y0 - .03, .52], M.plinth); c.box([0, y0 - .015, 0], [.72, .03, .58], M.plinth); c.box([0, .015, 0], [.74, .03, .6], M.plinth); return {}; },
-        pose(){ const P = V(.015, y0 + .905, 0); return { P, U: NV(.03, 1, .02), F: NV(0, -.02, 1), hands: [V(.31, P.y - .09, .05), V(-.3, P.y - .07, .03)], ePole: [V(.6, P.y + .2, -.6), V(-.6, P.y + .2, -.6)], feet: [V(.115, y0 + .075, .02), V(-.12, y0 + .1, -.06)], kPole: [V(.18, y0 + .6, 1.2), V(-.1, y0 + .6, 1.2)], fDir: [NV(.18, 0, 1), NV(-.26, 0, 1)] }; } };
+      return { cam: { az: 0, el: 4, d: 4.5, t: [0, .9, 0] }, still: .5,
+        build(){ return {}; },
+        pose(){
+          const P = V(0, .955, 0);
+          const wide = (uOf(growOf(growth, 'back')) + uOf(growOf(growth, 'delts')) + uOf(growOf(growth, 'biceps')) + uOf(growOf(growth, 'triceps'))) / 4;   // 0 … 2
+          const hx = .205 + .03 * lo1(wide) + .035 * hi1(wide);
+          return { P, U: NV(0, 1, 0), F: NV(0, 0, 1), hands: sym(hx, P.y - .16, .02), ePole: sym(.5, P.y + .1, -.7), feet: sym(.09, .075, .005), kPole: sym(.1, .6, 1.2), fDir: [NV(.16, 0, 1), NV(-.16, 0, 1)] };
+        } };
     }
   };
 
@@ -2426,23 +2514,19 @@ function stepViewer(d){
   Viz.stop(); $('#sheet').innerHTML = viewerHTML(); startViewer();
   const b = $(`#sheet [data-act="${d > 0 ? 'viz-next' : 'viz-prev'}"]`); if (b) b.focus();
 }
-const STONE = '#EDE9E3', CARVED = '#8E1B40';
 function mixHex(a, b, t){ const x = hexRgb(a), y = hexRgb(b); return '#' + x.map((v, i) => Math.round(v + (y[i] - v) * t).toString(16).padStart(2, '0')).join(''); }
-// body size per muscle group: skinny at muscle level 1, the full physique at level 11 (roughly 230–280 logged sets for that muscle)
-const GROW_FULL = 11;
-function growthLevels(){ const g = {}; for (const k in MUSCLES) g[k] = clamp((mLevel(G.muscleXP[k]) - 1) / (GROW_FULL - 1), 0, 1); return g; }
-function statueLevels(){ const lv = {}; for (const k in MUSCLES) lv[k] = Math.round(Math.sqrt(clamp((mLevel(G.muscleXP[k]) - 1) / 12, 0, 1)) * 6) / 6; return lv; }
-function openStatue(){
-  const lv = statueLevels(); Viz.setLevels(lv);
-  const rows = Object.entries(MUSCLES).map(([k, m]) => `<li><span><i class="sw" style="background:${mixHex(STONE, CARVED, lv[k])}"></i>${esc(m.n)}</span><b>Lv ${mLevel(G.muscleXP[k])}</b></li>`).join('');
-  if (openSheet(`${vizStageHTML('__statue', 'Your statue')}
-    <div class="viewer-txt">
-      <div class="eyebrow">Level ${G.level} · ${esc(rankFor(G.level).name)}</div>
-      <h2 class="h2 vz-title" id="vz-title">Your statue</h2>
-      <p class="vz-cue">Every muscle starts as stone. Each set you log carves it a little redder.</p>
-      <ul class="sum-list sw-list">${rows}</ul>
-      <div class="btn-row"><button class="btn btn-sm" data-act="close" data-autofocus>Close</button></div>
-    </div>`, 'viewer', () => Viz.stop())){ $('#sheet').setAttribute('aria-labelledby', 'vz-title'); startViewer(); }
+function openStages(){
+  const bs = stageOf(G.stages.body);
+  const cells = STAGES.map((x, i) => { const n = i + 1, cur = n === bs.n, done = n < bs.n; return `<li class="st-cell${cur ? ' cur' : done ? ' done' : ''}"><img src="${stageImg(n)}" alt="" loading="lazy" decoding="async"><b>${n}</b><span>${esc(x.n)}</span></li>`; }).join('');
+  const rows = Object.entries(MUSCLES).map(([k, m]) => { const ms = stageOf(G.stages.per[k]); return `<li><span>${esc(m.n)}</span><b>Stage ${ms.n} · ${esc(ms.name)}</b></li>`; }).join('');
+  openSheet(`<div class="eyebrow">Your body · stage ${bs.n} of 10</div>
+    <h2 class="h2" id="st-title">${esc(bs.name)}</h2>
+    <p class="lede">${esc(bs.desc)}. ${bs.n < 10 ? `${Math.round(bs.frac * 100)}% of the way to ${esc(STAGES[bs.n].n)}.` : 'The top stage. From here you refine.'}</p>
+    <ol class="st-grid" aria-label="The 10 stages">${cells}</ol>
+    <p class="sp-note">Each muscle climbs on its own as you log its sets; your body stage is the average of all seven. With steady training, stage 7 takes about a year and stage 10 two to three years.</p>
+    <div><div class="eyebrow" style="margin-bottom:4px">Your muscles</div><ul class="st-mus">${rows}</ul></div>
+    <button class="btn btn-sm" data-act="close" data-autofocus>Close</button>`);
+  $('#sheet').setAttribute('aria-labelledby', 'st-title');
 }
 
 /* ---------- derived helpers ---------- */
@@ -2515,7 +2599,7 @@ function renderToday(){
   const tip = TIPS[Math.floor(toDate(t).getTime() / 86400000) % TIPS.length];
   const hasCheckin = allCheckins().some(c => mondayOf(c.date) === mondayOf(t));
   const ev = G.ev.slice(0, 6);
-  Viz.setLevels(statueLevels()); const hero = Viz.statueCached('hero');
+  const bs = stageOf(G.stages.body);
   el.innerHTML = `
     <section class="slab" aria-label="Level ${li.level}, ${esc(rk.name)}">
       <canvas id="marble" aria-hidden="true"></canvas>
@@ -2527,7 +2611,7 @@ function renderToday(){
             <p class="rank-line">${esc(rk.line)}</p>
             <div class="lv"><span class="lv-k">LV</span><span class="lv-n">${li.level}</span></div>
           </div>
-          ${Viz.failed() ? '' : `<button class="slab-statue" data-act="statue-open" aria-label="Turn your statue in 3D"><img data-statue="hero" alt=""${hero ? ` src="${hero}"` : ''}></button>`}
+          <button class="slab-statue" data-act="stages-open" aria-label="Your body: stage ${bs.n} of 10, ${esc(bs.name)}. See all 10 stages"><img src="${stageImg(bs.n)}" alt="" decoding="async"><span class="slab-stage"><small>Stage ${bs.n}</small>${esc(bs.name)}</span></button>
         </div>
         <div class="lv-meta"><b>${fmt(G.xp)}</b> XP · ${fmt(li.next - G.xp)} to level ${li.level + 1}</div>
         <div class="xpbar" role="progressbar" aria-label="Progress to level ${li.level + 1}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(li.pct * 100)}"><i style="width:${(li.pct * 100).toFixed(1)}%"></i></div>
@@ -2761,7 +2845,6 @@ function afterChange(prev){
   const newAch = ACH.filter(a => G.ach[a.id] && !prev.ach[a.id]);
   newAch.forEach((a, k) => setTimeout(() => { toast(`<span>${TIER_NAME[a.t]} badge · <strong>${esc(a.n)}</strong></span><b>+${TIER_XP[a.t]}</b>`, true); sfx.pr(); }, 500 + k * 400));
   if (G.level > prev.level) setTimeout(() => showLevelUp(prev.level, G.level), 700);
-  Viz.setGrowth(growthLevels());
   renderHeader();
 }
 function showLevelUp(from, to){
@@ -2911,8 +2994,8 @@ function renderProgress(){
   const el = $('#v-progress'); const t = todayStr(); const li = levelInfo(G.xp);
   const cis = allCheckins(); const today = cis.find(c => c.date === t) || {};
   const lastBoth = cis.filter(c => +c.waist > 0 && +c.shoulders > 0).pop();
-  const slv = statueLevels(); Viz.setLevels(slv);
-  const muscleRows = Object.entries(MUSCLES).map(([k, m]) => { const mx = G.muscleXP[k]; const lv = mLevel(mx); const a = mxpFor(lv), b = mxpFor(lv + 1); const pct = clamp((mx - a) / Math.max(1, b - a), 0, 1); return `<div class="mrow${m.f ? '' : ' nf'}"><span class="m-n"><i class="sw" style="background:${mixHex(STONE, CARVED, slv[k])}" aria-hidden="true"></i>${esc(m.n)}</span><span class="m-l">Lv ${lv}</span><div class="bar" role="progressbar" aria-label="${esc(m.n)}: level ${lv}, ${Math.round(pct * 100)}% to the next" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(pct * 100)}"><i style="width:${(pct * 100).toFixed(1)}%"></i></div><span class="m-s">${fmt(mx / 10)} sets${m.f ? ' · focus' : ''}</span></div>`; }).join('');
+  const bs = stageOf(G.stages.body), nxt = bs.n < 10 ? STAGES[bs.n] : null;
+  const muscleRows = Object.entries(MUSCLES).map(([k, m]) => { const ms = stageOf(G.stages.per[k]); const pct = ms.frac; return `<div class="mrow${m.f ? '' : ' nf'}"><span class="m-n">${esc(m.n)}</span><span class="m-l">Stage ${ms.n}</span><div class="bar" role="progressbar" aria-label="${esc(m.n)}: stage ${ms.n}, ${esc(ms.name)}${ms.n < 10 ? `, ${Math.round(pct * 100)}% to stage ${ms.n + 1}` : ''}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(pct * 100)}"><i style="width:${(pct * 100).toFixed(1)}%"></i></div><span class="m-s">${esc(ms.name)} · ${fmt(G.muscleXP[k] / 10)} sets${m.f ? ' · focus' : ''}</span></div>`; }).join('');
   const recIds = []; [...MISSIONS, ...LEGACY_MISSIONS].forEach(mm => mm.slots.forEach(sl => [sl.ex, ...sl.alts].forEach(a => { if (G.bests[a] && !recIds.includes(a)) recIds.push(a); })));
   const records = recIds.map(id => { const b = G.bests[id]; const e = EX[id]; return `<li><span class="rc-n">${esc(e.n)}<small>${shortDate(b.date)}${e.k === 'bw' ? '' : ` · est. max ${fmtKg(Math.round(b.e * 2) / 2)} kg`}</small></span><b class="rc-v">${e.k === 'bw' ? `${b.r} reps${b.w ? ` +${fmtKg(b.w)}` : ''}` : `${fmtKg(b.w)} × ${b.r}`}</b></li>`; }).join('');
   const sess = allSessions().filter(s => G.info[s.id] && !G.info[s.id].empty).reverse();
@@ -2921,8 +3004,15 @@ function renderProgress(){
   const gMin = 1.2, gMax = 1.75; const gp = v => clamp((v - gMin) / (gMax - gMin), 0, 1) * 100;
   el.innerHTML = `
     <header><div class="eyebrow">Statue</div><h1 class="h1">Progress</h1><p class="lede mt6">Level ${li.level} · ${esc(rankFor(li.level).name)}. Everything below is built from your log.</p></header>
-    <section class="card" id="statue-card"><div class="sec-h"><h2 class="h3">Your statue</h2><span class="muted">muscle levels</span></div>
-      ${Viz.failed() ? '' : `<button class="statue-pics" data-act="statue-open" aria-label="Turn your statue in 3D">${['front', 'back'].map(k => { const src = Viz.statueCached(k); return `<span class="sp"><img data-statue="${k}" alt=""${src ? ` src="${src}"` : ''}><small>${k === 'front' ? 'Front' : 'Back'}</small></span>`; }).join('')}</button><p class="sp-note">Each muscle starts as stone and turns red as you train it. Tap to turn your statue in 3D.</p>`}
+    <section class="card" id="statue-card"><div class="sec-h"><h2 class="h3">Your body</h2><span class="muted">stage ${bs.n} of 10</span></div>
+      <button class="stage-pics" data-act="stages-open" aria-label="See all 10 stages">
+        <span class="sp now"><img src="${stageImg(bs.n)}" alt="Stage ${bs.n}, ${esc(bs.name)}" decoding="async"><small>Now</small></span>
+        <span class="sp${nxt ? ' next' : ''}"><img src="${stageImg(nxt ? bs.n + 1 : 10)}" alt="${nxt ? `Next: stage ${bs.n + 1}, ${esc(nxt.n)}` : ''}" decoding="async"><small>${nxt ? 'Next' : 'Top stage'}</small></span>
+      </button>
+      <div class="stage-now"><div class="stage-k">Stage ${bs.n} · ${esc(bs.name)}</div><p class="muted">${esc(bs.desc)}.</p></div>
+      ${nxt ? `<div class="prog stage-prog"><div class="bar"><i style="width:${(bs.frac * 100).toFixed(1)}%"></i></div><span><b>${Math.round(bs.frac * 100)}%</b> to ${esc(nxt.n)}</span></div>` : ''}
+      <p class="sp-note">Your body stage is the average of your seven muscles. Each one climbs as you log its sets. Tap the pictures to see all 10 stages.</p>
+      <h3 class="m-head">Muscle stages</h3>
       <div class="mgrid">${muscleRows}</div>
     </section>
     <div class="tiles four">
@@ -3184,7 +3274,8 @@ const actions = {
   'viz-open': a => openViewer(a.dataset.ex, a.dataset.slot, a.dataset.from),
   'viz-prev': () => stepViewer(-1),
   'viz-next': () => stepViewer(1),
-  'statue-open': () => openStatue(),
+  'statue-open': () => openStages(),
+  'stages-open': () => openStages(),
   swap: a => { state.swapOpen = state.swapOpen === a.dataset.slot ? null : a.dataset.slot; const y = window.scrollY; renderTrain(); window.scrollTo(0, y); },
   pswap: a => { state.planSwap = state.planSwap === a.dataset.slot ? null : a.dataset.slot; const y = window.scrollY; renderPlan(); window.scrollTo(0, y); if (state.planSwap){ const sel = $('#psw-' + state.planSwap); if (sel) sel.focus(); } },
   addset: a => { const t = todayStr(); const s = ensureSession(t, state.trainM); const sl = slotById(a.dataset.slot, s); if (!sl) return; const rec = slotRec(s, a.dataset.slot); const p = plannedSets(sl, PHASES[s.ph] ? s.ph : phaseOf(weekNum(t))); while (rec.s.length < p) rec.s.push({}); rec.s.push({}); touch(monthId(t)); const y = window.scrollY; renderTrain(); window.scrollTo(0, y); },
@@ -3321,7 +3412,6 @@ function start(data){
   loadLocal(); P();
   if (migratePlan()) touch('profile');
   G = compute();
-  Viz.setGrowth(growthLevels());
   buildChrome();
   if (data && data.trainM && MISSION_BY_ID[data.trainM]){ state.trainM = data.trainM; state.trainFor = todayStr(); }
   const v = (data && (VIEWS.includes(data.view) || ALIASES[data.view])) ? data.view : routeFromHash();
