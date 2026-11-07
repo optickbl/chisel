@@ -625,6 +625,7 @@ const EX = {
   incline_db_curl: { n: 'Incline dumbbell curl', m: 'biceps', k: 'db', inc: 2, cue: 'Bench at 45°, arms hanging behind you. The stretch builds the biceps peak.', q: 'incline dumbbell curl form' },
   preacher_curl:   { n: 'Preacher curl, EZ bar or machine', m: 'biceps', k: 'mc', inc: 2.5, cue: 'Armpits on the pad. Lower to almost straight, no bouncing.', q: 'preacher curl form' },
   overhead_ext:    { n: 'Cable overhead triceps extension', m: 'triceps', k: 'cb', inc: 2.5, cue: 'Face away from the cable, elbows by your head. Stretch deep, extend fully. The long head is most of your arm size.', q: 'cable overhead triceps extension form' },
+  db_overhead_ext: { n: 'Seated dumbbell overhead extension', m: 'triceps', k: 'db', inc: 2, cue: 'Sit tall with back support, both hands cupping one dumbbell. Elbows point up and stay narrow; lower deep behind your head for a full stretch, then extend.', q: 'seated dumbbell overhead triceps extension form' },
   skullcrusher:    { n: 'EZ-bar skull crusher', m: 'triceps', k: 'bb', inc: 2.5, cue: 'Lower the bar behind your head with elbows pointing up.', q: 'ez bar skull crusher form' },
   hanging_leg_raise: { n: 'Hanging leg raise', m: 'core', k: 'bw', inc: 0, cue: 'Hang still, curl your hips up as your legs rise. No swinging. Bent knees is fine to start.', q: 'hanging leg raise form' },
   captains_chair:  { n: "Captain's chair knee raise", m: 'core', k: 'bw', inc: 0, cue: 'Back against the pad, knees to chest, lower slowly.', q: 'captains chair knee raise form' }
@@ -736,7 +737,7 @@ const MISSIONS = [
       { id: 'C1', ex: 'hack_squat', alts: ['leg_press'], sets: 2, lo: 6, hi: 8, rest: 150 },
       { id: 'C2', ex: 'back_ext', alts: ['seated_leg_curl'], sets: 2, lo: 6, hi: 8, rest: 120 },
       { id: 'C3', ex: 'incline_db_curl', alts: ['preacher_curl'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'C4', tech: 'myo' },
-      { id: 'C4', ex: 'overhead_ext', alts: ['skullcrusher'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'C3' },
+      { id: 'C4', ex: 'overhead_ext', alts: ['db_overhead_ext'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'C3' },
       { id: 'C5', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 75, pair: 'C6', tech: 'partials' },
       { id: 'C6', ex: 'hanging_leg_raise', alts: ['captains_chair'], sets: 2, lo: 6, hi: 8, rest: 75, pair: 'C5' }
     ] }
@@ -1138,7 +1139,7 @@ const VIZ = {
   shoulder_press: { p: 'ohp' }, smith_ohp: { p: 'ohp', v: 'smith' },
   cable_lateral: { p: 'lateral', v: 'cable' }, machine_lateral: { p: 'lateral', v: 'machine' },
   pec_deck: { p: 'fly' }, cable_fly: { p: 'fly', v: 'cable' }, reverse_pec: { p: 'revfly' }, face_pull: { p: 'facepull' },
-  rope_pushdown: { p: 'pushdown', v: 'rope' }, bar_pushdown: { p: 'pushdown', v: 'bar' }, overhead_ext: { p: 'ohext' }, skullcrusher: { p: 'skull' },
+  rope_pushdown: { p: 'pushdown', v: 'rope' }, bar_pushdown: { p: 'pushdown', v: 'bar' }, overhead_ext: { p: 'ohext' }, db_overhead_ext: { p: 'ohext', v: 'db' }, skullcrusher: { p: 'skull' },
   hammer_curl: { p: 'curl', v: 'hammer' }, ez_curl: { p: 'curl', v: 'ez' }, bb_curl: { p: 'curl', v: 'bb' }, cable_curl: { p: 'curl', v: 'cable' }, rope_hammer: { p: 'curl', v: 'rope' },
   incline_db_curl: { p: 'inclinecurl' }, preacher_curl: { p: 'preacher' },
   cable_crunch: { p: 'crunch' }, machine_crunch: { p: 'crunch', v: 'machine' },
@@ -1179,7 +1180,7 @@ const WORKS = {
   cable_lateral: W(['sideDelts'], ['traps']), machine_lateral: W(['sideDelts'], ['traps']),
   pec_deck: W(['chest'], ['frontDelts']), cable_fly: W(['chest'], ['frontDelts']),
   face_pull: W(['rearDelts'], ['upperBack', 'traps']), reverse_pec: W(['rearDelts'], ['upperBack', 'traps']),
-  rope_pushdown: W(['triceps']), bar_pushdown: W(['triceps']), overhead_ext: W(['triceps']), skullcrusher: W(['triceps']),
+  rope_pushdown: W(['triceps']), bar_pushdown: W(['triceps']), overhead_ext: W(['triceps']), db_overhead_ext: W(['triceps']), skullcrusher: W(['triceps']),
   hammer_curl: W(['biceps', 'forearms']), rope_hammer: W(['biceps', 'forearms']),
   ez_curl: W(['biceps'], ['forearms']), bb_curl: W(['biceps'], ['forearms']), cable_curl: W(['biceps'], ['forearms']), incline_db_curl: W(['biceps'], ['forearms']), preacher_curl: W(['biceps'], ['forearms']),
   cable_crunch: W(['abs'], ['obliques']), machine_crunch: W(['abs'], ['obliques']),
@@ -1985,14 +1986,15 @@ const Viz = (() => {
         pose(p){ const a = mix(42, o.v === 'rope' ? -78 : -83, p) * D; const dir = V(0, Math.sin(a), Math.cos(a)); const sp = o.v === 'rope' ? mix(.08, .17, p) : .12; const H = [Eb[0].clone().addScaledVector(dir, .275).setX(sp), Eb[1].clone().addScaledVector(dir, .275).setX(-sp)]; return { P, U, F, hands: H, ePole: [pole(S[0], Eb[0], H[0]), pole(S[1], Eb[1], H[1])], feet: sym(.13, .075, 0), kPole: sym(.16, .55, 1.2) }; },
         update(p, b, d){ const m0 = mid(b.H[0], b.H[1]); let anchor = m0; if (o.v === 'rope'){ anchor = m0.clone().add(V(0, .1, 0)); d.att.set(b.H[0], b.H[1], anchor); } else d.att.set(b.H[0], b.H[1]); d.cab.set(pul, anchor); d.stk.set(cableLift(d, 0, pul.distanceTo(anchor))); } };
     },
-    ohext(){
-      const P = V(0, .94, 0), U = NV(0, 1, .4), F = NV(0, -.4, 1); const B = fr(P, U, F); const S = [B.at(.19, .45, 0), B.at(-.19, .45, 0)];
-      const ua = NV(0, .82, .57); const Eb = [S[0].clone().addScaledVector(ua, .29).setX(.15), S[1].clone().addScaledVector(ua, .29).setX(-.15)];
+    ohext(o){
+      const db = o.v === 'db';   // seated dumbbell version: upright on a bench, one dumbbell in both hands
+      const P = db ? V(0, .55, 0) : V(0, .94, 0), U = db ? NV(0, 1, -.08) : NV(0, 1, .4), F = db ? NV(0, .08, 1) : NV(0, -.4, 1); const B = fr(P, U, F); const S = [B.at(.19, .45, 0), B.at(-.19, .45, 0)];
+      const ua = db ? NV(0, .97, .25) : NV(0, .82, .57); const Eb = [S[0].clone().addScaledVector(ua, .29).setX(.15), S[1].clone().addScaledVector(ua, .29).setX(-.15)];
       const pul = V(0, 1.55, -.58);
-      return { cam: { az: 72, el: 10, d: 4.4, t: [0, 1.15, .02] }, tempo: ['Extend', 'Lower'],
-        build(c){ const stk = c.stack(0, -.76, 2.1); const pm = c.pulley(pul); return { stk, r: c.rope(), cab: c.cable(pm) }; },
-        pose(p){ const a = mix(160, 38, p) * D; const dir = V(0, Math.sin(a), Math.cos(a)); const H = [Eb[0].clone().addScaledVector(dir, .275).setX(.07), Eb[1].clone().addScaledVector(dir, .275).setX(-.07)]; return { P, U, F, hands: H, ePole: [pole(S[0], Eb[0], H[0]), pole(S[1], Eb[1], H[1])], feet: [V(.13, .075, .26), V(-.13, .075, -.22)], kPole: sym(.16, .55, 1.2) }; },
-        update(p, b, d){ const knot = mid(b.H[0], b.H[1]).add(V(0, .02, -.1)); d.r.set(b.H[0], b.H[1], knot); d.cab.set(pul, knot); d.stk.set(cableLift(d, 0, pul.distanceTo(knot))); } };
+      return { cam: db ? { az: 84, el: 10, d: 4, t: [0, 1, 0] } : { az: 72, el: 10, d: 4.4, t: [0, 1.15, .02] }, tempo: ['Extend', 'Lower'],
+        build(c){ if (db){ c.box([0, .41, .06], [.44, .08, .42], M.pad); c.boxB(B.at(0, .2, -.15), [.42, .44, .08], B.L, B.U, B.F); c.box([0, .2, .02], [.1, .36, .1]); return { db: c.dumbbell() }; } const stk = c.stack(0, -.76, 2.1); const pm = c.pulley(pul); return { stk, r: c.rope(), cab: c.cable(pm) }; },
+        pose(p){ const a = (db ? mix(215, 80, p) : mix(160, 38, p)) * D; const dir = V(0, Math.sin(a), Math.cos(a)); const H = [Eb[0].clone().addScaledVector(dir, .275).setX(.07), Eb[1].clone().addScaledVector(dir, .275).setX(-.07)]; return { P, U, F, hands: H, ePole: [pole(S[0], Eb[0], H[0]), pole(S[1], Eb[1], H[1])], feet: db ? sym(.17, .075, .45) : [V(.13, .075, .26), V(-.13, .075, -.22)], kPole: db ? sym(.22, 1.0, .9) : sym(.16, .55, 1.2) }; },
+        update(p, b, d){ if (db){ const ax = mid(b.H[0], b.H[1]).sub(mid(Eb[0], Eb[1])).normalize(); d.db.set(mid(b.H[0], b.H[1]).addScaledVector(ax, .06), ax); return; } const knot = mid(b.H[0], b.H[1]).add(V(0, .02, -.1)); d.r.set(b.H[0], b.H[1], knot); d.cab.set(pul, knot); d.stk.set(cableLift(d, 0, pul.distanceTo(knot))); } };
     },
     skull(){
       const P = V(0, .56, .15), U = V(0, 0, -1), F = V(0, 1, 0); const B = fr(P, U, F); const S = [B.at(.19, .45, 0), B.at(-.19, .45, 0)];
