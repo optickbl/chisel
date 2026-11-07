@@ -412,6 +412,15 @@ details > summary{cursor:pointer}
 .t-l{font-size:13px;color:var(--muted)}
 .t-v{font-family:var(--f-display);font-weight:800;font-size:34px;line-height:1.05}
 .t-v small{font-size:17px;color:var(--fg-2);font-weight:700;margin-left:3px}
+.tiles.sm{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.tiles.sm .tile{background:var(--surface-2);border-color:transparent;padding:10px 12px}
+.tiles.sm .t-v{font-size:24px}
+.tiles.sm .t-v small{font-size:14px}
+.t-s{font-size:12.5px;color:var(--muted);margin-top:2px}
+@media (min-width:520px){ .tiles.sm{grid-template-columns:repeat(3,minmax(0,1fr))} }
+.scan-ab{display:grid;grid-template-columns:1fr;gap:12px}
+@media (min-width:520px){ .scan-ab{grid-template-columns:1fr 1fr} }
+.scan-more summary{font-weight:700;color:var(--accent)}
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:14.5px}
 th{text-align:left;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:8px 6px;border-bottom:1px solid var(--line)}
@@ -544,6 +553,7 @@ const pad2 = n => String(n).padStart(2, '0');
 const fmt = n => Math.round(n).toLocaleString('en-US');
 const fmtKg = n => String(Math.round((+n || 0) * 100) / 100);
 const round1 = n => Math.round(n * 10) / 10;
+const round2 = n => Math.round(n * 100) / 100;
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const DAY_NAMES = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 const DAY_SHORT = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
@@ -658,7 +668,8 @@ const LEGACY_MISSIONS = [
       { id: 'C9', ex: 'hanging_leg_raise', alts: ['captains_chair'], sets: 3, lo: 10, hi: 15, rest: 60, pair: 'C8' }
     ] }
 ];
-const MISSIONS = [
+// the plan from 6 to 7 Nov 2026 (2 × 6–8 on everything). Sessions logged then keep it.
+const V2_MISSIONS = [
   { id: 'A', dow: 1, day: 'Monday', code: 'Upper A', short: 'Chest', name: 'Chest & Shoulders', mins: 45,
     focus: [['Chest', 1], ['Side delts', 1], ['Triceps', 0], ['Lats', 0]],
     slots: [
@@ -693,16 +704,54 @@ const MISSIONS = [
       { id: 'C6', ex: 'hanging_leg_raise', alts: ['captains_chair'], sets: 2, lo: 6, hi: 8, rest: 75, pair: 'C5' }
     ] }
 ];
-const MISSION_BY_ID = {};
-const SLOT_BY_ID = {};
-MISSIONS.forEach(m => { MISSION_BY_ID[m.id] = m; m.slots.forEach(s => { s.mission = m.id; SLOT_BY_ID[s.id] = s; }); });
-const LEGACY_BY_ID = {}, LEGACY_SLOT_BY_ID = {};
-LEGACY_MISSIONS.forEach(m => { LEGACY_BY_ID[m.id] = m; m.slots.forEach(s => { s.mission = m.id; LEGACY_SLOT_BY_ID[s.id] = s; }); });
-// sessions started on this plan carry pv: 2; older sessions keep their original plan
-const PLAN_V = 2;
-const isLegacy = s => !!s && !(s.pv >= PLAN_V);
-const slotsOf = s => (isLegacy(s) ? LEGACY_BY_ID : MISSION_BY_ID)[s.m].slots;
-const slotById = (id, s) => (isLegacy(s) ? LEGACY_SLOT_BY_ID : SLOT_BY_ID)[id];
+// the plan from 7 Nov 2026, after the body scan: 2 × 6–8 everywhere except lateral raises (10–15, strict),
+// and incline pressing leads both upper days because the upper chest is flat compared with the lower.
+const MISSIONS = [
+  { id: 'A', dow: 1, day: 'Monday', code: 'Upper A', short: 'Chest', name: 'Chest & Shoulders', mins: 45,
+    focus: [['Upper chest', 1], ['Side delts', 1], ['Chest', 0], ['Triceps', 0], ['Lats', 0]],
+    slots: [
+      { id: 'A1', ex: 'incline_machine', alts: ['incline_smith', 'incline_bb'], sets: 2, lo: 6, hi: 8, rest: 150 },
+      { id: 'A2', ex: 'bench', alts: ['smith_bench', 'chest_press'], sets: 2, lo: 6, hi: 8, rest: 150 },
+      { id: 'A3', ex: 'lat_pulldown', alts: ['pullup', 'close_pulldown'], sets: 2, lo: 6, hi: 8, rest: 120 },
+      { id: 'A4', ex: 'shoulder_press', alts: ['smith_ohp'], sets: 2, lo: 6, hi: 8, rest: 120 },
+      { id: 'A5', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 75, tech: 'drop' },
+      { id: 'A6', ex: 'pec_deck', alts: ['cable_fly'], sets: 2, lo: 6, hi: 8, rest: 90 },
+      { id: 'A7', ex: 'rope_pushdown', alts: ['bar_pushdown'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'A8', tech: 'drop' },
+      { id: 'A8', ex: 'hammer_curl', alts: ['rope_hammer'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'A7' }
+    ] },
+  { id: 'B', dow: 4, day: 'Thursday', code: 'Upper B', short: 'Back', name: 'Back & Arms', mins: 40,
+    focus: [['Upper chest', 1], ['Lats', 0], ['Biceps', 1], ['Rear delts', 0], ['Side delts', 1]],
+    slots: [
+      { id: 'B1', ex: 'incline_bb', alts: ['incline_smith', 'incline_machine'], sets: 2, lo: 6, hi: 8, rest: 150 },
+      { id: 'B2', ex: 'close_pulldown', alts: ['lat_pulldown', 'pullup'], sets: 2, lo: 6, hi: 8, rest: 120 },
+      { id: 'B3', ex: 'machine_row', alts: ['bb_row', 'cable_row'], sets: 2, lo: 6, hi: 8, rest: 120 },
+      { id: 'B4', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 75, pair: 'B5' },
+      { id: 'B5', ex: 'face_pull', alts: ['reverse_pec'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'B4' },
+      { id: 'B6', ex: 'ez_curl', alts: ['bb_curl', 'cable_curl'], sets: 2, lo: 6, hi: 8, rest: 90, tech: 'myo' },
+      { id: 'B7', ex: 'cable_crunch', alts: ['machine_crunch'], sets: 2, lo: 6, hi: 8, rest: 75 }
+    ] },
+  { id: 'C', dow: 6, day: 'Saturday', code: 'Lower + Arms', short: 'Legs', name: 'Legs, Arms & Abs', mins: 35,
+    focus: [['Legs', 0], ['Biceps', 1], ['Triceps', 0], ['Side delts', 1], ['Abs', 0]],
+    slots: [
+      { id: 'C1', ex: 'hack_squat', alts: ['leg_press'], sets: 2, lo: 6, hi: 8, rest: 150 },
+      { id: 'C2', ex: 'back_ext', alts: ['seated_leg_curl'], sets: 2, lo: 6, hi: 8, rest: 120 },
+      { id: 'C3', ex: 'incline_db_curl', alts: ['preacher_curl'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'C4', tech: 'myo' },
+      { id: 'C4', ex: 'overhead_ext', alts: ['skullcrusher'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'C3' },
+      { id: 'C5', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 75, pair: 'C6', tech: 'partials' },
+      { id: 'C6', ex: 'hanging_leg_raise', alts: ['captains_chair'], sets: 2, lo: 6, hi: 8, rest: 75, pair: 'C5' }
+    ] }
+];
+// every plan Chisel has used. A session carries pv (its plan version); sessions without one are plan 1.
+const PLANS = { 1: LEGACY_MISSIONS, 2: V2_MISSIONS, 3: MISSIONS };
+const PLAN_V = 3;
+const PLAN_M = {}, PLAN_S = {};
+for (const [v, list] of Object.entries(PLANS)){ PLAN_M[v] = {}; PLAN_S[v] = {}; list.forEach(m => { PLAN_M[v][m.id] = m; m.slots.forEach(s => { s.mission = m.id; PLAN_S[v][s.id] = s; }); }); }
+const MISSION_BY_ID = PLAN_M[PLAN_V], SLOT_BY_ID = PLAN_S[PLAN_V];
+const LEGACY_BY_ID = PLAN_M[1], LEGACY_SLOT_BY_ID = PLAN_S[1];
+const planOf = s => !s ? PLAN_V : (s.pv >= 2 ? Math.min(PLAN_V, Math.floor(s.pv)) : 1);
+const isLegacy = s => !!s && planOf(s) < PLAN_V;
+const slotsOf = s => PLAN_M[planOf(s)][s.m].slots;
+const slotById = (id, s) => PLAN_S[planOf(s)][id];
 const SCHEDULE = { 1: 'A', 4: 'B', 6: 'C' };
 
 /* ---------- body stages: the 10 pictures, Very Skinny → Max Muscular ---------- */
@@ -722,7 +771,30 @@ const STAGES = [
 // Its weekly planned sets come from the program, so a muscle trained less often is not left behind.
 const STAGE_WEEKS = 130;
 const WEEKLY_SETS = (() => { const w = {}; for (const k in MUSCLES) w[k] = 0; MISSIONS.forEach(m => m.slots.forEach(sl => { w[EX[sl.ex].m] += sl.sets; })); return w; })();
-function muscleStage(mxp, k){ const wk = Math.max(0, +mxp || 0) / (10 * Math.max(1, WEEKLY_SETS[k] || 1)); return Math.min(10, 1 + 9 * Math.sqrt(wk / STAGE_WEEKS)); }
+
+/* ---------- body scans: a fasted weigh-in plus a flex video, read by Claude ---------- */
+// stage: where each muscle stood that day on the 10-stage scale. Sets logged from that date on climb from there.
+// Legs were under a towel in the 7 Nov video, so they start at the overall level.
+const SCANS = [
+  { date: '2026-11-07', height: 180, weight: 69.65, bf: 15, bfLo: 13, bfHi: 17,
+    stage: { delts: 3.6, chest: 3.1, biceps: 2.6, triceps: 2.6, back: 3.0, core: 3.3, legs: 3.0 },
+    ahead: ['Front delts', 'Ab shape', 'Left–right symmetry'],
+    behind: ['Arms', 'Side delts', 'Upper chest', 'Lat width'],
+    notes: [
+      ['Muscle is the bottleneck, not fat.', 'An FFMI around 18 is where most untrained men sit. A lean, clearly muscular look at 180 cm is about 75–80 kg at 10–12% body fat: roughly 8–10 kg of muscle away, or 2–3 years of steady training.'],
+      ['Shoulders lead.', 'Front delts are already clearly built, with a cap showing even when relaxed. Side delts trail them, and they’re what make shoulders look wide.'],
+      ['Chest: bottom yes, top not yet.', 'The lower pec line is sharp; the area under the collarbones is flat. Incline pressing first, twice a week.'],
+      ['Arms are furthest behind.', 'A small biceps peak and not much triceps shape from the side. Triceps are two-thirds of the arm, so overhead extensions matter as much as curls.'],
+      ['Back: thick up top, narrow under the arms.', 'The spinal groove and rear delts show when flexed, but the lats don’t flare yet, so the V-taper is mild.'],
+      ['Fat sits low.', 'Upper four abs show; the lower belly, love handles and lower back hold the rest and will lean out last.'],
+      ['Worth a check.', 'Your lower back curves quite a lot in the back shots, which can be pelvic tilt or just the low camera. A side photo at hip height will tell.']
+    ] }
+];
+const SCAN0 = SCANS[0];
+const scanCalc = sc => { const m = sc.height / 100; const lean = sc.weight * (1 - sc.bf / 100); return { bmi: sc.weight / (m * m), lean, ffmi: lean / (m * m) }; };
+// weeks of full training that would have carried a muscle from stage 1 to its scanned stage
+const baseWeeks = k => { const s = SCAN0 && SCAN0.stage[k]; return s > 1 ? STAGE_WEEKS * Math.pow((s - 1) / 9, 2) : 0; };
+function muscleStage(mxp, k){ const wk = Math.max(0, +mxp || 0) / (10 * Math.max(1, WEEKLY_SETS[k] || 1)) + baseWeeks(k); return Math.min(10, 1 + 9 * Math.sqrt(wk / STAGE_WEEKS)); }
 function stagesFrom(muscleXP){ const per = {}; let sum = 0, n = 0; for (const k in MUSCLES){ per[k] = muscleStage(muscleXP[k], k); sum += per[k]; n++; } return { per, body: n ? sum / n : 1 }; }
 function stageOf(v){ const n = clamp(Math.floor(v + 1e-9), 1, 10); return { n, name: STAGES[n - 1].n, desc: STAGES[n - 1].d, frac: n >= 10 ? 1 : clamp(v - n, 0, 1) }; }
 const stageImg = n => `stage-${clamp(n, 1, 10)}.webp`;
@@ -786,9 +858,11 @@ const TIPS = [
   'Sharp or joint pain means stop. Muscle burn is fine.',
   'Missed a day? Do the next mission on your next free day and keep the order.',
   'Triceps are about two-thirds of your upper arm. Big arms need both sides.',
-  'Upper chest fills out a T-shirt. That’s why incline pressing comes first on Thursday.',
+  'Upper chest fills out a T-shirt. That’s why incline pressing comes first on Monday and Thursday.',
+  'Lateral raises live at 10–15 reps. Light and strict beats heavy and swung: the side delt does the work only when nothing else helps.',
   'Check in at the same time each week, ideally first thing in the morning.',
-  'Take progress photos every 4 weeks in the same light. The mirror lies day to day.',
+  'Progress photos every 4 weeks: same light, phone at chest height about 2 m away, front, side and back. The mirror lies day to day.',
+  'Weigh in first thing in the morning, after the bathroom, before food or water. That’s the only number worth comparing.',
   'A 4th session in a week earns no XP. You grow on the days between.',
   'New exercise? Watch its 3D demo first. Copy the path, not the speed.',
   'Full range beats heavy half reps. Stretch at the bottom, squeeze at the top.',
@@ -810,12 +884,29 @@ function P(){
   if (!p.swaps || typeof p.swaps !== 'object') p.swaps = {};
   return p;
 }
-// Saturday lost three leg slots in plan 2, so saved swaps for the arm and ab slots move to their new numbers
+// Saved swaps follow their exercise when slots are renumbered.
+// Plan 2: Saturday lost three leg slots, so the arm and ab slots moved up.
+// Plan 3: Monday's incline press and bench press traded places (A1 ⇄ A2).
 function migratePlan(){
-  const p = P(); if (p.plan >= PLAN_V) return false;
-  const old = p.swaps || {}, sw = {}, moved = { C6: 'C3', C7: 'C4', C8: 'C5', C9: 'C6' };
-  for (const [k, v] of Object.entries(old)){ if (k.charAt(0) !== 'C') sw[k] = v; else if (moved[k]) sw[moved[k]] = v; else if (k === 'C1' || k === 'C2') sw[k] = v; }
+  const p = P(); const from = p.plan >= 2 ? p.plan : 1; if (from >= PLAN_V) return false;
+  // a brand-new profile has nothing to move, and must not be marked as changed or it would overwrite the cloud copy
+  if (!(p._t > 0)){ p.plan = PLAN_V; return false; }
+  let sw = { ...(p.swaps || {}) };
+  if (from < 2){
+    const old = sw, moved = { C6: 'C3', C7: 'C4', C8: 'C5', C9: 'C6' }; sw = {};
+    for (const [k, v] of Object.entries(old)){ if (k.charAt(0) !== 'C') sw[k] = v; else if (moved[k]) sw[moved[k]] = v; else if (k === 'C1' || k === 'C2') sw[k] = v; }
+  }
+  if (from < 3){ const a1 = sw.A1, a2 = sw.A2; delete sw.A1; delete sw.A2; if (a2) sw.A1 = a2; if (a1) sw.A2 = a1; }
   p.swaps = sw; p.plan = PLAN_V;
+  return true;
+}
+// Once only: the scan's fasted weigh-in goes into the log as that day's check-in, unless a weight is already there.
+function seedScan(){
+  const p = P(); if (!SCAN0 || p.scan >= 1 || !(p._t > 0)) return false;
+  p.scan = 1;
+  const d = SCAN0.date, md = monthDoc(d, true), c = md.checkins[d] || {};
+  if (!(+c.weight > 0)){ md.checkins[d] = { ...c, weight: SCAN0.weight }; touch(monthId(d)); }
+  if (!allCheckins().some(x => x.date > d && +x.weight > 0)) p.weight = +md.checkins[d].weight;
   return true;
 }
 const monthId = date => 'm-' + date.slice(0, 7);
@@ -871,7 +962,7 @@ function bodyweightOn(date, checkins){ let bw = null; for (const c of checkins){
 function compute(){
   const sessions = allSessions(), checkins = allCheckins();
   const ev = [], bests = {}, info = {}, weeks = {};
-  const muscleXP = {}; for (const k in MUSCLES) muscleXP[k] = 0;
+  const muscleXP = {}, stageXP = {}; for (const k in MUSCLES){ muscleXP[k] = 0; stageXP[k] = 0; }
   const perDay = {}, perWeek = {};
   let prTotal = 0, volume = 0, missions = 0, setsTotal = 0;
   const today = todayStr();
@@ -900,7 +991,7 @@ function compute(){
     perDay[s.date] = (perDay[s.date] || 0) + 1;
     perWeek[wk] = (perWeek[wk] || 0) + 1;
     const complete = done >= Math.ceil(planned * 0.8), flawless = done >= planned;
-    if (earning){ for (const m in credit) muscleXP[m] += credit[m] * 10; if (complete) missions++; }
+    if (earning){ for (const m in credit){ muscleXP[m] += credit[m] * 10; if (!SCAN0 || s.date >= SCAN0.date) stageXP[m] += credit[m] * 10; } if (complete) missions++; }
     prTotal += prs.length;
     info[s.id] = { empty: false, planned, done, complete, flawless, earning, prs, ready, ph, wk, xp: 0 };
     (weeks[wk] = weeks[wk] || { list: [] }).list.push(s);
@@ -935,7 +1026,7 @@ function compute(){
   const curWk = mondayOf(today);
   let streak = 0, w = fullWeeks.has(curWk) ? curWk : addDays(curWk, -7);
   while (fullWeeks.has(w)){ streak++; w = addDays(w, -7); }
-  return { xp, level: levelFromXP(xp), ev, bests, info, weeks, fullWeeks, muscleXP, stages: stagesFrom(muscleXP), prTotal, volume, missions, setsTotal, ach, streak };
+  return { xp, level: levelFromXP(xp), ev, bests, info, weeks, fullWeeks, muscleXP, stages: stagesFrom(stageXP), prTotal, volume, missions, setsTotal, ach, streak };
 }
 function evalAch(sessions, info, weeks, fullWeeks, checkins){
   const A = {};
@@ -995,6 +1086,8 @@ function suggestion(slot, exId, ph){
   const last = ex.k === 'bw' ? `Last time: ${reps} reps${topW ? ` with +${fmtKg(topW)} kg` : ''}` : `Last time: ${fmtKg(topW)} kg × ${reps}`;
   if (ph === 'rec') return { w: topW || null, last, text: `Recovery week: same weight, half the sets, stop 3 reps short.` };
   if (ex.k === 'bw') return allTop ? { w: topW || null, last, up: true, text: `You hit ${slot.hi}+ every set. Slow the reps down or add a little weight.` } : { w: topW || null, last, text: `Beat ${reps} reps.` };
+  // the rep range moved up since last time (laterals went from 6–8 to 10–15), so the old weight is too heavy for it
+  if (L.hi < slot.lo && topW > 0){ const st = ex.inc || 1; const nw = Math.max(st, Math.round(topW * 0.85 / st) * st); return { w: nw, last, text: `New rep range: ${slot.lo}–${slot.hi}. Go a little lighter, about ${fmtKg(nw)} kg, with strict reps.` }; }
   if (allTop){ const nw = Math.round((topW + ex.inc) * 4) / 4; return { w: nw, last, up: true, text: `Add weight: ${fmtKg(nw)} kg${ex.k === 'mc' || ex.k === 'cb' ? ' (or the next pin)' : ''}. You hit the top of the range.` }; }
   return { w: topW, last, text: `Same weight. Beat ${reps} reps.` };
 }
@@ -2345,6 +2438,7 @@ function startCloud(db, uid){
         }
         flush();
       }
+      if (sync.confirmed && (migratePlan() | seedScan())){ touch('profile'); changed = true; }
       if (changed){ P(); saveLocalSoon(); refreshAll(); }
       setSync();
     }, () => { sync.mode = 'error'; setSync(); });
@@ -2523,7 +2617,7 @@ function openStages(){
     <h2 class="h2" id="st-title">${esc(bs.name)}</h2>
     <p class="lede">${esc(bs.desc)}. ${bs.n < 10 ? `${Math.round(bs.frac * 100)}% of the way to ${esc(STAGES[bs.n].n)}.` : 'The top stage. From here you refine.'}</p>
     <ol class="st-grid" aria-label="The 10 stages">${cells}</ol>
-    <p class="sp-note">Each muscle climbs on its own as you log its sets; your body stage is the average of all seven. With steady training, stage 7 takes about a year and stage 10 two to three years.</p>
+    <p class="sp-note">Each muscle started where your body scan put it and climbs on its own as you log its sets; your body stage is the average of all seven. With steady training, stage 7 takes about a year and stage 10 two to three years.</p>
     <div><div class="eyebrow" style="margin-bottom:4px">Your muscles</div><ul class="st-mus">${rows}</ul></div>
     <button class="btn btn-sm" data-act="close" data-autofocus>Close</button>`);
   $('#sheet').setAttribute('aria-labelledby', 'st-title');
@@ -2597,7 +2691,11 @@ function renderToday(){
   const li = levelInfo(G.xp); const rk = rankFor(li.level);
   const name = (p.name || '').trim();
   const tip = TIPS[Math.floor(toDate(t).getTime() / 86400000) % TIPS.length];
-  const hasCheckin = allCheckins().some(c => mondayOf(c.date) === mondayOf(t));
+  const allCi = allCheckins(), wkCi = allCi.filter(c => mondayOf(c.date) === mondayOf(t));
+  const hasCheckin = wkCi.length > 0;
+  // until a first tape measurement exists, a weight-only week still asks for waist and shoulders
+  const wkW = wkCi.filter(c => +c.weight > 0).pop();
+  const needTape = hasCheckin && wkW && !allCi.some(c => +c.waist > 0 || +c.shoulders > 0);
   const ev = G.ev.slice(0, 6);
   const bs = stageOf(G.stages.body);
   el.innerHTML = `
@@ -2620,6 +2718,7 @@ function renderToday(){
     </section>
     ${nextCardHTML()}
     ${weekStripHTML()}
+    ${needTape ? `<section class="card"><div class="sec-h" style="margin-bottom:6px"><h2 class="h3">Finish your check-in</h2><span class="tag gold">Baseline</span></div><p class="lede">Weight’s in: ${fmtKg(wkW.weight)} kg. Add your waist and shoulders so your golden ratio and waist trend have a starting point.</p><a class="btn btn-block mt14" href="#progress" data-act="go-checkin">Add measurements</a></section>` : ''}
     ${hasCheckin ? '' : `<section class="card"><div class="sec-h" style="margin-bottom:6px"><h2 class="h3">Weekly check-in</h2><span class="tag gold">+50 XP</span></div><p class="lede">Weigh in and measure your waist and shoulders. One minute, once a week. It’s how you’ll see the change.</p><a class="btn btn-block mt14" href="#progress" data-act="go-checkin">Do this week’s check-in</a></section>`}
     <section>
       <div class="sec-h"><h2 class="h3">Recent XP</h2>${G.ev.length ? `<span class="muted">${fmt(G.xp)} total</span>` : ''}</div>
@@ -2958,7 +3057,7 @@ function renderPlan(){
     ${missionsHTML}
     <section class="card"><h2 class="h3">How to train</h2><div class="prose mt10">
       <p><b>Effort.</b> Reps in reserve means how many more reps you could have done. Most growth comes from sets that end 0–3 reps short of failure. Your phase tells you how close to go.</p>
-      <p><b>Progression.</b> Every exercise has a rep range, like 6–8. Keep the same weight until you hit 8 on every set, then add the smallest step: 2.5 kg on most lifts, 5 kg on hack squats and the leg press, the next dumbbell for curls. The Train tab does this math for you.</p>
+      <p><b>Progression.</b> Every exercise has a rep range: 6–8 on most, 10–15 on lateral raises. Keep the same weight until you hit the top of the range on every set, then add the smallest step: 2.5 kg on most lifts, 5 kg on hack squats and the leg press, the next dumbbell for curls. The Train tab does this math for you.</p>
       <p><b>Form.</b> About 2 seconds down, full range, no bouncing. If form breaks, the set is over. Check the 3D demo before any new exercise.</p>
       <p><b>Rest.</b> 2–3 minutes on the big lifts, 60–90 seconds on isolation. The timer starts when you log a set. Paired exercises alternate with shorter rest.</p>
       <p><b>Missed a day.</b> Do the next mission on your next free day and keep the order A, B, C. Never two missions on one day. A 4th session in a week earns no XP.</p>
@@ -2968,8 +3067,8 @@ function renderPlan(){
       ${SKILLS.map(x => `<div class="skill${G.level >= x.lv ? ' on' : ''}"><span class="sk-lv">Lv ${x.lv}</span><div><div class="sk-n">${esc(x.n)}${G.level >= x.lv ? '' : ' · locked'}</div><div class="sk-d">${esc(x.d)}</div></div></div>`).join('')}
     </section>
     <section class="card"><h2 class="h3">Why this plan works for the look</h2><div class="prose mt10"><ul>
-      <li><b>Side delts, 3× a week.</b> Shoulder width is the top of the V and the biggest upgrade in a T-shirt. They recover fast, so they get trained every session.</li>
-      <li><b>Upper chest, 2× a week.</b> Incline pressing fills the top of the chest. It comes first on Thursday while you’re fresh.</li>
+      <li><b>Side delts, 3× a week.</b> Shoulder width is the top of the V and the biggest upgrade in a T-shirt. Your scan showed front delts ahead of side delts, so lateral raises run every session at 10–15 strict reps.</li>
+      <li><b>Upper chest, 2× a week.</b> Your lower chest line is already there; the top is flat. Incline pressing comes first on Monday and Thursday while you’re fresh.</li>
       <li><b>Arms, every session.</b> Biceps 3× and triceps 2× a week. Triceps make up about two-thirds of upper-arm size.</li>
       <li><b>Lats, 2× a week.</b> Width under the arms makes your waist look smaller.</li>
       <li><b>Abs, 2× a week.</b> Weighted crunches and leg raises build thicker abs that show more clearly.</li>
@@ -2996,7 +3095,7 @@ function renderProgress(){
   const lastBoth = cis.filter(c => +c.waist > 0 && +c.shoulders > 0).pop();
   const bs = stageOf(G.stages.body), nxt = bs.n < 10 ? STAGES[bs.n] : null;
   const muscleRows = Object.entries(MUSCLES).map(([k, m]) => { const ms = stageOf(G.stages.per[k]); const pct = ms.frac; return `<div class="mrow${m.f ? '' : ' nf'}"><span class="m-n">${esc(m.n)}</span><span class="m-l">Stage ${ms.n}</span><div class="bar" role="progressbar" aria-label="${esc(m.n)}: stage ${ms.n}, ${esc(ms.name)}${ms.n < 10 ? `, ${Math.round(pct * 100)}% to stage ${ms.n + 1}` : ''}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(pct * 100)}"><i style="width:${(pct * 100).toFixed(1)}%"></i></div><span class="m-s">${esc(ms.name)} · ${fmt(G.muscleXP[k] / 10)} sets${m.f ? ' · focus' : ''}</span></div>`; }).join('');
-  const recIds = []; [...MISSIONS, ...LEGACY_MISSIONS].forEach(mm => mm.slots.forEach(sl => [sl.ex, ...sl.alts].forEach(a => { if (G.bests[a] && !recIds.includes(a)) recIds.push(a); })));
+  const recIds = []; [...MISSIONS, ...V2_MISSIONS, ...LEGACY_MISSIONS].forEach(mm => mm.slots.forEach(sl => [sl.ex, ...sl.alts].forEach(a => { if (G.bests[a] && !recIds.includes(a)) recIds.push(a); })));
   const records = recIds.map(id => { const b = G.bests[id]; const e = EX[id]; return `<li><span class="rc-n">${esc(e.n)}<small>${shortDate(b.date)}${e.k === 'bw' ? '' : ` · est. max ${fmtKg(Math.round(b.e * 2) / 2)} kg`}</small></span><b class="rc-v">${e.k === 'bw' ? `${b.r} reps${b.w ? ` +${fmtKg(b.w)}` : ''}` : `${fmtKg(b.w)} × ${b.r}`}</b></li>`; }).join('');
   const sess = allSessions().filter(s => G.info[s.id] && !G.info[s.id].empty).reverse();
   const shown = state.showAllHist ? sess : sess.slice(0, 8);
@@ -3011,10 +3110,11 @@ function renderProgress(){
       </button>
       <div class="stage-now"><div class="stage-k">Stage ${bs.n} · ${esc(bs.name)}</div><p class="muted">${esc(bs.desc)}.</p></div>
       ${nxt ? `<div class="prog stage-prog"><div class="bar"><i style="width:${(bs.frac * 100).toFixed(1)}%"></i></div><span><b>${Math.round(bs.frac * 100)}%</b> to ${esc(nxt.n)}</span></div>` : ''}
-      <p class="sp-note">Your body stage is the average of your seven muscles. Each one climbs as you log its sets. Tap the pictures to see all 10 stages.</p>
+      <p class="sp-note">Each muscle started where your ${SCAN0 ? shortDate(SCAN0.date) + ' ' : ''}body scan put it and climbs as you log its sets. Your body stage is the average of all seven. Tap the pictures to see all 10 stages.</p>
       <h3 class="m-head">Muscle stages</h3>
       <div class="mgrid">${muscleRows}</div>
     </section>
+    ${scanCardHTML(cis)}
     <div class="tiles four">
       <div class="tile"><div class="t-l">Total XP</div><div class="t-v">${fmt(G.xp)}</div></div>
       <div class="tile"><div class="t-l">Missions</div><div class="t-v">${G.missions}</div></div>
@@ -3051,6 +3151,31 @@ function renderProgress(){
     ${oracleHTML()}`;
   drawCharts();
   Viz.hydrate();
+}
+function scanCardHTML(cis){
+  const sc = SCANS[SCANS.length - 1]; if (!sc) return '';
+  const k = scanCalc(sc); const d = toDate(sc.date);
+  const latest = cis.filter(c => c.date > sc.date && +c.weight > 0).pop();
+  const diff = latest ? round2(+latest.weight - sc.weight) : 0;
+  const stat = (l, v, u, sub) => `<div class="tile"><div class="t-l">${l}</div><div class="t-v">${v}${u ? `<small>${u}</small>` : ''}</div>${sub ? `<div class="t-s">${sub}</div>` : ''}</div>`;
+  return `<section class="card" id="scan-card"><div class="sec-h"><h2 class="h3">Body scan</h2><span class="muted">${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}</span></div>
+      <p class="lede">From a fasted morning weigh-in and a flex video. Estimates from photos, so read body fat as ±3%.</p>
+      <div class="tiles sm mt10">
+        ${stat('Weight', fmtKg(sc.weight), 'kg', 'fasted, morning')}
+        ${stat('Body fat', '~' + sc.bf, '%', `likely ${sc.bfLo}–${sc.bfHi}%`)}
+        ${stat('Lean mass', '~' + Math.round(k.lean), 'kg', 'everything but fat')}
+        ${stat('FFMI', '~' + k.ffmi.toFixed(1), '', 'muscle for your height')}
+        ${stat('BMI', k.bmi.toFixed(1), '', k.bmi < 18.5 ? 'below normal' : k.bmi < 25 ? 'normal range' : 'above normal')}
+        ${stat('Height', sc.height, 'cm', '')}
+      </div>
+      ${latest ? `<div class="notice mt10"><b>Since the scan: ${diff > 0 ? '+' : ''}${fmtKg(diff)} kg.</b> Latest weigh-in ${fmtKg(latest.weight)} kg on ${shortDate(latest.date)}.</div>` : ''}
+      <div class="scan-ab mt14">
+        <div><div class="chart-t">Ahead</div><div class="chips mt6">${sc.ahead.map(x => `<span class="chip">${esc(x)}</span>`).join('')}</div></div>
+        <div><div class="chart-t">Your focus</div><div class="chips mt6">${sc.behind.map(x => `<span class="chip focus">${esc(x)}</span>`).join('')}</div></div>
+      </div>
+      <details class="scan-more mt14"><summary>The full read</summary><div class="prose mt10">${sc.notes.map(([h, b]) => `<p><b>${esc(h)}</b> ${esc(b)}</p>`).join('')}</div></details>
+      <p class="sp-note mt10">Rescan every 8–12 weeks the same way: fasted weigh-in, same light, phone at chest height about 2 m away, front, side and back.</p>
+    </section>`;
 }
 function historyItem(s){
   const i = G.info[s.id]; const mm = MISSION_BY_ID[s.m];
@@ -3145,7 +3270,8 @@ function oracleContext(){
   const ci = allCheckins().slice(-8).map(c => `${c.date}: ${[c.weight && c.weight + ' kg', c.waist && 'waist ' + c.waist + ' cm', c.shoulders && 'shoulders ' + c.shoulders + ' cm'].filter(Boolean).join(', ')}`).join('\n');
   const program = MISSIONS.map(mm => `Mission ${mm.id} (${mm.day}): ` + mm.slots.map(sl => `${EX[currentEx(sl.id, null)].n} ${plannedSets(sl, ph)}x${sl.lo}-${sl.hi}`).join(', ')).join('\n');
   return `LIFTER: lifting for under 6 months when the program started. Trains 3 days a week (Mon, Thu, Sat) because he grows better with more rest. Uses machines, cables and barbells; dumbbells only for biceps. Goal: aesthetic physique, priority on shoulders, chest and biceps.
-CURRENT: program week ${wk}, phase ${PHASES[ph].n}. ${PHASES[ph].rir}
+${SCAN0 ? `BODY SCAN ${SCAN0.date} (fasted weigh-in + flex video): ${SCAN0.height} cm, ${SCAN0.weight} kg, about ${SCAN0.bf}% body fat, FFMI about ${scanCalc(SCAN0).ffmi.toFixed(1)}. Ahead: ${SCAN0.ahead.join(', ')}. Behind: ${SCAN0.behind.join(', ')}; arms furthest behind. Fat sits on the lower belly, love handles and lower back. He chose no calorie or diet targets, so keep advice on training.
+` : ''}CURRENT: program week ${wk}, phase ${PHASES[ph].n}. ${PHASES[ph].rir}
 PROGRAM:
 ${program}
 PROGRESSION RULE: double progression. When every set reaches the top of the rep range, add the smallest weight step next session.
@@ -3361,9 +3487,9 @@ function saveCheckin(){
   if (!(w > 0) && !(wa > 0) && !(sh > 0)){ toast('Enter at least one measurement.'); return; }
   if ((w > 0 && (w < 30 || w > 250)) || (wa > 0 && (wa < 40 || wa > 200)) || (sh > 0 && (sh < 60 || sh > 200))){ toast('That number looks off. Weight in kg, measurements in cm.'); return; }
   const md = monthDoc(t, true);
-  md.checkins[t] = { ...(w > 0 ? { weight: round1(w) } : {}), ...(wa > 0 ? { waist: round1(wa) } : {}), ...(sh > 0 ? { shoulders: round1(sh) } : {}) };
+  md.checkins[t] = { ...(w > 0 ? { weight: round2(w) } : {}), ...(wa > 0 ? { waist: round1(wa) } : {}), ...(sh > 0 ? { shoulders: round1(sh) } : {}) };
   touch(monthId(t));
-  if (w > 0){ P().weight = round1(w); touch('profile'); }
+  if (w > 0){ P().weight = round2(w); touch('profile'); }
   const prev = G; G = compute(); const y = window.scrollY; renderProgress(); window.scrollTo(0, y); afterChange(prev);
   toast(G.xp > prev.xp ? `<span>Check-in saved</span><b>+${G.xp - prev.xp}</b>` : 'Check-in updated', G.xp > prev.xp);
 }
@@ -3410,7 +3536,7 @@ async function initCaps(){
 }
 function start(data){
   loadLocal(); P();
-  if (migratePlan()) touch('profile');
+  if (migratePlan() | seedScan()) touch('profile');
   G = compute();
   buildChrome();
   if (data && data.trainM && MISSION_BY_ID[data.trainM]){ state.trainM = data.trainM; state.trainFor = todayStr(); }
