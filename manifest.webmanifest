@@ -1,13 +1,13 @@
 {
   "name": "Chisel",
   "short_name": "Chisel",
-  "description": "Three days a week, carved into a statue. Your training log, program and 3D form guide.",
+  "description": "Three days a week. Your training log, program, strength forecast and 3D form guide.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#130A0D",
-  "theme_color": "#130A0D",
+  "background_color": "#ECECE9",
+  "theme_color": "#0D0D0D",
   "icons": [
     {
       "src": "icon-192.png",

@@ -1,6 +1,6 @@
 // Chisel offline cache. The page is fetched fresh when online (so updates arrive) and served from the cache when offline.
-const CACHE = 'chisel-8gallery1108', FONTS = 'chisel-fonts';
-const CORE = ['./', './index.html', './three.min.js', './manifest.webmanifest', './icon-180.png', './icon-192.png', './icon-512.png', './marcellus-latin-400-normal.woff2', './statue-1.webp', './statue-2.webp', './statue-3.webp', './statue-4.webp', './statue-5.webp', './statue-6.webp', './statue-7.webp', './statue-8.webp', './statue-9.webp', './statue-10.webp'];
+const CACHE = 'chisel-9poster1109', FONTS = 'chisel-fonts';
+const CORE = ['./', './index.html', './three.min.js', './manifest.webmanifest', './icon-180.png', './icon-192.png', './icon-512.png', './big-shoulders-display-latin-800-normal.woff2', './big-shoulders-display-latin-900-normal.woff2', './statue-1.webp', './statue-2.webp', './statue-3.webp', './statue-4.webp', './statue-5.webp', './statue-6.webp', './statue-7.webp', './statue-8.webp', './statue-9.webp', './statue-10.webp'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE && k !== FONTS).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {
