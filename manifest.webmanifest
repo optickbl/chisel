@@ -1,13 +1,13 @@
 {
   "name": "Chisel",
   "short_name": "Chisel",
-  "description": "Three-day aesthetic training program with 3D form demos.",
+  "description": "Three days a week, carved into a statue. Your training log, program and 3D form guide.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#FEE3C5",
-  "theme_color": "#82193A",
+  "background_color": "#130A0D",
+  "theme_color": "#130A0D",
   "icons": [
     {
       "src": "icon-192.png",
@@ -20,7 +20,7 @@
       "type": "image/png"
     },
     {
-      "src": "icon-512.png",
+      "src": "icon-512-maskable.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
