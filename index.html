@@ -744,7 +744,7 @@ const V3_MISSIONS = [
 ];
 // the plan from 7 Nov 2026, evening: Saturday's quad swap is the leg extension (no leg press),
 // and Saturday's triceps move is the rope pushdown instead of the overhead extension.
-const MISSIONS = [
+const V4_MISSIONS = [
   { id: 'A', dow: 1, day: 'Monday', code: 'Upper A', short: 'Chest', name: 'Chest & Shoulders', mins: 45,
     focus: [['Upper chest', 1], ['Side delts', 1], ['Chest', 0], ['Triceps', 0], ['Lats', 0]],
     slots: [
@@ -779,9 +779,48 @@ const MISSIONS = [
       { id: 'C6', ex: 'hanging_leg_raise', alts: ['captains_chair'], sets: 2, lo: 6, hi: 8, rest: 75, pair: 'C5' }
     ] }
 ];
+// the plan from 8 Nov 2026: the body video showed the V-taper comes from the delts alone (torso under the
+// arms is no wider than the hips), so Saturday adds a lat pulldown as C3 and lats get three sessions a week.
+// The arm, lateral-raise and ab slots move down one (C3–C6 → C4–C7). Triceps stay on pushdowns by choice.
+const MISSIONS = [
+  { id: 'A', dow: 1, day: 'Monday', code: 'Upper A', short: 'Chest', name: 'Chest & Shoulders', mins: 45,
+    focus: [['Upper chest', 1], ['Side delts', 1], ['Chest', 0], ['Triceps', 0], ['Lats', 0]],
+    slots: [
+      { id: 'A1', ex: 'incline_machine', alts: ['incline_smith', 'incline_bb'], sets: 2, lo: 6, hi: 8, rest: 150 },
+      { id: 'A2', ex: 'bench', alts: ['smith_bench', 'chest_press'], sets: 2, lo: 6, hi: 8, rest: 150 },
+      { id: 'A3', ex: 'lat_pulldown', alts: ['pullup', 'close_pulldown'], sets: 2, lo: 6, hi: 8, rest: 120 },
+      { id: 'A4', ex: 'shoulder_press', alts: ['smith_ohp'], sets: 2, lo: 6, hi: 8, rest: 120 },
+      { id: 'A5', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 75, tech: 'drop' },
+      { id: 'A6', ex: 'pec_deck', alts: ['cable_fly'], sets: 2, lo: 6, hi: 8, rest: 90 },
+      { id: 'A7', ex: 'rope_pushdown', alts: ['bar_pushdown'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'A8', tech: 'drop' },
+      { id: 'A8', ex: 'hammer_curl', alts: ['rope_hammer'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'A7' }
+    ] },
+  { id: 'B', dow: 4, day: 'Thursday', code: 'Upper B', short: 'Back', name: 'Back & Arms', mins: 40,
+    focus: [['Upper chest', 1], ['Lats', 0], ['Biceps', 1], ['Rear delts', 0], ['Side delts', 1]],
+    slots: [
+      { id: 'B1', ex: 'incline_bb', alts: ['incline_smith', 'incline_machine'], sets: 2, lo: 6, hi: 8, rest: 150 },
+      { id: 'B2', ex: 'close_pulldown', alts: ['lat_pulldown', 'pullup'], sets: 2, lo: 6, hi: 8, rest: 120 },
+      { id: 'B3', ex: 'machine_row', alts: ['bb_row', 'cable_row'], sets: 2, lo: 6, hi: 8, rest: 120 },
+      { id: 'B4', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 75, pair: 'B5' },
+      { id: 'B5', ex: 'face_pull', alts: ['reverse_pec'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'B4' },
+      { id: 'B6', ex: 'ez_curl', alts: ['bb_curl', 'cable_curl'], sets: 2, lo: 6, hi: 8, rest: 90, tech: 'myo' },
+      { id: 'B7', ex: 'cable_crunch', alts: ['machine_crunch'], sets: 2, lo: 6, hi: 8, rest: 75 }
+    ] },
+  { id: 'C', dow: 6, day: 'Saturday', code: 'Lower + Arms', short: 'Legs', name: 'Legs, Arms & Abs', mins: 40,
+    focus: [['Legs', 0], ['Lats', 0], ['Biceps', 1], ['Triceps', 0], ['Side delts', 1], ['Abs', 0]],
+    slots: [
+      { id: 'C1', ex: 'hack_squat', alts: ['leg_ext'], sets: 2, lo: 6, hi: 8, rest: 150 },
+      { id: 'C2', ex: 'back_ext', alts: ['seated_leg_curl'], sets: 2, lo: 6, hi: 8, rest: 120 },
+      { id: 'C3', ex: 'lat_pulldown', alts: ['pullup', 'close_pulldown'], sets: 2, lo: 6, hi: 8, rest: 120 },
+      { id: 'C4', ex: 'incline_db_curl', alts: ['preacher_curl'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'C5', tech: 'myo' },
+      { id: 'C5', ex: 'rope_pushdown', alts: ['bar_pushdown', 'db_overhead_ext'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'C4' },
+      { id: 'C6', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 75, pair: 'C7', tech: 'partials' },
+      { id: 'C7', ex: 'hanging_leg_raise', alts: ['captains_chair'], sets: 2, lo: 6, hi: 8, rest: 75, pair: 'C6' }
+    ] }
+];
 // every plan Chisel has used. A session carries pv (its plan version); sessions without one are plan 1.
-const PLANS = { 1: LEGACY_MISSIONS, 2: V2_MISSIONS, 3: V3_MISSIONS, 4: MISSIONS };
-const PLAN_V = 4;
+const PLANS = { 1: LEGACY_MISSIONS, 2: V2_MISSIONS, 3: V3_MISSIONS, 4: V4_MISSIONS, 5: MISSIONS };
+const PLAN_V = 5;
 const PLAN_M = {}, PLAN_S = {};
 for (const [v, list] of Object.entries(PLANS)){ PLAN_M[v] = {}; PLAN_S[v] = {}; list.forEach(m => { PLAN_M[v][m.id] = m; m.slots.forEach(s => { s.mission = m.id; PLAN_S[v][s.id] = s; }); }); }
 const MISSION_BY_ID = PLAN_M[PLAN_V], SLOT_BY_ID = PLAN_S[PLAN_V];
@@ -822,7 +861,7 @@ const SCANS = [
       ['Muscle is the bottleneck, not fat.', 'An FFMI around 18 is where most untrained men sit. A lean, clearly muscular look at 180 cm is about 75–80 kg at 10–12% body fat: roughly 8–10 kg of muscle away, or 2–3 years of steady training.'],
       ['Shoulders lead.', 'Front delts are already clearly built, with a cap showing even when relaxed. Side delts trail them, and they’re what make shoulders look wide.'],
       ['Chest: bottom yes, top not yet.', 'The lower pec line is sharp; the area under the collarbones is flat. Incline pressing first, twice a week.'],
-      ['Arms are furthest behind.', 'A small biceps peak and not much triceps shape from the side. Triceps are two-thirds of the arm, so overhead extensions matter as much as curls.'],
+      ['Arms are furthest behind.', 'A small biceps peak and not much triceps shape from the side. Triceps are two-thirds of the arm, so they need as much work as the biceps.'],
       ['Back: thick up top, narrow under the arms.', 'The spinal groove and rear delts show when flexed, but the lats don’t flare yet, so the V-taper is mild.'],
       ['Fat sits low.', 'Upper four abs show; the lower belly, love handles and lower back hold the rest and will lean out last.'],
       ['Worth a check.', 'Your lower back curves quite a lot in the back shots, which can be pelvic tilt or just the low camera. A side photo at hip height will tell.']
@@ -926,6 +965,7 @@ function P(){
 // Plan 2: Saturday lost three leg slots, so the arm and ab slots moved up.
 // Plan 3: Monday's incline press and bench press traded places (A1 ⇄ A2).
 // Plan 4: Saturday's leg press swap became the leg extension, and C4 is now the rope pushdown.
+// Plan 5: Saturday gained a lat pulldown as C3, so C3–C6 moved down to C4–C7.
 function migratePlan(){
   const p = P(); const from = p.plan >= 2 ? p.plan : 1; if (from >= PLAN_V) return false;
   // a brand-new profile has nothing to move, and must not be marked as changed or it would overwrite the cloud copy
@@ -937,6 +977,7 @@ function migratePlan(){
   }
   if (from < 3){ const a1 = sw.A1, a2 = sw.A2; delete sw.A1; delete sw.A2; if (a2) sw.A1 = a2; if (a1) sw.A2 = a1; }
   if (from < 4){ if (sw.C1 === 'leg_press') sw.C1 = 'leg_ext'; if (sw.C4 === 'overhead_ext' || sw.C4 === 'db_overhead_ext' || sw.C4 === 'skullcrusher') delete sw.C4; }
+  if (from < 5){ const old = sw, moved = { C3: 'C4', C4: 'C5', C5: 'C6', C6: 'C7' }; sw = {}; for (const [k, v] of Object.entries(old)) sw[moved[k] || k] = v; }
   p.swaps = sw; p.plan = PLAN_V;
   return true;
 }
@@ -3111,7 +3152,7 @@ function renderPlan(){
       <li><b>Side delts, 3× a week.</b> Shoulder width is the top of the V and the biggest upgrade in a T-shirt. Your scan showed front delts ahead of side delts, so lateral raises run every session at 10–15 strict reps.</li>
       <li><b>Upper chest, 2× a week.</b> Your lower chest line is already there; the top is flat. Incline pressing comes first on Monday and Thursday while you’re fresh.</li>
       <li><b>Arms, every session.</b> Biceps 3× and triceps 2× a week. Triceps make up about two-thirds of upper-arm size.</li>
-      <li><b>Lats, 2× a week.</b> Width under the arms makes your waist look smaller.</li>
+      <li><b>Lats, 3× a week.</b> Your 8 Nov video: the V comes from your delts alone, and under your arms you’re no wider than your hips. Lat width is the missing half of the V, and it makes your waist look smaller.</li>
       <li><b>Abs, 2× a week.</b> Weighted crunches and leg raises build thicker abs that show more clearly.</li>
       <li><b>Legs, once a week, hard.</b> Keeps you in proportion.</li>
       <li><b>Three days, not six.</b> You noticed it yourself: you grow more with more rest. Training creates the signal, recovery builds the muscle.</li>
@@ -3136,7 +3177,7 @@ function renderProgress(){
   const lastBoth = cis.filter(c => +c.waist > 0 && +c.shoulders > 0).pop();
   const bs = stageOf(G.stages.body), nxt = bs.n < 10 ? STAGES[bs.n] : null;
   const muscleRows = Object.entries(MUSCLES).map(([k, m]) => { const ms = stageOf(G.stages.per[k]); const pct = ms.frac; return `<div class="mrow${m.f ? '' : ' nf'}"><span class="m-n">${esc(m.n)}</span><span class="m-l">Stage ${ms.n}</span><div class="bar" role="progressbar" aria-label="${esc(m.n)}: stage ${ms.n}, ${esc(ms.name)}${ms.n < 10 ? `, ${Math.round(pct * 100)}% to stage ${ms.n + 1}` : ''}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(pct * 100)}"><i style="width:${(pct * 100).toFixed(1)}%"></i></div><span class="m-s">${esc(ms.name)} · ${fmt(G.muscleXP[k] / 10)} sets${m.f ? ' · focus' : ''}</span></div>`; }).join('');
-  const recIds = []; [...MISSIONS, ...V3_MISSIONS, ...V2_MISSIONS, ...LEGACY_MISSIONS].forEach(mm => mm.slots.forEach(sl => [sl.ex, ...sl.alts].forEach(a => { if (G.bests[a] && !recIds.includes(a)) recIds.push(a); })));
+  const recIds = []; [...MISSIONS, ...V4_MISSIONS, ...V3_MISSIONS, ...V2_MISSIONS, ...LEGACY_MISSIONS].forEach(mm => mm.slots.forEach(sl => [sl.ex, ...sl.alts].forEach(a => { if (G.bests[a] && !recIds.includes(a)) recIds.push(a); })));
   const records = recIds.map(id => { const b = G.bests[id]; const e = EX[id]; return `<li><span class="rc-n">${esc(e.n)}<small>${shortDate(b.date)}${e.k === 'bw' ? '' : ` · est. max ${fmtKg(Math.round(b.e * 2) / 2)} kg`}</small></span><b class="rc-v">${e.k === 'bw' ? `${b.r} reps${b.w ? ` +${fmtKg(b.w)}` : ''}` : `${fmtKg(b.w)} × ${b.r}`}</b></li>`; }).join('');
   const sess = allSessions().filter(s => G.info[s.id] && !G.info[s.id].empty).reverse();
   const shown = state.showAllHist ? sess : sess.slice(0, 8);
