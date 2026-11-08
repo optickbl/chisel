@@ -2796,10 +2796,11 @@ function floatXP(x, y, text){
 }
 const sheetQueue = [];
 let sheetClosing = false;
-function openSheet(html, cls, onClose){
+function openSheet(html, cls, onClose, onOpen){
   const ov = $('#overlay');
-  if (!ov.hidden || sheetClosing){ sheetQueue.push([html, cls, onClose]); return false; }
-  const sh = $('#sheet'); sh.className = 'sheet' + (cls ? ' ' + cls : ''); sh.innerHTML = html; sh._onClose = onClose || null; sh.style.transform = '';
+  if (!ov.hidden || sheetClosing){ sheetQueue.push([html, cls, onClose, onOpen]); return false; }
+  const sh = $('#sheet'); sh.className = 'sheet' + (cls ? ' ' + cls : ''); sh.innerHTML = html; sh._onClose = onClose || null; sh._onOk = null; sh.style.transform = '';
+  if (onOpen) onOpen(sh);
   ov.classList.remove('closing'); ov.hidden = false;
   sh.scrollTop = 0;
   document.documentElement.classList.add('sheet-open');
@@ -2813,7 +2814,7 @@ function closeSheet(){
     sheetClosing = false; ov.hidden = true; ov.classList.remove('closing'); sh.classList.remove('closing'); sh.style.transform = ''; sh.innerHTML = '';
     document.documentElement.classList.remove('sheet-open');
     if (cb) cb();
-    if (sheetQueue.length){ const [h, c, o] = sheetQueue.shift(); setTimeout(() => openSheet(h, c, o), 60); }
+    if (sheetQueue.length){ const [h, c, o, op] = sheetQueue.shift(); setTimeout(() => openSheet(h, c, o, op), 60); }
   };
   if (reduceMotion()){ fin(); return; }
   sheetClosing = true; ov.classList.add('closing'); sh.classList.add('closing'); setTimeout(fin, 270);
@@ -2841,8 +2842,7 @@ function closeSheet(){
   sh.addEventListener('pointerup', end); sh.addEventListener('pointercancel', end);
 })();
 function confirmSheet({ title, body, ok, danger, onOk }){
-  if (!openSheet(`<h2 class="h2">${esc(title)}</h2><p class="lede">${esc(body)}</p><div class="btn-row"><button class="btn ${danger ? 'btn-danger' : 'btn-gold'}" data-act="sheet-ok">${esc(ok)}</button><button class="btn" data-act="close" data-autofocus>Cancel</button></div>`)) return;
-  $('#sheet')._onOk = onOk;
+  openSheet(`<h2 class="h2">${esc(title)}</h2><p class="lede">${esc(body)}</p><div class="btn-row"><button class="btn ${danger ? 'btn-danger' : 'btn-gold'}" data-act="sheet-ok">${esc(ok)}</button><button class="btn" data-act="close" data-autofocus>Cancel</button></div>`, '', null, sh => { sh._onOk = onOk; });
 }
 /* exercise viewer: the live 3D demo plus everything needed to do the lift; flips through the mission */
 let vctx = null;
@@ -3693,6 +3693,8 @@ function renderVault(){
     <div class="group">
       ${row('export-save', 'Export save file', 'A backup of everything, as .json')}
       ${row('import-save', 'Load a save file', 'Replaces what’s in this app')}
+      ${row('copy-progress', 'Copy progress', 'To move it to a new Chisel icon')}
+      ${row('paste-progress', 'Paste progress', 'From your old Chisel icon')}
       ${row('export-csv', 'Export training log', 'Every set, as a spreadsheet (.csv)')}
       ${row('export-plan', 'Download the program', 'A printable page (.html)')}
     </div>
@@ -3735,7 +3737,25 @@ async function offerFile(filename, data, mime){
   }
   openSheet(`<h2 class="h2">Copy your file</h2><p class="lede">Saving files isn’t available here. Copy this text and keep it in your notes as <b>${esc(filename)}</b>.</p><textarea class="copybox" id="copybox" readonly>${esc(data)}</textarea><div class="btn-row"><button class="btn btn-gold" data-act="copy-box">Copy</button><button class="btn" data-act="close">Close</button></div>`);
 }
-function exportSave(){ offerFile(`chisel-save-${todayStr()}.json`, JSON.stringify({ app: 'chisel', v: 1, exported: new Date().toISOString(), docs }, null, 1), 'application/json'); }
+function saveText(pretty){ return JSON.stringify({ app: 'chisel', v: 1, exported: new Date().toISOString(), docs }, null, pretty ? 1 : 0); }
+function exportSave(){ offerFile(`chisel-save-${todayStr()}.json`, saveText(true), 'application/json'); }
+// moving to a new copy of Chisel (a new Home Screen icon has its own empty storage): copy here, paste there
+function copyProgress(){
+  const text = saveText(false);
+  let job; try { job = navigator.clipboard.writeText(text); } catch (e) { job = Promise.reject(e); }
+  Promise.resolve(job).then(() => { haptic.tap(); toast('Progress copied. Open your new Chisel and tap Paste progress.', false, 5000); },
+    () => openSheet(`<h2 class="h2">Copy your progress</h2><p class="lede">Tap Copy, then open your new Chisel and tap Paste progress.</p><textarea class="copybox" id="copybox" readonly>${esc(text)}</textarea><div class="btn-row"><button class="btn btn-gold" data-act="copy-box">Copy</button><button class="btn" data-act="close">Close</button></div>`));
+}
+function pasteBoxSheet(){
+  if (!$('#overlay').hidden) closeSheet();
+  openSheet(`<h2 class="h2">Paste your progress</h2><p class="lede">Press and hold in the box, tap Paste, then Load.</p><textarea class="copybox" id="pastebox" placeholder="Paste here" autocomplete="off" autocapitalize="off" spellcheck="false"></textarea><div class="btn-row"><button class="btn btn-gold" data-act="paste-box-load">Load</button><button class="btn" data-act="close">Cancel</button></div>`);
+}
+async function pasteProgress(){
+  let text = null;
+  try { text = navigator.clipboard && navigator.clipboard.readText ? await navigator.clipboard.readText() : null; } catch (e) { text = null; }
+  if (text == null){ pasteBoxSheet(); return; }
+  if (!offerSave(text)) toast('Nothing to paste yet. In your old Chisel, tap the gear, then Copy progress.', false, 5000);
+}
 function exportCSV(){
   const rows = [['date', 'week', 'mission', 'exercise', 'set', 'kg', 'reps', 'est_max_kg']];
   for (const s of allSessions()){ for (const sl of slotsOf(s)){ const rec = s.sets && s.sets[sl.id]; if (!rec) continue; const e = EX[EX[rec.ex] ? rec.ex : sl.ex]; (rec.s || []).forEach((x, i) => { if (x && x.d && +x.r > 0) rows.push([s.date, weekNum(s.date), s.m, e.n, i + 1, +x.w || 0, +x.r, e.k === 'bw' ? '' : round1((+x.w || 0) * (1 + x.r / 30))]); }); } }
@@ -3792,6 +3812,9 @@ const actions = {
   'oracle-stop': () => { if (oracle.ctl) oracle.ctl.abort(); },
   'export-save': () => exportSave(),
   'import-save': () => $('#importFile').click(),
+  'copy-progress': () => copyProgress(),
+  'paste-progress': () => pasteProgress(),
+  'paste-box-load': () => { const box = $('#pastebox'); const v = box ? box.value : ''; if (!offerSave(v)){ toast('That isn’t Chisel progress. Copy it again from your old Chisel.'); if (box) box.focus(); } },
   'export-plan': () => offerFile(`Chisel-Program${P().name ? '-' + P().name.replace(/[^A-Za-z0-9]+/g, '') : ''}.html`, planDocHTML(), 'text/html'),
   'export-csv': () => exportCSV(),
   'reset-arm': () => { state.resetArm = true; renderVault(); },
@@ -3871,17 +3894,19 @@ function saveCheckin(){
   const prev = G; G = compute(); const y = window.scrollY; renderProgress(); window.scrollTo(0, y); afterChange(prev);
   toast(G.xp > prev.xp ? `<span>Check-in saved</span><b>+${G.xp - prev.xp}</b>` : 'Check-in updated', G.xp > prev.xp);
 }
+// a save from a file or the clipboard: check it, then ask before it replaces anything
+function offerSave(text){
+  let o = null; try { o = JSON.parse(String(text || '').trim()); } catch (e) { o = null; }
+  if (!o || o.app !== 'chisel' || !o.docs || typeof o.docs !== 'object') return false;
+  const ss = []; for (const [k, v] of Object.entries(o.docs)) if (/^m-\d{4}-\d{2}$/.test(k) && v && v.sessions) ss.push(...Object.values(v.sessions));
+  const latest = ss.map(s => s && s.date).filter(isDateStr).sort().pop();
+  if (!$('#overlay').hidden) closeSheet();
+  confirmSheet({ title: 'Load this save?', body: `It has ${ss.length} session${ss.length === 1 ? '' : 's'}${latest ? `, the latest on ${prettyDate(latest)}` : ''}. It replaces the progress in this app.`, ok: 'Load save', danger: true, onOk: () => applyImport(o.docs) });
+  return true;
+}
 function onImportFile(file){
   const fr = new FileReader();
-  fr.onload = () => {
-    try {
-      const o = JSON.parse(String(fr.result));
-      if (!o || o.app !== 'chisel' || !o.docs || typeof o.docs !== 'object') throw new Error('bad');
-      const ss = []; for (const [k, v] of Object.entries(o.docs)) if (/^m-\d{4}-\d{2}$/.test(k) && v && v.sessions) ss.push(...Object.values(v.sessions));
-      const latest = ss.map(s => s && s.date).filter(isDateStr).sort().pop();
-      confirmSheet({ title: 'Load this save?', body: `It has ${ss.length} session${ss.length === 1 ? '' : 's'}${latest ? `, the latest on ${prettyDate(latest)}` : ''}. It replaces the progress in this app.`, ok: 'Load save', danger: true, onOk: () => applyImport(o.docs) });
-    } catch (e) { toast('That file isn’t a Chisel save.'); }
-  };
+  fr.onload = () => { if (!offerSave(fr.result)) toast('That file isn’t a Chisel save.'); };
   fr.readAsText(file);
 }
 function applyImport(nd){
@@ -3895,12 +3920,25 @@ function applyImport(nd){
   }
   P(); migratePlan(); docs.profile._t = now; dirty.add('profile');
   for (const k of old) if (!docs[k]) deleteCloudDoc(k);
+  try { localStorage.setItem('chisel.welcomed', '1'); } catch (e) {}
   saveLocal(); flush(); G = compute(); renderView(state.view); renderHeader();
   const n = allSessions().filter(s => G.info[s.id] && !G.info[s.id].empty).length;
-  toast(`<span>Save loaded · <strong>${n} session${n === 1 ? '' : 's'}</strong></span><b>Level ${G.level}</b>`, true);
+  clearToasts(); toast(`<span>Save loaded · <strong>${n} session${n === 1 ? '' : 's'}</strong></span><b>Level ${G.level}</b>`, true);
 }
 
 /* ---------- boot ---------- */
+// a new Home Screen icon starts with empty storage, so its first launch offers to bring progress over
+function maybeWelcome(){
+  let seen = false; try { seen = !!localStorage.getItem('chisel.welcomed'); } catch (e) { seen = true; }
+  if (seen || allSessions().length || allCheckins().length) return;
+  setTimeout(() => {
+    if (allSessions().length || allCheckins().length) return;
+    openSheet(`<p class="eyebrow">Welcome to Chisel</p><h2 class="h2">Bring your progress over</h2>
+      <p class="lede">Moving from your old Chisel icon? Open it, tap the gear, then <b>Copy progress</b>. Then come back here and tap Paste progress.</p>
+      <button class="btn btn-gold btn-block" data-act="paste-progress">Paste progress</button>
+      <div class="btn-row"><button class="btn" data-act="import-save">Load a save file</button><button class="btn" data-act="close">Start fresh</button></div>`, '', () => { try { localStorage.setItem('chisel.welcomed', '1'); } catch (e) {} });
+  }, 1500);
+}
 function buildChrome(){
   $('#tabsIn').innerHTML = [['today', 'Today'], ['train', 'Train'], ['plan', 'Program'], ['progress', 'Progress']].map(([v, l]) => `<a class="tab" href="#${v}" data-v="${v}">${I[v]}<span>${l}</span></a>`).join('');
   $('#vaultBtn').innerHTML = I.gear;
@@ -3935,7 +3973,8 @@ function start(data){
   Viz.ensure();
   if (!window.claude){
     try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {}); } catch (e) {}
-    if (IOS && !STANDALONE){ let seen = false; try { seen = !!localStorage.getItem('chisel.a2hs'); localStorage.setItem('chisel.a2hs', '1'); } catch (e) {} if (!seen) setTimeout(() => toast('<b>Install Chisel:</b> tap Share, then Add to Home Screen.', true, 7000), 1400); }
+    if (IOS && !STANDALONE) setTimeout(() => toast('<span><b>Install Chisel:</b> tap Share (or ⋯, then Share), then Add to Home Screen.</span>', true, 9000), 1400);
+    if (STANDALONE) maybeWelcome();
   }
 }
 const hot = window.claude && window.claude.hot;
