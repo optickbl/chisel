@@ -3081,9 +3081,9 @@ function upcoming(t, done){
   return null;
 }
 function focusChips(mm){ return mm.focus.map(([n, f]) => `<span class="chip${f ? ' focus' : ''}">${esc(n)}</span>`).join(''); }
-// about 6 min warm-up, 1 min per set, 3 min rest between sets, rounded to 5
-const REST_SEC = 180;
-function sessionMins(sets){ return Math.max(5, Math.round((6 + sets + Math.max(0, sets - 1) * REST_SEC / 60) / 5) * 5); }
+// about 6 min warm-up, 30 s per set, 3 min rest between sets, rounded to 5
+const REST_SEC = 180, SET_SEC = 30;
+function sessionMins(sets){ return Math.max(5, Math.round((6 + (sets * SET_SEC + Math.max(0, sets - 1) * REST_SEC) / 60) / 5) * 5); }
 function missionLine(mm, ph, slots){ slots = slots || mm.slots; const sets = slots.reduce((a, s) => a + plannedSets(s, ph), 0); return `${slots.length} exercises · ${sets} sets · about ${sessionMins(sets)} min`; }
 function unlocked(key){ const sk = SKILLS.find(s => s.key === key); return sk && G.level >= sk.lv; }
 
@@ -3562,14 +3562,14 @@ function showSummary(sid, celebrate, fromTrain){
   setTimeout(() => { const bar = $('#sheet .carve .xpbar i'); if (bar) bar.style.width = bar.dataset.to + '%'; }, 450);
 }
 
-/* time left in the session: 1 min per set left, 3 min rest between them, plus what's left of the rest running now */
+/* time left in the session: 30 s per set left, 3 min rest between them, plus what's left of the rest running now */
 const sessLeft = { sets: 0, started: false, planned: 0 };
 function sessLeftText(sep){
   const L = sessLeft; if (!L.planned || (L.started && L.sets <= 0)) return '';
   let min;
   if (!L.started) min = sessionMins(L.planned);
   else { const restLeft = !$('#restBar').hidden && Date.now() < rest.end ? (rest.end - Date.now()) / 1000 : 0;
-    min = Math.max(1, Math.ceil((restLeft + L.sets * 60 + Math.max(0, L.sets - 1) * REST_SEC) / 60)); }
+    min = Math.max(1, Math.ceil((restLeft + L.sets * SET_SEC + Math.max(0, L.sets - 1) * REST_SEC) / 60)); }
   return `${sep || ''}${min} min left`;
 }
 function paintSessLeft(){
