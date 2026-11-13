@@ -392,6 +392,53 @@ details > summary::-webkit-details-marker{display:none}
 .rest-t{font-family:var(--f-display);font-weight:900;font-size:36px;line-height:.9;font-variant-numeric:tabular-nums;color:#FF4A3F}
 .rest-sub{font-size:13.5px;color:#D9D9D4;min-width:0;line-height:1.3}
 .rest-mid{min-width:0}
+/* time left + finish clock under the progress bar */
+.tleft{display:flex;align-items:center;gap:7px;font-size:14.5px;color:var(--fg-2);margin-top:-10px;font-variant-numeric:tabular-nums}
+.tleft:empty{display:none}
+.tleft svg{width:16px;height:16px;flex-shrink:0;color:var(--muted)}
+.tleft b{color:var(--fg);font-weight:750}
+
+/* ghost of last time, under each set */
+.set .ghost{grid-column:2/4;margin:-5px 0 2px;padding-left:14px;font-size:12.5px;font-weight:550;color:var(--muted);font-variant-numeric:tabular-nums;line-height:1.2}
+.set .ghost.beat{color:var(--good);font-weight:700}
+.set .ghost.match{color:var(--fg-2);font-weight:650}
+.set .ghost.below{color:var(--faint)}
+.ex-meta-r{display:flex;gap:16px;margin-left:auto}
+
+/* plate calculator */
+.pc-bars{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:3px;padding:3px;background:var(--card-2);border-radius:13px}
+.pc-bars button{border:0;background:none;border-radius:10px;padding:9px 2px;font-size:13.5px;font-weight:650;color:var(--fg-2);line-height:1.15}
+.pc-bars button b{display:block;font-size:15px;font-weight:750}
+.pc-bars button small{display:block;font-size:12px;font-weight:550;color:var(--muted)}
+.pc-bars button[aria-checked="true"]{background:var(--ink);color:#fff}
+.pc-bars button[aria-checked="true"] small{color:var(--on-ink-2)}
+.pc-viz{background:var(--card-2);border-radius:16px;padding:14px 8px 10px}
+.pc-viz svg{display:block;width:100%;height:auto}
+.pc-side{font-family:var(--f-display);font-weight:900;font-size:34px;line-height:1;text-align:center;margin-top:8px;letter-spacing:.01em}
+.pc-side small{display:block;font-family:var(--f-body);font-size:13.5px;font-weight:600;color:var(--muted);letter-spacing:0;margin-bottom:4px}
+.pc-note{font-size:14px;color:var(--fg-2);text-align:center;line-height:1.45}
+.pc-note.warn{color:var(--warn)}
+.pc-viz + .pc-note{margin-top:10px}
+
+/* muscle map */
+.mm-wrap{display:flex;flex-direction:column;gap:14px}
+.mm-svg{display:block;width:100%;max-width:400px;height:auto;margin:0 auto}
+.mm-svg .mx{fill:var(--card-2)}
+.mm-svg [data-m]{stroke:var(--card);stroke-width:1.6;stroke-linejoin:round;transition:fill .5s var(--ease)}
+.mm-svg .l0{fill:#D6D6D0}
+.mm-svg .l1{fill:rgba(226,35,26,.24)}
+.mm-svg .l2{fill:rgba(226,35,26,.46)}
+.mm-svg .l3{fill:rgba(226,35,26,.72)}
+.mm-svg .l4{fill:var(--accent)}
+.mm-svg .abl{stroke:var(--card);stroke-width:1.6;fill:none}
+.mm-svg text{font-family:var(--f-display);font-weight:800;font-size:15px;fill:var(--muted);letter-spacing:.06em}
+.mm-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 18px;list-style:none;margin:0;padding:0}
+.mm-list li{display:flex;align-items:center;gap:8px;font-size:14.5px;color:var(--fg-2);min-width:0}
+.mm-list i{width:12px;height:12px;border-radius:4px;flex-shrink:0}
+.mm-list i.l0{background:#D6D6D0}.mm-list i.l1{background:rgba(226,35,26,.24)}.mm-list i.l2{background:rgba(226,35,26,.46)}.mm-list i.l3{background:rgba(226,35,26,.72)}.mm-list i.l4{background:var(--accent)}
+.mm-list span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mm-list b{font-variant-numeric:tabular-nums;color:var(--fg);font-weight:750}
+.mm-list li.hit b{color:var(--good)}
 .rest-left{font-size:12.5px;font-weight:650;color:var(--on-ink-2);margin-top:3px;font-variant-numeric:tabular-nums;white-space:nowrap}
 .rest-left:empty{display:none}
 .rest-btns{display:flex;gap:6px}
@@ -3153,6 +3200,7 @@ function renderToday(){
     </section>
     ${nextCardHTML()}
     ${weekStripHTML()}
+    ${muscleMapHTML()}
     ${needTape ? `<section class="card"><div class="sec-h" style="margin-bottom:8px"><h2 class="h3">Finish your check-in</h2><span class="tag gold">Baseline</span></div><p class="lede">Your weight is in: ${fmtKg(wkW.weight)} kg. Add your waist and shoulders to start your golden ratio and waist trend.</p><a class="btn btn-block mt14" href="#progress" data-act="go-checkin">Add measurements</a></section>` : ''}
     ${hasCheckin ? '' : `<section class="card"><div class="sec-h" style="margin-bottom:8px"><h2 class="h3">Weekly check-in</h2><span class="tag gold">+50 XP</span></div><p class="lede">Weigh in and measure your waist and shoulders. One minute, once a week. It’s how you see the change.</p><a class="btn btn-block mt14" href="#progress" data-act="go-checkin">Do this week’s check-in</a></section>`}
     ${forecastCardHTML()}
@@ -3233,6 +3281,59 @@ function weekStripHTML(){
 const r05 = v => Math.round(v * 2) / 2;
 const fcGet = exId => (G && G.bests[exId]) ? forecast(exId, G.info) : null;
 // exercises in your current program that have logged sets, in program order
+/* muscle map: each muscle lights up by the share of this week's planned sets you've done */
+const MM_FRONT = [
+  ['delts', 'M60 57Q44 55 37 69Q33 81 39 93Q45 80 55 73Q62 67 60 57Z'],
+  ['chest', 'M63 61Q71 57 79 59L79 96Q69 100 60 95Q54 88 56 75Q58 65 63 61Z'],
+  ['biceps', 'M39 97Q35 106 35 118Q36 129 41 133Q47 129 49 117Q50 104 47 94Q42 92 39 97Z'],
+  [null, 'M35 137Q31 153 32 172Q34 182 39 182Q43 172 45 156Q46 142 43 135Z'],
+  [null, 'M31 186Q29 196 33 200Q39 201 41 195Q42 188 39 184Z'],
+  [null, 'M60 99Q57 130 61 160L66 162L66 101Z'],
+  [null, 'M60 165L79 165L79 186L57 186Q56 175 60 165Z'],
+  ['legs', 'M57 189Q53 214 55 240Q57 256 65 263Q74 259 77 244Q80 219 79 190Z'],
+  ['legs', 'M59 275Q56 296 59 316L70 318Q74 296 73 275Q66 271 59 275Z'],
+  [null, 'M58 320Q57 327 66 327L73 327L72 320Z']
+];
+const MM_BACK = [
+  ['back', 'M70 43L79 43L79 70L55 59Z'],
+  ['delts', 'M60 57Q44 55 37 69Q33 81 39 93Q45 80 55 73Q62 67 60 57Z'],
+  ['back', 'M57 63L79 74L79 141Q69 137 63 128Q57 108 55 85Q54 71 57 63Z'],
+  ['triceps', 'M39 97Q35 106 35 118Q36 129 41 133Q47 129 49 117Q50 104 47 94Q42 92 39 97Z'],
+  [null, 'M35 137Q31 153 32 172Q34 182 39 182Q43 172 45 156Q46 142 43 135Z'],
+  [null, 'M31 186Q29 196 33 200Q39 201 41 195Q42 188 39 184Z'],
+  [null, 'M64 132Q71 140 79 144L79 163L61 163Q60 146 64 132Z'],
+  ['legs', 'M61 166L79 166L79 190Q70 195 61 189Q57 178 61 166Z'],
+  ['legs', 'M57 194Q54 222 57 247Q61 260 68 263Q76 254 78 236Q79 212 78 196Z'],
+  ['legs', 'M60 272Q55 289 59 304Q63 313 68 313Q74 301 73 284Q72 274 67 270Z'],
+  [null, 'M58 320Q57 327 66 327L73 327L72 320Z']
+];
+function mmLevel(d, p){ if (!d) return 0; const r = p > 0 ? d / p : 1; return r >= 1 ? 4 : r >= 0.67 ? 3 : r >= 0.34 ? 2 : 1; }
+function weekMuscleSets(t){
+  const mon = mondayOf(t), ph = phaseOf(weekNum(t)); const done = {}, plan = {};
+  for (const k of Object.keys(MUSCLES)){ done[k] = 0; plan[k] = 0; }
+  for (const mm of MISSIONS) for (const sl of mm.slots){ const m = EX[currentEx(sl.id, null)].m; plan[m] += plannedSets(sl, ph); }
+  for (const s of allSessions()){
+    if (s.date < mon || s.date > t) continue;
+    for (const sl of slotsOf(s)){ const rec = s.sets && s.sets[sl.id]; if (!rec) continue; const exId = EX[rec.ex] ? rec.ex : sl.ex; done[EX[exId].m] += doneSets(rec).length; }
+  }
+  return { done, plan };
+}
+function mmFigure(parts, lv, dx, label, abs){
+  const paint = list => list.map(([m, d]) => m ? `<path data-m="${m}" class="l${lv[m]}" d="${d}"/>` : `<path class="mx" d="${d}"/>`).join('');
+  const half = paint(parts);
+  const absP = abs ? `<path data-m="core" class="l${lv.core}" d="M67 101Q80 97 93 101L93 160Q80 165 67 160Z"/><path class="abl" d="M80 101V162M67 117H93M67 132H93M67 147H93"/>` : '';
+  return `<g transform="translate(${dx},0)"><ellipse class="mx" cx="80" cy="22" rx="14" ry="17"/><path class="mx" d="M72 37H88L90 52H70Z"/>${half}<g transform="matrix(-1 0 0 1 160 0)">${half}</g>${absP}<text x="80" y="346" text-anchor="middle">${label}</text></g>`;
+}
+function muscleMapHTML(){
+  const t = todayStr(); const { done, plan } = weekMuscleSets(t);
+  const lv = {}; for (const k of Object.keys(MUSCLES)) lv[k] = mmLevel(done[k], plan[k]);
+  const tot = Object.values(done).reduce((a, b) => a + b, 0), totP = Object.values(plan).reduce((a, b) => a + b, 0);
+  const rows = Object.entries(MUSCLES).map(([k, m]) => `<li class="${plan[k] && done[k] >= plan[k] ? 'hit' : ''}"><i class="l${lv[k]}"></i><span>${esc(m.n)}</span><b>${done[k]}/${plan[k]}</b></li>`).join('');
+  const label = Object.entries(MUSCLES).map(([k, m]) => `${m.n} ${done[k]} of ${plan[k]} sets`).join(', ');
+  return `<section class="card mm-wrap"><div class="sec-h" style="margin-bottom:0"><h2 class="h3">Muscles this week</h2><span class="muted">${tot} of ${totP} sets</span></div>
+    <svg class="mm-svg" viewBox="0 0 340 352" role="img" aria-label="Muscle map. ${esc(label)}.">${mmFigure(MM_FRONT, lv, 2, 'FRONT', true)}${mmFigure(MM_BACK, lv, 178, 'BACK', false)}</svg>
+    <ul class="mm-list">${rows}</ul></section>`;
+}
 function fcIds(){ const out = []; for (const mm of MISSIONS) for (const sl of mm.slots){ const id = currentEx(sl.id, null); if (!out.includes(id) && G.bests[id]) out.push(id); } return out; }
 const fcText = (f, st) => f.ex.k === 'bw' ? `${st.r} reps` : `${fmtKg(st.w)} × ${st.r}`;
 const fcBig = (f, st) => f.ex.k === 'bw' ? `${st.r}<small>reps</small>` : `${fmtKg(st.w)}<small>kg</small> × ${st.r}`;
@@ -3357,7 +3458,8 @@ function renderTrain(){
       <p class="meta">${missionLine(mm, ph, slots)}</p>
     </header>
     ${warn}
-    <div class="prog" aria-live="polite"><div class="bar"><i style="width:${Math.round(done / Math.max(1, planned) * 100)}%"></i></div><span><b>${done}</b> of ${planned} sets<span id="tLeft">${sessLeftText(' · ')}</span>${sessXP ? ` · <span class="xpb">+${fmt(sessXP)} XP</span>` : ''}</span></div>
+    <div class="prog" aria-live="polite"><div class="bar"><i style="width:${Math.round(done / Math.max(1, planned) * 100)}%"></i></div><span><b>${done}</b> of ${planned} sets${sessXP ? ` · <span class="xpb">+${fmt(sessXP)} XP</span>` : ''}</span></div>
+    <p class="tleft" id="tLeft" aria-live="off">${tLeftHTML()}</p>
     ${started ? '' : `<div class="notice"><b>${PHASES[ph].n}.</b> ${esc(PHASES[ph].note)} ${esc(PHASES[ph].rir)}</div>
     <details class="warm"><summary><span>Warm-up, about 6 minutes</span><span class="muted">Not logged</span></summary><ol>
       <li>5 minutes easy on the bike, rower or an incline walk.</li>
@@ -3413,11 +3515,21 @@ function exCardHTML(sl, s, ph, isCur){
     const rVal = x.r !== undefined && x.r !== null && x.r !== '' ? String(x.r) : '';
     const extra = i >= p;
     const isNext = !isDone && !nextMarked && isCur; if (isNext) nextMarked = true;
+    // ghost: the same set last time, and once logged, whether you beat it
+    let ghost = '';
+    const lg = L && L.sets[i];
+    if (lg){
+      const was = fmtSet(lg);
+      if (!isDone) ghost = `<div class="ghost">Last time: ${was}</div>`;
+      else { const now = metric(ex, x), then = metric(ex, lg); const same = (+x.w || 0) === lg.w && +x.r === lg.r;
+        ghost = same ? `<div class="ghost match">= Matched last time</div>` : now > then ? `<div class="ghost beat">▲ Beat last time (${was})</div>` : `<div class="ghost below">Last time: ${was}</div>`; }
+    }
     setRows.push(`<div class="set${isDone ? ' is-done' : ''}${extra ? ' is-extra' : ''}${isNext ? ' is-next' : ''}" data-i="${i}">
       <span class="set-n" title="${extra ? 'Extra set, no XP' : ''}">${i + 1}</span>
       <input class="in-w" inputmode="decimal" autocomplete="off" enterkeyhint="next" value="${esc(wVal)}" placeholder="${bw ? '+0' : 'kg'}" aria-label="Set ${i + 1} ${bw ? 'added weight' : 'weight'} in kg">
       <input class="in-r" inputmode="numeric" autocomplete="off" enterkeyhint="done" value="${esc(rVal)}" placeholder="${lastR ? lastR : sl.lo + '–' + sl.hi}" aria-label="Set ${i + 1} reps">
       <button class="chk" data-act="check" aria-pressed="${isDone ? 'true' : 'false'}" aria-label="${isDone ? 'Undo' : 'Log'} set ${i + 1}">${I.check}</button>
+      ${ghost}
     </div>`);
   }
   const altList = [sl.ex, ...sl.alts];
@@ -3432,7 +3544,7 @@ function exCardHTML(sl, s, ph, isCur){
       ${complete ? `<button class="ex-count linkish" data-act="ex-tog" data-slot="${sl.id}" aria-expanded="true" aria-label="Fold ${esc(ex.n)} away">${Math.min(ds.length, p)}/${p}</button>` : `<span class="ex-count" aria-label="${Math.min(ds.length, p)} of ${p} sets done">${Math.min(ds.length, p)}/${p}</span>`}
     </div>
     <p class="ex-cue">${esc(ex.cue)}</p>
-    <div class="ex-meta"><span><b>${p} × ${sl.lo}–${sl.hi}</b> reps · rest ${restLabel(sl.rest)}</span><button class="linkish" data-act="swap" data-slot="${sl.id}" aria-expanded="${state.swapOpen === sl.id ? 'true' : 'false'}">Swap</button></div>
+    <div class="ex-meta"><span><b>${p} × ${sl.lo}–${sl.hi}</b> reps · rest ${restLabel(sl.rest)}</span><span class="ex-meta-r">${PLATE_EX[exId] !== undefined ? `<button class="linkish" data-act="plates" data-slot="${sl.id}">Plates</button>` : ''}<button class="linkish" data-act="swap" data-slot="${sl.id}" aria-expanded="${state.swapOpen === sl.id ? 'true' : 'false'}">Swap</button></span></div>
     ${state.swapOpen === sl.id ? `<div class="swaprow"><label for="sw-${sl.id}">${anyDone ? 'Sets are already logged today, so the swap applies from next session.' : 'Machine taken? Pick another option. Same XP.'}</label><select class="sel" id="sw-${sl.id}" data-swap="${sl.id}">${altList.map(a => `<option value="${a}"${a === exId ? ' selected' : ''}>${esc(EX[a].n)}</option>`).join('')}</select></div>` : ''}
     <div class="ex-last${sug.up ? ' up' : ''}">${sug.last ? esc(sug.last) + '. ' : ''}<b>${esc(sug.text)}</b></div>
     ${projLineHTML(exId, sl)}
@@ -3564,18 +3676,82 @@ function showSummary(sid, celebrate, fromTrain){
 
 /* time left in the session: 30 s per set left, 3 min rest between them, plus what's left of the rest running now */
 const sessLeft = { sets: 0, started: false, planned: 0 };
-function sessLeftText(sep){
-  const L = sessLeft; if (!L.planned || (L.started && L.sets <= 0)) return '';
-  let min;
-  if (!L.started) min = sessionMins(L.planned);
-  else { const restLeft = !$('#restBar').hidden && Date.now() < rest.end ? (rest.end - Date.now()) / 1000 : 0;
-    min = Math.max(1, Math.ceil((restLeft + L.sets * SET_SEC + Math.max(0, L.sets - 1) * REST_SEC) / 60)); }
-  return `${sep || ''}${min} min left`;
+function sessLeftMin(){
+  const L = sessLeft; if (!L.planned || (L.started && L.sets <= 0)) return 0;
+  if (!L.started) return sessionMins(L.planned);
+  const restLeft = !$('#restBar').hidden && Date.now() < rest.end ? (rest.end - Date.now()) / 1000 : 0;
+  return Math.max(1, Math.ceil((restLeft + L.sets * SET_SEC + Math.max(0, L.sets - 1) * REST_SEC) / 60));
+}
+// the clock time the session ends if you keep this pace
+function clockIn(min){ const d = new Date(Date.now() + min * 60000); return `${pad2(d.getHours())}:${pad2(d.getMinutes())}`; }
+function tLeftHTML(){
+  const min = sessLeftMin(); if (!min) return '';
+  const ic = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg>';
+  return sessLeft.started ? `${ic}<span><b>${min} min left</b> · done by ${clockIn(min)}</span>` : `${ic}<span>About <b>${min} min</b> · done by ${clockIn(min)} if you start now</span>`;
 }
 function paintSessLeft(){
-  const a = $('#tLeft'); if (a) a.textContent = sessLeftText(' · ');
-  const t = sessLeftText(); const b = $('#restLeft'); if (b){ b.textContent = t; b.title = t ? `Session: ${t}` : ''; }
-  const c = $('#restFsLeft'); if (c) c.textContent = t ? `Session: ${t}` : '';
+  const a = $('#tLeft'); if (a) a.innerHTML = tLeftHTML();
+  const min = sessLeftMin();
+  const b = $('#restLeft'); if (b){ b.textContent = min ? `${min} min left` : ''; b.title = min ? `Session done by ${clockIn(min)}` : ''; }
+  const c = $('#restFsLeft'); if (c) c.textContent = min ? `Session: ${min} min left · done by ${clockIn(min)}` : '';
+}
+// the finish time moves with the clock even while you're mid-set
+setInterval(() => { if (state.view === 'train' || !$('#restBar').hidden) paintSessLeft(); }, 15000);
+
+/* plate calculator: barbell lifts count the bar in the logged weight; plate-loaded machines count plates only */
+const PLATE_EX = { bench: 20, incline_bb: 20, bb_row: 20, bb_curl: 20, squat: 20, rdl: 20, ez_curl: 10, skullcrusher: 10,
+  hack_squat: 0, leg_press: 0, lp_calf: 0, smith_bench: 0, incline_smith: 0, smith_ohp: 0, smith_rdl: 0, incline_machine: 0 };
+const PLATES = [25, 20, 15, 10, 5, 2.5, 1.25];
+const PLATE_LOOK = { 25: ['#E2231A', 108, 15], 20: ['#1C55C4', 108, 13], 15: ['#F5C400', 96, 12], 10: ['#129C48', 82, 10], 5: ['#F9F9F7', 62, 8], 2.5: ['#0D0D0D', 50, 6], 1.25: ['#9C9C97', 40, 5] };
+const BAR_OPTS = [[20, '20 kg', 'bar'], [15, '15 kg', 'bar'], [10, '10 kg', 'EZ bar'], [0, 'Plates', 'only']];
+function barFor(exId){ const b = (P().bars || {})[exId]; return BAR_OPTS.some(o => o[0] === b) ? b : PLATE_EX[exId]; }
+function platesFor(total, bar){
+  let side = Math.round((total - bar) / 2 * 4); const out = [];
+  if (side < 0) return { out, left: side / 4 };
+  for (const pl of PLATES){ const u = pl * 4; while (side >= u){ out.push(pl); side -= u; } }
+  return { out, left: side / 4 };
+}
+function plateSVG(out, bar){
+  const W = 340, H = 124, cy = H / 2, inner = 106;
+  const total = out.reduce((a, p) => a + PLATE_LOOK[p][2] + 1.5, 0); const k = total > 92 ? 92 / total : 1;
+  let g = `<rect x="4" y="${cy - 3.5}" width="${W - 8}" height="7" rx="3.5" fill="#B9B9B4"/>`;
+  if (bar > 0) g += `<rect x="${inner - 8}" y="${cy - 11}" width="8" height="22" rx="2" fill="#686864"/><rect x="${W - inner}" y="${cy - 11}" width="8" height="22" rx="2" fill="#686864"/>`;
+  let xr = W - inner + 9, xl = inner - 9;
+  for (const p of out){ const [c, h, w0] = PLATE_LOOK[p]; const w = w0 * k; const st = p === 5 ? ' stroke="#9C9C97" stroke-width="1.2"' : '';
+    g += `<rect x="${xr.toFixed(1)}" y="${cy - h / 2}" width="${w.toFixed(1)}" height="${h}" rx="2.5" fill="${c}"${st}/><rect x="${(xl - w).toFixed(1)}" y="${cy - h / 2}" width="${w.toFixed(1)}" height="${h}" rx="2.5" fill="${c}"${st}/>`;
+    xr += w + 1.5; xl -= w + 1.5; }
+  return `<svg viewBox="0 0 ${W} ${H}" aria-hidden="true">${g}</svg>`;
+}
+function plateOutHTML(exId, total, bar){
+  if (!(total > 0)) return `<p class="pc-note">Type the weight you want on the bar.</p>`;
+  const { out, left } = platesFor(total, bar);
+  if (left < 0) return `${plateSVG([], bar)}<p class="pc-note warn">${fmtKg(total)} kg is lighter than the ${fmtKg(bar)} kg bar on its own.</p>`;
+  const loaded = bar + 2 * out.reduce((a, p) => a + p, 0);
+  const sideTxt = out.length ? out.map(fmtKg).join(' + ') : 'Nothing';
+  return `<div class="pc-viz">${plateSVG(out, bar)}<div class="pc-side"><small>Each side</small>${sideTxt}</div></div>
+    <p class="pc-note">${bar ? `${fmtKg(bar)} kg bar + ${fmtKg(loaded - bar)} kg of plates = <b>${fmtKg(loaded)} kg</b>` : `<b>${fmtKg(loaded)} kg</b> of plates. The machine’s own weight isn’t counted.`}${left > 0 ? `<br>That’s the closest you can load, ${fmtKg(total - loaded)} kg under ${fmtKg(total)}.` : ''}</p>`;
+}
+function openPlates(slotId){
+  const s = getSession(todayStr(), state.trainM); const exId = currentEx(slotId, s); const ex = EX[exId];
+  const card = $(`#ex-${slotId}`); let w = NaN;
+  if (card){ for (const inp of card.querySelectorAll('.set:not(.is-done) .in-w')){ const v = parseNum(inp.value); if (v > 0){ w = v; break; } }
+    if (!(w > 0)){ const dn = [...card.querySelectorAll('.set.is-done .in-w')].map(x => parseNum(x.value)).filter(v => v > 0); if (dn.length) w = dn[dn.length - 1]; } }
+  let bar = barFor(exId);
+  const paint = sh => {
+    const v = parseNum(sh.querySelector('#pc-w').value);
+    sh.querySelector('#pc-out').innerHTML = plateOutHTML(exId, v, bar);
+    sh.querySelector('#pc-hint').textContent = bar ? 'kg, bar included' : 'kg of plates';
+    sh.querySelectorAll('[data-pcbar]').forEach(b => b.setAttribute('aria-checked', +b.dataset.pcbar === bar ? 'true' : 'false'));
+  };
+  openSheet(`<p class="eyebrow">Plate calculator</p><h2 class="h2">${esc(ex.n)}</h2>
+    <label class="field">Weight<span id="pc-hint"></span><input id="pc-w" inputmode="decimal" autocomplete="off" value="${w >= 0 ? esc(fmtKg(w)) : ''}" placeholder="e.g. 60"></label>
+    <div class="pc-bars" role="radiogroup" aria-label="Bar">${BAR_OPTS.map(([kg, l, sub]) => `<button type="button" role="radio" data-pcbar="${kg}" aria-checked="false" aria-label="${esc(l + ' ' + sub)}"><b>${esc(l)}</b><small>${esc(sub)}</small></button>`).join('')}</div>
+    <div id="pc-out" aria-live="polite"></div>
+    <button class="btn btn-gold btn-block" data-act="close">Done</button>`, '', null, sh => {
+    paint(sh);
+    sh.querySelector('#pc-w').addEventListener('input', () => paint(sh));
+    sh.querySelector('.pc-bars').addEventListener('click', e => { const b = e.target.closest('[data-pcbar]'); if (!b) return; bar = +b.dataset.pcbar; const p = P(); p.bars = p.bars || {}; p.bars[exId] = bar; touch('profile'); paint(sh); });
+  });
 }
 
 /* rest timer */
@@ -4100,6 +4276,7 @@ const actions = {
   sound: () => { const p = P(); p.sound = !p.sound; touch('profile'); renderHeader(); if (p.sound) sfx.tap(); },
   'rest-add': a => { if (Date.now() >= rest.end){ if (+a.dataset.s > 0) startRest(+a.dataset.s, $('#restSub').textContent); return; } rest.end += (+a.dataset.s) * 1000; rest.total = Math.max(rest.total, (rest.end - Date.now()) / 1000); clearTimeout(rest.timer); tickRest(); },
   'rest-skip': () => stopRest(),
+  plates: a => openPlates(a.dataset.slot),
   'rest-full': () => restFull(true),
   'rest-min': () => restFull(false),
   close: a => { const then = a && a.dataset && a.dataset.then; closeSheet(); if (then && state.view !== then) location.hash = then; },
