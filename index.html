@@ -392,6 +392,35 @@ details > summary::-webkit-details-marker{display:none}
 .rest-t{font-family:var(--f-display);font-weight:900;font-size:36px;line-height:.9;font-variant-numeric:tabular-nums;color:#FF4A3F}
 .rest-sub{font-size:13.5px;color:#D9D9D4;min-width:0;line-height:1.3}
 .rest-mid{min-width:0}
+/* strength score */
+.ss-top{display:flex;align-items:center;gap:16px}
+.ss-num{font-family:var(--f-display);font-weight:900;font-size:76px;line-height:.85;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.ss-lv b{display:block;font-family:var(--f-display);font-weight:800;font-size:26px;line-height:1}
+.ss-lv small{display:block;font-size:13.5px;color:var(--muted);margin-top:5px;line-height:1.35}
+.ss-lv small .up{color:var(--good);font-weight:700}
+.ss-lv small .down{color:var(--warn);font-weight:700}
+.ss-scale{position:relative;height:10px;border-radius:999px;background:var(--card-3);overflow:hidden}
+.ss-scale i{position:absolute;inset:0 auto 0 0;background:var(--accent);border-radius:999px}
+.ss-scale u{position:absolute;top:0;bottom:0;width:2px;background:var(--card);text-decoration:none}
+.ss-ticks{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);margin-top:5px;font-weight:600}
+.ss-ticks span{flex:1;text-align:center}
+.ss-mus{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.ss-mus li + li{border-top:1px solid var(--line)}
+.ss-row{display:grid;grid-template-columns:96px 1fr 34px 12px;align-items:center;gap:12px;width:100%;border:0;background:none;padding:11px 0;text-align:left;color:inherit;font:inherit;cursor:pointer}
+.ss-row:disabled{cursor:default}
+.ss-row span{font-weight:650;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ss-row .ss-b{height:8px;border-radius:999px;background:var(--card-3);position:relative;overflow:hidden}
+.ss-row .ss-b i{position:absolute;inset:0 auto 0 0;background:var(--accent);border-radius:999px}
+.ss-row b{font-family:var(--f-display);font-weight:800;font-size:21px;text-align:right;font-variant-numeric:tabular-nums}
+.ss-row:disabled b{color:var(--faint);font-size:17px}
+.ss-row em{font-style:normal;color:var(--faint);font-size:17px}
+.ss-lifts{list-style:none;margin:0;padding:0}
+.ss-lifts li{padding:12px 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:6px}
+.ss-lifts li:first-child{border-top:0;padding-top:0}
+.ss-l1{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-weight:650;font-size:15.5px}
+.ss-l1 b{font-family:var(--f-display);font-weight:800;font-size:22px;font-variant-numeric:tabular-nums}
+.ss-l2{font-size:13.5px;color:var(--muted);line-height:1.4}
+.ss-l2 b{color:var(--fg-2)}
 /* lift history */
 .lh-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .lh-tiles div{background:var(--card-2);border-radius:14px;padding:11px 12px;min-width:0}
@@ -3753,6 +3782,109 @@ function paintSessLeft(){
 // the finish time moves with the clock even while you're mid-set
 setInterval(() => { if (state.view === 'train' || !$('#restBar').hidden) paintSessLeft(); }, 15000);
 
+/* Strength Score: every lift's best set from the last 3 months, as an estimated 1-rep max, against
+   strength standards for men (Strength Level, 1RM in kg at 70 kg bodyweight; bodyweight lifts in reps).
+   Beginner 20 · Novice 40 · Intermediate 60 · Advanced 80 · Elite 100. Muscle score = average of its lifts,
+   overall = the middle (median) of the muscle scores. Smith and plate-loaded machines compare what you log.
+   Borrowed standards: incline machine = chest press, reverse pec-deck = 2 × dumbbell reverse fly,
+   rope hammer = cable curl, machine crunch = cable crunch, Smith lifts = their barbell twin. */
+const SS_STD = {
+  bench: [47, 64, 85, 110, 136], smith_bench: [45, 62, 84, 108, 134], chest_press: [33, 53, 80, 112, 147], incline_machine: [33, 53, 80, 112, 147],
+  incline_bb: [41, 56, 75, 96, 119], incline_smith: [41, 56, 75, 96, 119], pec_deck: [36, 55, 79, 107, 139], cable_fly: [6, 16, 31, 52, 77],
+  lat_pulldown: [42, 57, 77, 99, 123], close_pulldown: [42, 57, 77, 99, 123], machine_row: [39, 62, 92, 128, 168], bb_row: [40, 56, 77, 101, 127], cable_row: [40, 57, 78, 102, 128],
+  shoulder_press: [23, 42, 66, 97, 131], smith_ohp: [23, 42, 66, 97, 131], cable_lateral: [2, 7, 14, 25, 37], machine_lateral: [20, 34, 53, 75, 100],
+  face_pull: [13, 25, 42, 63, 88], reverse_pec: [4, 14, 30, 52, 78],
+  rope_pushdown: [14, 26, 41, 60, 82], bar_pushdown: [18, 31, 50, 73, 98], overhead_ext: [11, 22, 37, 57, 79], db_overhead_ext: [5, 10, 19, 30, 42], skullcrusher: [16, 25, 38, 52, 68],
+  hammer_curl: [9, 14, 21, 29, 39], rope_hammer: [17, 29, 46, 67, 91], ez_curl: [21, 31, 42, 55, 69], bb_curl: [18, 28, 41, 57, 74], cable_curl: [17, 29, 46, 67, 91],
+  incline_db_curl: [8, 12, 18, 24, 30], preacher_curl: [17, 27, 40, 56, 72],
+  cable_crunch: [22, 39, 62, 90, 122], machine_crunch: [22, 39, 62, 90, 122],
+  squat: [62, 86, 116, 149, 185], hack_squat: [52, 88, 135, 193, 257], rdl: [54, 79, 110, 145, 184], smith_rdl: [54, 79, 110, 145, 184], leg_press: [90, 139, 202, 277, 359],
+  leg_curl: [25, 40, 59, 82, 107], seated_leg_curl: [34, 52, 76, 103, 134], leg_ext: [42, 65, 95, 130, 169], calf_raise: [40, 76, 126, 189, 260], lp_calf: [40, 76, 126, 189, 260]
+};
+const SS_REPS = { pullup: [1, 7, 14, 22, 31], back_ext: [3, 15, 30, 47, 66], hanging_leg_raise: [1, 8, 17, 29, 41] };
+const SS_LV = ['Beginner', 'Novice', 'Intermediate', 'Advanced', 'Elite'];
+const ssLevel = sc => sc >= 100 ? 4 : sc >= 80 ? 3 : sc >= 60 ? 2 : sc >= 40 ? 1 : 0;
+// the five standards for one lift, as estimated 1-rep maxes at this bodyweight
+function ssTargets(exId, bw){
+  if (SS_REPS[exId]) return SS_REPS[exId].map(r => bw * (1 + r / 30));
+  const s = SS_STD[exId]; if (!s) return null; const k = Math.pow(bw / 70, 0.8); return s.map(v => v * k);
+}
+function ssScore(e, T){
+  const pts = [0, ...T], sc = [0, 20, 40, 60, 80, 100];
+  if (e >= T[4]) return 100;
+  for (let i = 1; i < pts.length; i++) if (e < pts[i]) return Math.floor(sc[i - 1] + (e - pts[i - 1]) / (pts[i] - pts[i - 1]) * 20);
+  return 100;
+}
+// best set per lift per day, kept raw so bodyweight lifts can use the bodyweight of the day they're scored
+function ssSets(){
+  const out = [];
+  for (const s of allSessions()) for (const sl of slotsOf(s)){
+    const rec = s.sets && s.sets[sl.id]; if (!rec) continue; const exId = EX[rec.ex] ? rec.ex : sl.ex;
+    if (!SS_STD[exId] && !SS_REPS[exId]) continue;
+    for (const x of doneSets(rec)) out.push({ date: s.date, exId, w: +x.w || 0, r: +x.r || 0 });
+  }
+  return out;
+}
+// bodyweight that day: latest check-in, else saved weight, else the body scan
+function ssBW(date, cis){ const sc = SCANS.filter(x => x.date <= date).pop() || SCANS[0]; return bodyweightOn(date, cis) || (sc && sc.weight) || null; }
+function ssAt(date, sets, cis){
+  const bw = ssBW(date, cis); if (!(bw > 0)) return null;
+  const from = addDays(date, -90); const best = {};
+  for (const x of sets){ if (x.date > date || x.date <= from || !(x.r > 0)) continue;
+    const e = SS_REPS[x.exId] ? (bw + x.w) * (1 + x.r / 30) : x.w * (1 + x.r / 30);
+    if (!best[x.exId] || e > best[x.exId].e) best[x.exId] = { e, w: x.w, r: x.r, date: x.date }; }
+  const lifts = Object.entries(best).map(([exId, b]) => { const T = ssTargets(exId, bw); return { exId, ...b, T, score: ssScore(b.e, T) }; });
+  if (!lifts.length) return null;
+  const mus = {}; for (const l of lifts){ const m = EX[l.exId].m; (mus[m] = mus[m] || []).push(l.score); }
+  const muscles = {}; for (const [m, a] of Object.entries(mus)) muscles[m] = Math.round(a.reduce((x, y) => x + y, 0) / a.length);
+  const ms = Object.values(muscles).sort((a, b) => a - b); const mid = ms.length >> 1;
+  const overall = Math.round(ms.length % 2 ? ms[mid] : (ms[mid - 1] + ms[mid]) / 2);
+  return { date, bw, overall, muscles, lifts };
+}
+function ssHistory(){
+  const sets = ssSets(); const cis = allCheckins(); const t = todayStr();
+  const dates = [...new Set(sets.map(x => x.date))].filter(d => d <= t).sort(); if (dates[dates.length - 1] !== t) dates.push(t);
+  return { now: ssAt(t, sets, cis), pts: dates.map(d => { const r = ssAt(d, sets, cis); return r && { date: d, v: r.overall }; }).filter(Boolean), sets, cis };
+}
+function ssCardHTML(){
+  const H = ssHistory(); const S = H.now;
+  if (!S && H.sets.length && !(ssBW(todayStr(), H.cis) > 0)) return `<section class="card"><div class="sec-h"><h2 class="h3">Strength Score</h2></div><p class="lede">Add your bodyweight in a weekly check-in and your Strength Score appears here.</p></section>`;
+  if (!S) return `<section class="card"><div class="sec-h"><h2 class="h3">Strength Score</h2></div><p class="lede">Log a mission and your Strength Score appears here: one number for how strong you are for your bodyweight, plus a score for every muscle.</p></section>`;
+  const lv = ssLevel(S.overall); const next = lv < 4 ? (lv + 1) * 20 + 20 : null;
+  const ago = ssAt(addDays(todayStr(), -28), H.sets, H.cis); const d4 = ago ? S.overall - ago.overall : null;
+  const rows = Object.entries(MUSCLES).map(([m, mm]) => { const v = S.muscles[m];
+    return v === undefined ? `<li><button class="ss-row" disabled><span>${esc(mm.n)}</span><div class="ss-b"></div><b>–</b><em></em></button></li>`
+      : `<li><button class="ss-row" data-act="ss-muscle" data-m="${m}" aria-label="${esc(mm.n)}: ${v}, ${SS_LV[ssLevel(v)]}. Show lifts"><span>${esc(mm.n)}</span><div class="ss-b"><i style="width:${v}%"></i></div><b>${v}</b><em>›</em></button></li>`; }).join('');
+  return `<section class="card stack" style="gap:16px"><div class="sec-h" style="margin-bottom:0"><h2 class="h3">Strength Score</h2><span class="muted">for ${fmtKg(S.bw)} kg bodyweight</span></div>
+    <div class="ss-top"><div class="ss-num">${S.overall}</div><div class="ss-lv"><b>${SS_LV[lv]}</b><small>${next ? `${next - S.overall} to ${SS_LV[lv + 1]}` : 'Top of the scale'}${d4 !== null ? ` · <span class="${d4 > 0 ? 'up' : d4 < 0 ? 'down' : ''}">${d4 > 0 ? '+' : ''}${d4}</span> in 4 weeks` : ''}</small></div></div>
+    <div><div class="ss-scale"><i style="width:${S.overall}%"></i><u style="left:20%"></u><u style="left:40%"></u><u style="left:60%"></u><u style="left:80%"></u></div>
+      <div class="ss-ticks" aria-hidden="true">${['Beg.', 'Novice', 'Inter.', 'Adv.', 'Elite'].map(l => `<span>${l}</span>`).join('')}</div></div>
+    <div><div class="chart-t">Over time<span>${H.pts.length > 1 ? `since ${shortDate(H.pts[0].date)}` : ''}</span></div><div class="chart" id="ss-chart"></div></div>
+    <ul class="ss-mus">${rows}</ul>
+    <p class="fc-note">Your best set on each lift in the last 3 months, turned into an estimated 1-rep max and compared with strength standards for men your weight. A muscle’s score is the average of its lifts; the big number is the middle muscle score. Tap a muscle for its lifts.</p>
+  </section>`;
+}
+function drawSSChart(){
+  const el = $('#ss-chart'); if (!el) return; const { pts } = ssHistory();
+  if (pts.length < 2){ el.innerHTML = '<p class="muted" style="font-size:14px">Your graph starts after your second session.</p>'; return; }
+  lineChart(el, pts, 'pts', 'Strength Score');
+}
+function openSSMuscle(m){
+  const S = ssHistory().now; if (!S) return;
+  const lifts = S.lifts.filter(l => EX[l.exId].m === m).sort((a, b) => b.score - a.score);
+  const rows = lifts.map(l => { const ex = EX[l.exId]; const lv = ssLevel(l.score); const bwEx = !!SS_REPS[l.exId];
+    let nxt = 'Top of the scale.';
+    if (lv < 4 || l.score < 100){ const tgtLv = l.score < 20 ? 0 : Math.min(4, lv + 1); const tgt = l.T[tgtLv];
+      if (bwEx) nxt = `Next: <b>${SS_LV[tgtLv]}</b> at ${SS_REPS[l.exId][tgtLv]} reps`;
+      else { const inc = ex.inc || 2.5; const w8 = Math.ceil(tgt / (1 + 8 / 30) / inc) * inc; nxt = `Next: <b>${SS_LV[tgtLv]}</b> at ${fmtKg(w8)} kg × 8`; } }
+    const best = bwEx ? `${l.r} reps${l.w ? ` +${fmtKg(l.w)} kg` : ''}` : `${fmtKg(l.w)} × ${l.r}`;
+    return `<li><div class="ss-l1"><span>${esc(ex.n)}</span><b>${l.score}</b></div><div class="ss-l2">${SS_LV[lv]} · best ${best} on ${shortDate(l.date)}${bwEx ? '' : `, est. max ${fmtKg(Math.round(l.e * 2) / 2)} kg`}<br>${nxt}</div></li>`; }).join('');
+  openSheet(`<header class="stack" style="gap:6px"><p class="eyebrow">Strength Score</p><h2 class="h2" id="ssm-title">${esc(MUSCLES[m].n)} · ${S.muscles[m]}</h2></header>
+    <ul class="ss-lifts">${rows}</ul>
+    <p class="fc-note">“Next” is the weight for 8 clean reps that would move that lift up a level.</p>
+    <button class="btn btn-block" data-act="close">Close</button>`, '', null, sh => sh.setAttribute('aria-labelledby', 'ssm-title'));
+}
+
 /* lift history: every session of one lift, with a graph of the heaviest set */
 function liftHistory(exId){
   const out = [];
@@ -4073,6 +4205,7 @@ function renderProgress(){
     const records = recIds.map(id => { const b = G.bests[id]; const e = EX[id]; return `<li><button class="rc-row" data-act="lift-hist" data-ex="${id}" aria-label="${esc(e.n)} history"><span class="rc-n">${esc(e.n)}<small>${shortDate(b.date)}${e.k === 'bw' ? '' : ` · est. max ${fmtKg(Math.round(b.e * 2) / 2)} kg`}</small></span><b class="rc-v">${e.k === 'bw' ? `${b.r} reps${b.w ? ` +${fmtKg(b.w)}` : ''}` : `${fmtKg(b.w)} × ${b.r}`}</b></button></li>`; }).join('');
     const fcl = fcListHTML();
     body = `
+    ${ssCardHTML()}
     <section class="card"><div class="sec-h" style="margin-bottom:4px"><h2 class="h3">Strength forecast</h2><span class="muted">now → in 12 weeks</span></div>
       ${fcl ? `<p class="fc-note">Worked out from your own sets and how often you train. Tap a lift for its full forecast.</p>${fcl}` : '<p class="lede">Log a mission and every lift you train gets a forecast here: what you’ll be lifting in 4, 8 and 12 weeks.</p>'}
     </section>
@@ -4104,6 +4237,7 @@ function renderProgress(){
   }
   el.innerHTML = head + body;
   if (tab === 'body') drawCharts();
+  if (tab === 'lifts') drawSSChart();
   const hm = el.querySelector('.hm-scroll'); if (hm) hm.scrollLeft = hm.scrollWidth;
   Viz.hydrate();
 }
@@ -4438,6 +4572,7 @@ const actions = {
   plates: a => openPlates(a.dataset.slot),
   'lift-hist': a => { haptic.tap(); openLiftHistory(a.dataset.ex); },
   'hm-day': a => hmDay(a),
+  'ss-muscle': a => { haptic.tap(); openSSMuscle(a.dataset.m); },
   'rest-full': () => restFull(true),
   'rest-min': () => restFull(false),
   close: a => { const then = a && a.dataset && a.dataset.then; closeSheet(); if (then && state.view !== then) location.hash = then; },
