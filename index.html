@@ -392,6 +392,75 @@ details > summary::-webkit-details-marker{display:none}
 .rest-t{font-family:var(--f-display);font-weight:900;font-size:36px;line-height:.9;font-variant-numeric:tabular-nums;color:#FF4A3F}
 .rest-sub{font-size:13.5px;color:#D9D9D4;min-width:0;line-height:1.3}
 .rest-mid{min-width:0}
+/* mission summary: time, sets, kilos, what you beat */
+.sum-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%}
+.sum-stats div{background:var(--ink);color:#fff;border-radius:14px;padding:12px 12px 13px;min-width:0}
+.sum-stats span{display:block;font-size:12.5px;font-weight:600;color:var(--on-ink-2)}
+.sum-stats b{display:block;font-family:var(--f-display);font-weight:900;font-size:30px;line-height:1;margin-top:5px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sum-like{font-size:15px;color:var(--fg-2);margin-top:-4px}
+.sum-like b{color:var(--fg)}
+.sum-up{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px;width:100%}
+.sum-up li{font-size:15px;color:var(--good);font-weight:650;line-height:1.35}
+.sum-up li span{color:var(--fg-2);font-weight:500}
+
+/* time card: session lengths, fastest missions, where the minutes go */
+.tm-fast{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tm-fast div{background:var(--card-2);border-radius:14px;padding:11px 12px;min-width:0}
+.tm-fast span{display:block;font-size:12.5px;font-weight:600;color:var(--muted)}
+.tm-fast b{display:block;font-family:var(--f-display);font-weight:900;font-size:26px;line-height:1.05;margin-top:4px;font-variant-numeric:tabular-nums}
+.tm-fast small{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.tm-ex{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+.tm-ex li{display:grid;grid-template-columns:minmax(0,1fr) 80px 66px;align-items:center;gap:10px;font-size:14.5px}
+.tm-ex li span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+.tm-ex li i{height:8px;border-radius:999px;background:var(--card-3);position:relative;overflow:hidden;display:block}
+.tm-ex li i em{position:absolute;inset:0 auto 0 0;background:var(--ink);border-radius:999px}
+.tm-ex li b{text-align:right;font-variant-numeric:tabular-nums;font-weight:750;white-space:nowrap}
+
+/* weekly volume bars */
+.vol-svg{display:block;width:100%;height:auto}
+.vol-svg text{font-size:10.5px;fill:var(--muted);font-weight:600;font-variant-numeric:tabular-nums}
+.vol-svg .vv{fill:var(--fg);font-weight:750}
+
+/* set records */
+.sr-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.sr-grid div{background:var(--card-2);border-radius:11px;padding:8px 9px;text-align:center}
+.sr-grid span{display:block;font-size:12px;color:var(--muted);font-weight:600}
+.sr-grid b{display:block;font-family:var(--f-display);font-weight:800;font-size:19px;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* then vs now */
+.tvn-list{list-style:none;margin:0;padding:0}
+.tvn-list li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;padding:11px 0;border-top:1px solid var(--line);align-items:center}
+.tvn-list li:first-child{border-top:0;padding-top:2px}
+.tvn-list .tn{font-weight:650;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tvn-list .tv{grid-column:1;font-size:13.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.tvn-list .tv b{color:var(--fg);font-weight:700}
+.tvn-list .tp{grid-row:1/3;grid-column:2;font-family:var(--f-display);font-weight:800;font-size:21px;font-variant-numeric:tabular-nums}
+.tvn-list .tp.up{color:var(--good)}
+.tvn-list .tp.down{color:var(--warn)}
+.seg-sm{display:inline-grid;grid-auto-flow:column;gap:3px;padding:3px;background:var(--card-2);border-radius:11px}
+.seg-sm button{border:0;background:none;border-radius:8px;padding:6px 11px;font-size:13px;font-weight:700;color:var(--fg-2)}
+.seg-sm button[aria-pressed="true"]{background:var(--ink);color:#fff}
+
+/* year in review */
+.yr{display:flex;flex-direction:column;gap:10px}
+.yr-b{background:var(--ink);color:#fff;border-radius:18px;padding:18px 18px 19px}
+.yr-b span{display:block;font-size:13.5px;font-weight:650;color:var(--on-ink-2)}
+.yr-b b{display:block;font-family:var(--f-display);font-weight:900;font-size:46px;line-height:1;margin-top:6px;font-variant-numeric:tabular-nums}
+.yr-b small{display:block;font-size:14.5px;color:#D9D9D4;margin-top:7px;line-height:1.4}
+.yr-b.red{background:var(--accent)}
+.yr-b.red span,.yr-b.red small{color:rgba(255,255,255,.85)}
+.yr-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.yr-two .yr-b b{font-size:34px}
+/* in-gym flow: last time, record star, same-as-last-set */
+.set .ghost.g-row{grid-column:2/5;display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;padding-right:2px}
+.set .g-rec{color:var(--gold);font-weight:750}
+.set .g-rec:empty{display:none}
+.set .g-same{margin-left:auto;border:0;background:var(--card-2);border-radius:999px;padding:5px 11px;font-size:12.5px;font-weight:700;color:var(--fg);white-space:nowrap}
+.set .g-same:active{transform:scale(.96)}
+.tleft{flex-wrap:wrap;row-gap:4px}
+.pace{font-size:12.5px;font-weight:750;padding:3px 9px;border-radius:999px;background:var(--card-2);color:var(--fg-2);white-space:nowrap}
+.pace.ok{background:var(--good-wash, rgba(22,163,74,.12));color:var(--good)}
+.pace.late{background:var(--warn-wash, rgba(217,119,6,.13));color:var(--warn)}
 /* strength score */
 .ss-top{display:flex;align-items:center;gap:16px}
 .ss-num{font-family:var(--f-display);font-weight:900;font-size:76px;line-height:.85;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
@@ -3282,6 +3351,7 @@ function renderToday(){
       </div>
     </section>
     ${nextCardHTML()}
+    ${yearCardHTML(true)}
     ${todayRecapHTML()}
     ${weekStripHTML()}
     ${muscleMapHTML()}
@@ -3508,6 +3578,47 @@ function openForecast(exId){
 }
 
 /* TRAIN */
+/* reps needed at this weight to beat your best (same maths as records), if it's within the rep range */
+function recNeed(ex, best, w, hi){
+  if (!best || !(w >= 0)) return null; let r;
+  if (ex.k === 'bw') r = Math.floor(best.e - w + 1e-6) + 1;
+  else { if (!(w > 0)) return null; r = Math.floor(30 * (best.e / w - 1) + 1e-6) + 1; }
+  r = Math.max(1, r); return r <= hi ? r : null;
+}
+function updateStar(row){
+  const st = row && row.querySelector('.g-rec'); if (!st || !row.dataset.be) return;
+  const need = recNeed({ k: row.dataset.bw === '1' ? 'bw' : '' }, { e: +row.dataset.be }, parseNum(row.querySelector('.in-w').value), +row.dataset.hi);
+  st.textContent = need ? `★ ${need} rep${need > 1 ? 's' : ''} = record` : '';
+}
+
+/* today's exercise order: "Later" moves an exercise (and its pair) to the end of the list */
+function orderSlots(s, slots){
+  if (!s || !s.ord || !s.ord.length) return slots;
+  const pos = id => { const k = s.ord.indexOf(id); return k < 0 ? 999 + slots.findIndex(x => x.id === id) : k; };
+  return slots.slice().sort((a, b) => pos(a.id) - pos(b.id));
+}
+function doLater(slotId){
+  const t = todayStr(); const s = ensureSession(t, state.trainM);
+  const slots = orderSlots(s, slotsOf(s)); const sl = slots.find(x => x.id === slotId); if (!sl) return;
+  const move = [slotId, sl.pair].filter(Boolean);
+  s.ord = [...slots.filter(x => !move.includes(x.id)), ...slots.filter(x => move.includes(x.id))].map(x => x.id);
+  touch(monthId(t)); haptic.tap();
+  const y = window.scrollY; renderTrain(); window.scrollTo(0, y);
+  toast(`<span>${esc(EX[currentEx(slotId, s)].n)} moved to the end</span>`);
+  scrollToSet(document.querySelector('#v-train .ex.is-current .set:not(.is-done)'), 120);
+}
+// bring the next set into view after you log one, unless it's already on screen
+function scrollToSet(el, delay){
+  setTimeout(() => {
+    if (state.view !== 'train' || isEditing()) return;
+    if (typeof el === 'function') el = el(); if (!el) return;
+    const r = el.getBoundingClientRect(); const bar = $('#restBar') && !$('#restBar').hidden ? 170 : 110;
+    if (r.top >= 120 && r.bottom <= innerHeight - bar) return;
+    el.scrollIntoView({ block: 'center', behavior: reduceMotion() ? 'auto' : 'smooth' });
+  }, delay || 0);
+}
+// the sets you've logged today, in time order
+function sessTimes(s){ const ts = []; for (const k in (s && s.sets) || {}) for (const x of (s.sets[k].s || [])) if (x && x.d && +x.r > 0 && x.t) ts.push(x.t); return ts.sort((a, b) => a - b); }
 function renderTrain(){
   const el = $('#v-train'); const t = todayStr();
   if (!state.trainM || state.trainFor !== t){ state.trainM = suggestMission(); state.trainFor = t; state.expand = {}; }
@@ -3515,7 +3626,7 @@ function renderTrain(){
   const s = getSession(t, m); const info = s ? G.info[s.id] : null;
   const wk = weekNum(t); const ph = s && PHASES[s.ph] ? s.ph : phaseOf(wk);
   const doneWk = missionsDoneThisWeek(t);
-  const slots = s ? slotsOf(s) : mm.slots;
+  const slots = s ? orderSlots(s, slotsOf(s)) : mm.slots;
   const planned = slots.reduce((a, sl) => a + plannedSets(sl, ph), 0);
   const done = info && !info.empty ? info.done : 0;
   const others = todaySessions().filter(x => x.m !== m);
@@ -3532,6 +3643,10 @@ function renderTrain(){
   const cur = slots.find(sl => doneSets(s && s.sets && s.sets[sl.id]).length < plannedSets(sl, ph));
   sessLeft.sets = slots.reduce((a, sl) => a + Math.max(0, plannedSets(sl, ph) - doneSets(s && s.sets && s.sets[sl.id]).length), 0);
   sessLeft.started = started; sessLeft.planned = planned;
+  const ts = sessTimes(s); sessLeft.first = ts[0] || 0; sessLeft.last = ts[ts.length - 1] || 0;
+  // "Later" only makes sense if something unfinished comes after it
+  const rem = slots.filter(x => doneSets(s && s.sets && s.sets[x.id]).length < plannedSets(x, ph)).map(x => x.id);
+  const canLater = sl => { const k = rem.indexOf(sl.id); return k >= 0 && rem.slice(k + 1).some(id => id !== sl.pair); };
   el.innerHTML = `
     <div class="seg" role="tablist" aria-label="Choose mission">
       ${MISSIONS.map(x => `<button role="tab" data-act="pick-m" data-m="${x.id}" aria-selected="${x.id === m ? 'true' : 'false'}"><b>${x.id}${doneWk.has(x.id) ? ` <span class="okm" aria-label="done this week">${I.ok}</span>` : ''}</b><small>${x.day.slice(0, 3)} · ${esc(x.short)}</small></button>`).join('')}
@@ -3550,7 +3665,7 @@ function renderTrain(){
       <li>First lift: 2–3 lighter ramp-up sets. About 50% × 8, 70% × 5, 85% × 2.</li>
       <li>Then your working sets. Log only those.</li>
     </ol></details>`}
-    <ol class="exlist">${slots.map(sl => exCardHTML(sl, s, ph, cur && cur.id === sl.id)).join('')}</ol>
+    <ol class="exlist">${slots.map(sl => exCardHTML(sl, s, ph, cur && cur.id === sl.id, canLater(sl))).join('')}</ol>
     ${info && !info.empty && info.complete ? `<div class="notice good"><b>Mission complete.</b> ${info.flawless ? 'Every planned set is done.' : 'Finish the last sets for the Flawless bonus, or call it here.'}</div>` : ''}
     <button class="btn btn-gold btn-block" data-act="finish">${info && !info.empty && info.complete ? 'View mission summary' : 'Finish mission'}</button>
     <p class="muted" style="font-size:13.5px;text-align:center;margin-top:-8px">Sets save as you log them. You can close the app mid-workout.</p>`;
@@ -3563,7 +3678,7 @@ function projLineHTML(exId, sl){
   const txt = f.ex.k === 'bw' ? `${st.r} reps` : `${fmtKg(st.w)} kg × ${st.r}`;
   return `<button class="ex-proj" data-act="fc-open" data-ex="${exId}">On track for <b>${txt}</b> by ${shortDate(d)}</button>`;
 }
-function exCardHTML(sl, s, ph, isCur){
+function exCardHTML(sl, s, ph, isCur, canLater){
   const exId = currentEx(sl.id, s); const ex = EX[exId];
   const rec = s && s.sets && s.sets[sl.id];
   const p = plannedSets(sl, ph);
@@ -3602,13 +3717,18 @@ function exCardHTML(sl, s, ph, isCur){
     // ghost: the same set last time, and once logged, whether you beat it
     let ghost = '';
     const lg = L && L.sets[i];
-    if (lg){
+    const best = G.bests[exId];
+    if (!isDone){
+      // last time, the reps that would make it a record at this weight, and a one-tap copy of the set above
+      const prevDone = i > 0 && rec && rec.s && rec.s[i - 1] && rec.s[i - 1].d && +rec.s[i - 1].r > 0;
+      const need = best ? recNeed(ex, best, parseNum(wVal), sl.hi) : null;
+      if (lg || best || prevDone) ghost = `<div class="ghost g-row">${lg ? `<span>Last time: ${fmtSet(lg)}</span>` : ''}<span class="g-rec">${need ? `★ ${need} rep${need > 1 ? 's' : ''} = record` : ''}</span>${prevDone ? `<button class="g-same" data-act="same-set" aria-label="Copy set ${i} into set ${i + 1}">Same as set ${i}</button>` : ''}</div>`;
+    } else if (lg){
       const was = fmtSet(lg);
-      if (!isDone) ghost = `<div class="ghost">Last time: ${was}</div>`;
-      else { const now = metric(ex, x), then = metric(ex, lg); const same = (+x.w || 0) === lg.w && +x.r === lg.r;
+      { const now = metric(ex, x), then = metric(ex, lg); const same = (+x.w || 0) === lg.w && +x.r === lg.r;
         ghost = same ? `<div class="ghost match">= Matched last time</div>` : now > then ? `<div class="ghost beat">▲ Beat last time (${was})</div>` : `<div class="ghost below">Last time: ${was}</div>`; }
     }
-    setRows.push(`<div class="set${isDone ? ' is-done' : ''}${extra ? ' is-extra' : ''}${isNext ? ' is-next' : ''}" data-i="${i}">
+    setRows.push(`<div class="set${isDone ? ' is-done' : ''}${extra ? ' is-extra' : ''}${isNext ? ' is-next' : ''}" data-i="${i}"${!isDone && best ? ` data-be="${best.e}" data-hi="${sl.hi}" data-bw="${bw ? 1 : 0}"` : ''}>
       <span class="set-n" title="${extra ? 'Extra set, no XP' : ''}">${i + 1}</span>
       <input class="in-w" inputmode="decimal" autocomplete="off" enterkeyhint="next" value="${esc(wVal)}" placeholder="${bw ? '+0' : 'kg'}" aria-label="Set ${i + 1} ${bw ? 'added weight' : 'weight'} in kg">
       <input class="in-r" inputmode="numeric" autocomplete="off" enterkeyhint="done" value="${esc(rVal)}" placeholder="${lastR ? lastR : sl.lo + '–' + sl.hi}" aria-label="Set ${i + 1} reps">
@@ -3628,7 +3748,7 @@ function exCardHTML(sl, s, ph, isCur){
       ${complete ? `<button class="ex-count linkish" data-act="ex-tog" data-slot="${sl.id}" aria-expanded="true" aria-label="Fold ${esc(ex.n)} away">${Math.min(ds.length, p)}/${p}</button>` : `<span class="ex-count" aria-label="${Math.min(ds.length, p)} of ${p} sets done">${Math.min(ds.length, p)}/${p}</span>`}
     </div>
     <p class="ex-cue">${esc(ex.cue)}</p>
-    <div class="ex-meta"><span><b>${p} × ${sl.lo}–${sl.hi}</b> reps · rest ${restLabel(sl.rest)}</span><span class="ex-meta-r">${G.bests[exId] ? `<button class="linkish" data-act="lift-hist" data-ex="${exId}">History</button>` : ''}${PLATE_EX[exId] !== undefined ? `<button class="linkish" data-act="plates" data-slot="${sl.id}">Plates</button>` : ''}<button class="linkish" data-act="swap" data-slot="${sl.id}" aria-expanded="${state.swapOpen === sl.id ? 'true' : 'false'}">Swap</button></span></div>
+    <div class="ex-meta"><span><b>${p} × ${sl.lo}–${sl.hi}</b> reps · rest ${restLabel(sl.rest)}</span><span class="ex-meta-r">${canLater ? `<button class="linkish" data-act="later" data-slot="${sl.id}" aria-label="Do ${esc(ex.n)} later">Later</button>` : ''}${G.bests[exId] ? `<button class="linkish" data-act="lift-hist" data-ex="${exId}">History</button>` : ''}${PLATE_EX[exId] !== undefined ? `<button class="linkish" data-act="plates" data-slot="${sl.id}">Plates</button>` : ''}<button class="linkish" data-act="swap" data-slot="${sl.id}" aria-expanded="${state.swapOpen === sl.id ? 'true' : 'false'}">Swap</button></span></div>
     ${state.swapOpen === sl.id ? `<div class="swaprow"><label for="sw-${sl.id}">${anyDone ? 'Sets are already logged today, so the swap applies from next session.' : 'Machine taken? Pick another option. Same XP.'}</label><select class="sel" id="sw-${sl.id}" data-swap="${sl.id}">${altList.map(a => `<option value="${a}"${a === exId ? ' selected' : ''}>${esc(EX[a].n)}</option>`).join('')}</select></div>` : ''}
     <div class="ex-last${sug.up ? ' up' : ''}">${sug.last ? esc(sug.last) + '. ' : ''}<b>${esc(sug.text)}</b></div>
     ${projLineHTML(exId, sl)}
@@ -3658,6 +3778,7 @@ function onSetInput(input){
   else { const v = parseNum(input.value); x.r = Number.isNaN(v) ? null : Math.round(v); }
   for (let k = 0; k < rec.s.length; k++) if (!rec.s[k]) rec.s[k] = {};
   touch(monthId(t));
+  if (input.classList.contains('in-w')) updateStar(row);
 }
 function onCheck(btn){
   const card = btn.closest('.ex'); const row = btn.closest('.set'); const slotId = card.dataset.slot; const i = +row.dataset.i;
@@ -3700,10 +3821,18 @@ function onCheck(btn){
   if (finishedEx) setTimeout(() => { if (state.expand && state.expand[slotId] === 'auto'){ delete state.expand[slotId]; if (state.view === 'train' && !isEditing()){ const y = window.scrollY; renderTrain(); window.scrollTo(0, y); } } }, 1100);
   let nextTxt = '';
   if (doneCount < p) nextTxt = sl.pair ? `Next: ${EX[currentEx(sl.pair, s)].n}, then set ${doneCount + 1}` : `Next: ${ex.n}, set ${doneCount + 1}`;
-  else { const sls = slotsOf(s); const idx = sls.findIndex(x => x.id === slotId); const nx = sls.slice(idx + 1).find(x => doneSets(s.sets[x.id]).length < plannedSets(x, info.ph)); nextTxt = nx ? `Next: ${EX[currentEx(nx.id, s)].n}` : ''; }
+  else { const sls = orderSlots(s, slotsOf(s)); const idx = sls.findIndex(x => x.id === slotId); const nx = sls.slice(idx + 1).find(x => doneSets(s.sets[x.id]).length < plannedSets(x, info.ph)); nextTxt = nx ? `Next: ${EX[currentEx(nx.id, s)].n}` : ''; }
   if (!info.flawless) startRest(sl.rest, nextTxt);
   else stopRest();
   afterChange(prev);
+  // move the screen to where you're going next: the pair, the same card, or (once it folds) the next exercise
+  if (!info.flawless){
+    const firstOpen = id => document.querySelector(`#ex-${id} .set:not(.is-done)`);
+    const partnerBehind = sl.pair && doneSets(s.sets[sl.pair]).length < doneCount && doneSets(s.sets[sl.pair]).length < plannedSets(slotById(sl.pair, s), info.ph);
+    if (partnerBehind) scrollToSet(() => firstOpen(sl.pair), 350);
+    else if (doneCount < p) scrollToSet(() => firstOpen(slotId), 350);
+    else scrollToSet(() => document.querySelector('#v-train .ex.is-current .set:not(.is-done)'), 1250);
+  }
   if (summaryNext) setTimeout(() => showSummary(s.id, true, true), 450);
 }
 function afterChange(prev){
@@ -3748,6 +3877,7 @@ function showSummary(sid, celebrate, fromTrain){
   const next = i.ready.map(id => { const exId = currentEx(id, s); const ex = EX[exId]; const sug = ex.k === 'bw' ? 'add reps or a little weight' : `${fmtKg((G.bests[exId] || {}).w || 0)} → add ${fmtKg(ex.inc)} kg`; return `<li>${esc(ex.n)}<b>${esc(sug)}</b></li>`; });
   openSheet(`<p class="eyebrow">${prettyDate(s.date)} · Mission ${mm.id}, ${esc(mm.name)}</p>
     <h2 class="h2">${i.complete ? 'Mission complete' : 'Mission logged'}</h2>
+    ${summaryStatsHTML(s)}
     ${i.earning ? '' : '<div class="notice warn"><b>Bonus session: no XP.</b> Muscle grows on rest days. Your records still count.</div>'}
     ${gain && carved > 0 ? `<div class="carve"><img src="${stageImg(sa.n)}" alt="" decoding="async"><div class="carve-t"><b>${esc(sa.name)}</b><span>${sa.n === sb.n ? `+${carved}% carved this session` : `New stage: ${esc(sa.name)}`}</span><div class="xpbar"><i data-to="${(sa.frac * 100).toFixed(1)}" style="width:${(sa.n === sb.n ? sb.frac * 100 : 0).toFixed(1)}%"></i></div><small>${sa.n < 10 ? `${Math.round(sa.frac * 100)}% of the way to ${esc(STAGES[sa.n].n)}` : 'The top stage'}</small></div></div>` : ''}
     ${rows.length ? `<ul class="sum-list">${rows.map(r => `<li><span>${esc(r[0])}</span><b>${esc(r[1])}</b></li>`).join('')}</ul><div class="sum-total"><span>Total</span><span>+${fmt(i.xp)} XP</span></div>` : ''}
@@ -3759,25 +3889,40 @@ function showSummary(sid, celebrate, fromTrain){
 }
 
 /* time left in the session: 30 s per set left, 3 min rest between them, plus what's left of the rest running now */
-const sessLeft = { sets: 0, started: false, planned: 0 };
+const sessLeft = { sets: 0, started: false, planned: 0, first: 0, last: 0 };
+function sessLeftSec(){
+  const L = sessLeft; const restLeft = !$('#restBar').hidden && Date.now() < rest.end ? (rest.end - Date.now()) / 1000 : 0;
+  return restLeft + L.sets * SET_SEC + Math.max(0, L.sets - 1) * REST_SEC;
+}
 function sessLeftMin(){
   const L = sessLeft; if (!L.planned || (L.started && L.sets <= 0)) return 0;
   if (!L.started) return sessionMins(L.planned);
-  const restLeft = !$('#restBar').hidden && Date.now() < rest.end ? (rest.end - Date.now()) / 1000 : 0;
-  return Math.max(1, Math.ceil((restLeft + L.sets * SET_SEC + Math.max(0, L.sets - 1) * REST_SEC) / 60));
+  return Math.max(1, Math.ceil(sessLeftSec() / 60));
 }
+// pace: the finish time now vs the one it predicted when you logged your first set
+function paceInfo(){
+  const L = sessLeft; if (!L.started || !L.first || L.sets <= 0) return null;
+  const plannedEnd = L.first + Math.max(0, L.planned - 1) * (SET_SEC + REST_SEC) * 1000;
+  const d = (Date.now() + sessLeftSec() * 1000 - plannedEnd) / 60000;
+  return Math.abs(d) < 2.5 ? { cls: 'ok', t: 'On pace' } : d > 0 ? { cls: 'late', t: `${Math.round(d)} min behind` } : { cls: 'ok', t: `${Math.round(-d)} min ahead` };
+}
+const elapsedMin = () => sessLeft.first ? Math.max(1, Math.floor(((Date.now() - sessLeft.first) / 1000 + SET_SEC) / 60)) : 0;
 // the clock time the session ends if you keep this pace
 function clockIn(min){ const d = new Date(Date.now() + min * 60000); return `${pad2(d.getHours())}:${pad2(d.getMinutes())}`; }
 function tLeftHTML(){
-  const min = sessLeftMin(); if (!min) return '';
+  const min = sessLeftMin();
+  const ic0 = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg>';
+  if (!min && sessLeft.started && sessLeft.first) return `${ic0}<span>All sets done in <b>${Math.max(1, Math.round(((sessLeft.last - sessLeft.first) / 1000 + SET_SEC) / 60))} min</b></span>`;
+  if (!min) return '';
   const ic = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg>';
-  return sessLeft.started ? `${ic}<span><b>${min} min left</b> · done by ${clockIn(min)}</span>` : `${ic}<span>About <b>${min} min</b> · done by ${clockIn(min)} if you start now</span>`;
+  const pc = paceInfo();
+  return sessLeft.started ? `${ic}<span>${elapsedMin()} min in · <b>${min} min left</b> · done by ${clockIn(min)}</span>${pc ? `<span class="pace ${pc.cls}">${pc.t}</span>` : ''}` : `${ic}<span>About <b>${min} min</b> · done by ${clockIn(min)} if you start now</span>`;
 }
 function paintSessLeft(){
   const a = $('#tLeft'); if (a) a.innerHTML = tLeftHTML();
   const min = sessLeftMin();
   const b = $('#restLeft'); if (b){ b.textContent = min ? `${min} min left` : ''; b.title = min ? `Session done by ${clockIn(min)}` : ''; }
-  const c = $('#restFsLeft'); if (c) c.textContent = min ? `Session: ${min} min left · done by ${clockIn(min)}` : '';
+  const pc = paceInfo(); const c = $('#restFsLeft'); if (c) c.textContent = min ? `Session: ${min} min left · done by ${clockIn(min)}${pc ? ` · ${pc.t.toLowerCase()}` : ''}` : '';
 }
 // the finish time moves with the clock even while you're mid-set
 setInterval(() => { if (state.view === 'train' || !$('#restBar').hidden) paintSessLeft(); }, 15000);
@@ -3885,6 +4030,146 @@ function openSSMuscle(m){
     <button class="btn btn-block" data-act="close">Close</button>`, '', null, sh => sh.setAttribute('aria-labelledby', 'ssm-title'));
 }
 
+/* ---------- time, volume and comparisons ---------- */
+// session length: first logged set to last, plus the first set itself
+function sessDurMin(s){ const ts = sessTimes(s); return ts.length ? Math.max(1, Math.round(((ts[ts.length - 1] - ts[0]) / 1000 + SET_SEC) / 60)) : null; }
+function sessVolume(s){ let v = 0, n = 0; for (const sl of slotsOf(s)){ for (const x of doneSets(s.sets && s.sets[sl.id])){ v += (+x.w || 0) * (+x.r || 0); n++; } } return { v, n }; }
+const fmtMass = v => v >= 1000 ? `${(v / 1000).toFixed(1)} t` : `${fmt(Math.round(v))} kg`;
+const fmtDur = m => m >= 60 ? `${Math.floor(m / 60)} h ${m % 60} min` : `${m} min`;
+// "That's like lifting…", rough weights
+const HEAVY = [[7, 'a bowling ball', 'bowling balls'], [70, 'a washing machine', 'washing machines'], [180, 'a gorilla', 'gorillas'], [350, 'a grand piano', 'grand pianos'],
+  [450, 'a polar bear', 'polar bears'], [550, 'a horse', 'horses'], [950, 'a Fiat 500', 'Fiat 500s'], [1500, 'a family car', 'family cars'], [2300, 'a rhino', 'rhinos'],
+  [6000, 'an African elephant', 'African elephants'], [12000, 'a city bus', 'city buses'], [40000, 'a loaded truck', 'loaded trucks'], [180000, 'a jumbo jet', 'jumbo jets']];
+function likeLifting(kg){
+  if (!(kg >= 7)) return ''; let it = HEAVY[0]; for (const h of HEAVY) if (kg >= h[0]) it = h;
+  const n = kg / it[0]; const c = n < 1.15 ? 1 : n < 3 ? Math.round(n * 10) / 10 : Math.round(n);
+  return c === 1 ? `That’s like lifting <b>${it[1]}</b>.` : `That’s like lifting <b>${c} ${it[2]}</b>.`;
+}
+function prevSameMission(s){ let out = null; for (const x of allSessions()){ if (x.id === s.id) break; if (x.m === s.m && x.date < s.date && G.info[x.id] && !G.info[x.id].empty) out = x; } return out; }
+// only the things that went up since the last time you did this mission
+function improvements(s){
+  const p = prevSameMission(s); if (!p) return [];
+  const tops = ses => { const m = {}; for (const sl of slotsOf(ses)){ const rec = ses.sets && ses.sets[sl.id]; const ds = doneSets(rec); if (!ds.length) continue; const exId = EX[rec.ex] ? rec.ex : sl.ex; const ex = EX[exId]; let t = null, reps = 0; for (const x of ds){ reps += +x.r; if (!t || metric(ex, x) > metric(ex, t)) t = x; } m[exId] = { t, reps, n: ds.length }; } return m; };
+  const a = tops(s), b = tops(p); const out = [];
+  for (const exId in a){ const ex = EX[exId], A = a[exId], B = b[exId]; if (!B) continue;
+    const fs = x => ex.k === 'bw' ? `${x.r} reps${+x.w ? ` +${fmtKg(x.w)}` : ''}` : `${fmtKg(x.w)} × ${x.r}`;
+    if (metric(ex, A.t) > metric(ex, B.t) + 1e-9) out.push([ex.n, `${fs(A.t)}, was ${fs(B.t)}`]);
+    else if (A.reps > B.reps && A.n <= B.n) out.push([ex.n, `+${A.reps - B.reps} rep${A.reps - B.reps > 1 ? 's' : ''} in total`]); }
+  if (out.length > 6){ const more = out.length - 6; out.length = 6; out.push([`${more} more lift${more > 1 ? 's' : ''} up`, 'see History for each']); }
+  const va = sessVolume(s).v, vb = sessVolume(p).v; if (va > vb + 0.5) out.push([`${fmtMass(va - vb)} more lifted`, `than last Mission ${s.m}`]);
+  const da = sessDurMin(s), db = sessDurMin(p); if (da && db && da < db && G.info[s.id].done >= G.info[p.id].done) out.push([`${db - da} min faster`, `than last Mission ${s.m}`]);
+  return out;
+}
+function summaryStatsHTML(s){
+  const d = sessDurMin(s), v = sessVolume(s); const up = improvements(s); const like = likeLifting(v.v);
+  return `<div class="sum-stats"><div><span>Time</span><b>${d ? `${d} min` : '–'}</b></div><div><span>Sets</span><b>${v.n}</b></div><div><span>Lifted</span><b>${fmtMass(v.v)}</b></div></div>
+    ${like ? `<p class="sum-like">${like}</p>` : ''}
+    ${up.length ? `<div style="width:100%"><h3 class="h3" style="font-size:16px;margin-bottom:8px;color:var(--good)">Better than last time</h3><ul class="sum-up">${up.map(([a, b]) => `<li>▲ ${esc(a)} <span>· ${esc(b)}</span></li>`).join('')}</ul></div>` : ''}`;
+}
+
+// minutes per exercise: the time since your previous set counts toward this one (capped, in case you stopped)
+function exMinutes(s){
+  const all = []; for (const sl of slotsOf(s)){ const rec = s.sets && s.sets[sl.id]; if (!rec) continue; const exId = EX[rec.ex] ? rec.ex : sl.ex; for (const x of doneSets(rec)) if (x.t) all.push({ t: x.t, exId }); }
+  all.sort((a, b) => a.t - b.t); const out = {};
+  all.forEach((x, k) => { const sec = k ? Math.min((x.t - all[k - 1].t) / 1000, 12 * 60) : SET_SEC; out[x.exId] = (out[x.exId] || 0) + sec; });
+  return out;
+}
+function timeCardHTML(){
+  const live = allSessions().filter(s => G.info[s.id] && !G.info[s.id].empty && sessDurMin(s));
+  if (!live.length) return '';
+  const fast = MISSIONS.map(mm => { const full = live.filter(s => s.m === mm.id && G.info[s.id].flawless); const pool = full.length ? full : []; let b = null; for (const s of pool){ const d = sessDurMin(s); if (!b || d < b.d) b = { d, date: s.date }; } return [mm, b]; });
+  const since = addDays(todayStr(), -56); const sums = {}, cnt = {};
+  for (const s of live.filter(x => x.date > since)){ const em = exMinutes(s); for (const id in em){ sums[id] = (sums[id] || 0) + em[id]; cnt[id] = (cnt[id] || 0) + 1; } }
+  const avg = Object.keys(sums).map(id => [id, sums[id] / cnt[id] / 60]).sort((a, b) => b[1] - a[1]); const top = avg.length ? avg[0][1] : 1;
+  const recent = live.filter(x => x.date > addDays(todayStr(), -28)); const avgLen = recent.length ? Math.round(recent.reduce((a, s) => a + sessDurMin(s), 0) / recent.length) : null;
+  return `<section class="card stack" style="gap:16px"><div class="sec-h" style="margin-bottom:0"><h2 class="h3">Session time</h2><span class="muted">${avgLen ? `${avgLen} min average, last 4 weeks` : ''}</span></div>
+    <div class="tm-fast">${fast.map(([mm, b]) => `<div><span>Fastest ${mm.id}</span><b>${b ? `${b.d}<small style="display:inline;font-size:14px;color:inherit;font-family:var(--f-body);font-weight:700"> min</small>` : '–'}</b><small>${b ? shortDate(b.date) : 'all sets, not yet'}</small></div>`).join('')}</div>
+    <div><div class="chart-t">Every session<span>minutes</span></div><div class="chart" id="tm-chart"></div></div>
+    ${avg.length ? `<div><div class="chart-t" style="margin-bottom:10px">Where your time goes<span>per session</span></div><ul class="tm-ex">${avg.slice(0, 8).map(([id, m]) => `<li><span>${esc(EX[id].n)}</span><i><em style="width:${Math.round(m / top * 100)}%"></em></i><b>${m.toFixed(m < 10 ? 1 : 0)} min</b></li>`).join('')}</ul></div>` : ''}
+    <p class="fc-note">Timed from your first logged set to your last. Fastest counts only sessions with every planned set done. Where your time goes is the average over the last 8 weeks, counting the time since your previous set.</p>
+  </section>`;
+}
+function drawTimeChart(){
+  const el = $('#tm-chart'); if (!el) return;
+  const pts = allSessions().filter(s => G.info[s.id] && !G.info[s.id].empty).map(s => ({ date: s.date, v: sessDurMin(s) })).filter(x => x.v);
+  if (pts.length < 2){ el.innerHTML = '<p class="muted" style="font-size:14px">The graph starts after your second timed session.</p>'; return; }
+  lineChart(el, pts, 'min', 'Session length');
+}
+
+// kilos lifted each week, the last 12 weeks
+function volumeCardHTML(){
+  const t = todayStr(), thisMon = mondayOf(t); const live = allSessions().filter(s => G.info[s.id] && !G.info[s.id].empty); if (!live.length) return '';
+  const firstMon = mondayOf(live[0].date); const weeks = [];
+  for (let k = 11; k >= 0; k--){ const mon = addDays(thisMon, -7 * k); if (mon < firstMon) continue; weeks.push({ mon, v: 0 }); }
+  for (const s of live){ const w = weeks.find(x => x.mon === mondayOf(s.date)); if (w) w.v += sessVolume(s).v; }
+  const max = Math.max(...weeks.map(w => w.v), 1); const W = 340, H = 150, top = 22, base = 122, n = weeks.length, slot = W / Math.max(n, 6), bw = Math.min(30, slot * 0.62);
+  const bars = weeks.map((w, k) => { const x = k * slot + (slot - bw) / 2; const h = Math.max(w.v > 0 ? 3 : 0, (w.v / max) * (base - top)); const cur = w.mon === thisMon;
+    return `<rect x="${x.toFixed(1)}" y="${(base - h).toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="4" fill="${cur ? 'rgba(226,35,26,.45)' : 'var(--accent)'}"/>
+      ${w.v > 0 ? `<text x="${(x + bw / 2).toFixed(1)}" y="${(base - h - 6).toFixed(1)}" text-anchor="middle" class="vv">${w.v >= 1000 ? (w.v / 1000).toFixed(1) + 't' : Math.round(w.v)}</text>` : ''}
+      ${(n <= 6 || k % 2 === (n - 1) % 2) ? `<text x="${(x + bw / 2).toFixed(1)}" y="${base + 18}" text-anchor="middle">${cur ? 'Now' : shortDate(w.mon).replace(/^0/, '')}</text>` : ''}`; }).join('');
+  const last = weeks[weeks.length - 1], prev = weeks[weeks.length - 2];
+  return `<section class="card"><div class="sec-h"><h2 class="h3">Kilos lifted per week</h2><span class="muted">${prev ? `last week ${fmtMass(prev.v)}` : ''}</span></div>
+    <svg class="vol-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Kilos lifted per week. This week so far ${fmtMass(last.v)}${prev ? `, last week ${fmtMass(prev.v)}` : ''}.">${bars}<line x1="0" x2="${W}" y1="${base}" y2="${base}" stroke="var(--line)"/></svg>
+    <p class="fc-note" style="margin-top:6px">Weight × reps for every set. This week’s bar is lighter until it’s over.</p></section>`;
+}
+
+// then vs now: each lift's latest session against the last one at least N weeks ago
+function thenNowHTML(){
+  const N = state.tvn || 4; const cut = addDays(todayStr(), -7 * N); const rows = [];
+  for (const exId of Object.keys(G.bests)){
+    const ex = EX[exId]; if (!ex) continue; const H = liftHistory(exId); if (H.length < 2) continue;
+    const now = H[H.length - 1]; let then = null; for (const h of H) if (h.date <= cut) then = h; if (!then || then.date >= now.date) continue;
+    const top = h => h.sets.reduce((a, x) => !a || metric(ex, x) > metric(ex, a) ? x : a, null);
+    const a = top(then), b = top(now); const ea = metric(ex, a), eb = metric(ex, b);
+    const fs = x => ex.k === 'bw' ? `${x.r} reps${x.w ? ` +${fmtKg(x.w)}` : ''}` : `${fmtKg(x.w)} × ${x.r}`;
+    rows.push({ ex, a: fs(a), b: fs(b), pct: ea > 0 ? (eb / ea - 1) * 100 : 0, d: then.date });
+  }
+  rows.sort((x, y) => y.pct - x.pct);
+  const seg = `<div class="seg-sm" role="group" aria-label="Compare with">${[4, 8, 12].map(w => `<button data-act="tvn" data-w="${w}" aria-pressed="${w === N ? 'true' : 'false'}">${w} wk</button>`).join('')}</div>`;
+  return `<section class="card stack" style="gap:12px"><div class="sec-h" style="margin-bottom:0;align-items:center"><h2 class="h3">Then vs now</h2>${seg}</div>
+    ${rows.length ? `<ul class="tvn-list">${rows.map(r => `<li><span class="tn">${esc(r.ex.n)}</span><span class="tv">${r.a} <span aria-hidden="true">→</span> <b>${r.b}</b></span><span class="tp ${r.pct > 0.5 ? 'up' : r.pct < -0.5 ? 'down' : ''}">${r.pct > 0 ? '+' : ''}${Math.round(r.pct)}%</span></li>`).join('')}</ul>
+    <p class="fc-note">Best set then against your latest session, as an estimated max.</p>` : `<p class="lede">Nothing to compare yet. Lifts show up here once you’ve trained them ${N} weeks apart.</p>`}
+  </section>`;
+}
+
+// year in review
+function yearReview(y){
+  const live = allSessions().filter(s => s.date.startsWith(String(y)) && G.info[s.id] && !G.info[s.id].empty);
+  let mins = 0, vol = 0, sets = 0, prs = 0; const months = {}, exSets = {}, musSets = {}, weeks = new Set();
+  for (const s of live){ mins += sessDurMin(s) || 0; const v = sessVolume(s); vol += v.v; sets += v.n; prs += G.info[s.id].prs.length; weeks.add(mondayOf(s.date));
+    const mo = +s.date.slice(5, 7) - 1; months[mo] = (months[mo] || 0) + 1;
+    for (const sl of slotsOf(s)){ const rec = s.sets && s.sets[sl.id]; const n = doneSets(rec).length; if (!n) continue; const exId = EX[rec.ex] ? rec.ex : sl.ex; exSets[exId] = (exSets[exId] || 0) + n; const m = EX[exId].m; musSets[m] = (musSets[m] || 0) + n; } }
+  const topMonth = Object.entries(months).sort((a, b) => b[1] - a[1])[0];
+  const fav = Object.entries(exSets).sort((a, b) => b[1] - a[1])[0];
+  const mus = Object.entries(musSets).sort((a, b) => b[1] - a[1])[0];
+  const ss = ssHistory().pts.filter(p => p.date.startsWith(String(y)));
+  return { y, n: live.length, mins, vol, sets, prs, weeks: weeks.size, topMonth, fav, mus, ssFrom: ss[0], ssTo: ss[ss.length - 1] };
+}
+const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+function openYear(y){
+  const r = yearReview(y); const done = todayStr() > `${y}-12-31`;
+  if (!r.n){ toast(`No sessions logged in ${y} yet.`); return; }
+  openSheet(`<header class="stack" style="gap:6px"><p class="eyebrow">Chisel · ${done ? 'Year in review' : 'Your year so far'}</p><h2 class="h2" id="yr-title">${y}${done ? ' in review' : ', so far'}</h2></header>
+    <div class="yr">
+      <div class="yr-b red"><span>Workouts</span><b>${r.n}</b><small>${r.weeks} week${r.weeks === 1 ? '' : 's'} with training · ${fmt(r.sets)} sets</small></div>
+      <div class="yr-two"><div class="yr-b"><span>Time training</span><b>${Math.round(r.mins / 60 * 10) / 10} h</b></div><div class="yr-b"><span>Records</span><b>${r.prs}</b></div></div>
+      <div class="yr-b"><span>Lifted in total</span><b>${fmtMass(r.vol)}</b>${likeLifting(r.vol) ? `<small>${likeLifting(r.vol).replace(/<\/?b>/g, '')}</small>` : ''}</div>
+      ${r.topMonth ? `<div class="yr-b"><span>Most productive month</span><b>${MONTH_NAMES[+r.topMonth[0]]}</b><small>${r.topMonth[1]} workouts</small></div>` : ''}
+      ${r.fav ? `<div class="yr-b"><span>Favourite lift</span><b style="font-size:30px;line-height:1.05">${esc(EX[r.fav[0]].n)}</b><small>${r.fav[1]} sets${G.bests[r.fav[0]] ? `, best ${EX[r.fav[0]].k === 'bw' ? `${G.bests[r.fav[0]].r} reps` : `${fmtKg(G.bests[r.fav[0]].w)} × ${G.bests[r.fav[0]].r}`}` : ''}</small></div>` : ''}
+      <div class="yr-two">${r.mus ? `<div class="yr-b"><span>Most trained</span><b style="font-size:28px">${esc(MUSCLES[r.mus[0]].n)}</b><small>${r.mus[1]} sets</small></div>` : ''}${r.ssTo ? `<div class="yr-b"><span>Strength Score</span><b style="font-size:28px">${r.ssFrom && r.ssFrom.v !== r.ssTo.v ? `${r.ssFrom.v} → ${r.ssTo.v}` : r.ssTo.v}</b><small>${SS_LV[ssLevel(r.ssTo.v)]}</small></div>` : ''}</div>
+    </div>
+    <button class="btn btn-gold btn-block" data-act="close">Done</button>`, '', null, sh => sh.setAttribute('aria-labelledby', 'yr-title'));
+  sfx.level(); haptic.double(); setTimeout(() => fx.burst(innerWidth / 2, innerHeight * 0.3, 40, 'gold'), 80);
+}
+function yearCardHTML(onToday){
+  const t = todayStr(); const y = +t.slice(0, 4); const dec = t.slice(5, 7) === '12';
+  if (onToday && !dec) return '';
+  if (!allSessions().some(s => s.date.startsWith(String(y)) && G.info[s.id] && !G.info[s.id].empty)) return '';
+  return `<section class="card recap" style="gap:12px"><div><p class="eyebrow">${dec ? 'It’s ready' : 'Year in review'}</p><h2 class="h2" style="margin-top:6px">${dec ? `Your ${y} in review` : `Your ${y} so far`}</h2></div>
+    <p style="color:#D9D9D4;font-size:15px;line-height:1.45">Workouts, hours, tonnes lifted, records, your favourite lift and more.</p>
+    <button class="btn btn-gold btn-block" data-act="year" data-y="${y}">Open ${dec ? 'it' : 'your year'}</button></section>`;
+}
+
 /* lift history: every session of one lift, with a graph of the heaviest set */
 function liftHistory(exId){
   const out = [];
@@ -3909,6 +4194,10 @@ function openLiftHistory(exId){
   openSheet(`<header class="stack" style="gap:6px"><p class="eyebrow">Lift history</p><h2 class="h2" id="lh-title">${esc(ex.n)}</h2></header>
     ${H.length ? `<div class="lh-tiles"><div><span>Best set</span><b>${best ? fmtS(best) : '–'}</b></div><div><span>Sessions</span><b>${H.length}</b></div><div><span>Sets</span><b>${nSets}</b></div></div>
     <div><div class="chart-t">${bw ? 'Most reps' : 'Heaviest set'}<span>${H.length > 1 ? `${change > 0 ? '+' : ''}${fmtKg(change)} ${bw ? 'reps' : 'kg'} since ${shortDate(H[0].date)}` : 'every session'}</span></div><div class="chart" id="lh-chart"></div></div>
+    ${bw ? '' : (() => { const best = {}; for (const h of H) for (const x of h.sets){ if (!(x.r > 0)) continue; for (let r = 1; r <= Math.min(x.r, 20); r++) if (!(best[r] >= x.w)) best[r] = x.w; }
+      const all = H.flatMap(h => h.sets.map(x => x.r)).filter(r => r > 0); if (!all.length) return ''; const lo = Math.min(...all), hi = Math.min(20, Math.max(...all));
+      const cells = []; for (let r = lo; r <= hi; r++) if (best[r] !== undefined) cells.push(`<div><span>${r} rep${r > 1 ? 's' : ''}</span><b>${fmtKg(best[r])}</b></div>`);
+      return cells.length ? `<div><div class="chart-t" style="margin-bottom:8px">Set records<span>heaviest kg for that many reps or more</span></div><div class="sr-grid">${cells.join('')}</div></div>` : ''; })()}
     <ul class="lh-list">${rows}</ul>` : '<p class="lede">No sets on this lift yet. Log one and its history starts here.</p>'}
     <button class="btn btn-block" data-act="close">Close</button>`, '', null, sh => {
     sh.setAttribute('aria-labelledby', 'lh-title');
@@ -4206,6 +4495,7 @@ function renderProgress(){
     const fcl = fcListHTML();
     body = `
     ${ssCardHTML()}
+    ${thenNowHTML()}
     <section class="card"><div class="sec-h" style="margin-bottom:4px"><h2 class="h3">Strength forecast</h2><span class="muted">now → in 12 weeks</span></div>
       ${fcl ? `<p class="fc-note">Worked out from your own sets and how often you train. Tap a lift for its full forecast.</p>${fcl}` : '<p class="lede">Log a mission and every lift you train gets a forecast here: what you’ll be lifting in 4, 8 and 12 weeks.</p>'}
     </section>
@@ -4227,7 +4517,7 @@ function renderProgress(){
     const shown = state.showAllHist ? sess : sess.slice(0, 8);
     const t0 = todayStr(); const wkNow = mondayOf(t0);
     const recap = recapHTML(wkNow, isoDow(t0) === 7 ? 'Your week' : 'This week so far') || recapHTML(addDays(wkNow, -7), 'Last week');
-    body = `${recap}${heatmapHTML()}<section class="card"><div class="sec-h"><h2 class="h3">History</h2><span class="muted">${sess.length} session${sess.length === 1 ? '' : 's'}</span></div>
+    body = `${recap}${yearCardHTML(false)}${volumeCardHTML()}${timeCardHTML()}${heatmapHTML()}<section class="card"><div class="sec-h"><h2 class="h3">History</h2><span class="muted">${sess.length} session${sess.length === 1 ? '' : 's'}</span></div>
       ${sess.length ? `<ul class="hist">${shown.map(s => historyItem(s)).join('')}</ul>${sess.length > 8 ? `<button class="btn btn-sm mt10" data-act="hist-all">${state.showAllHist ? 'Show fewer' : `Show all ${sess.length}`}</button>` : ''}` : '<p class="lede">Your missions will show up here.</p>'}
     </section>
     <section class="card"><div class="sec-h"><h2 class="h3">XP log</h2><span class="muted">${fmt(G.xp)} total</span></div>
@@ -4238,6 +4528,7 @@ function renderProgress(){
   el.innerHTML = head + body;
   if (tab === 'body') drawCharts();
   if (tab === 'lifts') drawSSChart();
+  if (tab === 'log') drawTimeChart();
   const hm = el.querySelector('.hm-scroll'); if (hm) hm.scrollLeft = hm.scrollWidth;
   Viz.hydrate();
 }
@@ -4269,7 +4560,7 @@ function scanCardHTML(cis){
 function historyItem(s){
   const i = G.info[s.id]; const mm = MISSION_BY_ID[s.m];
   const lines = slotsOf(s).map(sl => { const rec = s.sets && s.sets[sl.id]; const ds = doneSets(rec); if (!ds.length) return ''; const e = EX[EX[rec.ex] ? rec.ex : sl.ex]; return `<div><b>${esc(e.n)}</b> · ${ds.map(x => e.k === 'bw' ? `${x.r}${+x.w ? ` (+${fmtKg(x.w)})` : ''}` : `${fmtKg(x.w)}×${x.r}`).join(', ')}</div>`; }).join('');
-  return `<li><details><summary><span class="h-t">${prettyDate(s.date)} · Mission ${s.m}<small>${i.done}/${i.planned} sets${i.prs.length ? ` · ${i.prs.length} PR${i.prs.length > 1 ? 's' : ''}` : ''}${i.earning ? '' : ' · bonus, no XP'}</small></span><span class="h-xp">+${fmt(i.xp)}</span></summary>
+  return `<li><details><summary><span class="h-t">${prettyDate(s.date)} · Mission ${s.m}<small>${i.done}/${i.planned} sets${sessDurMin(s) ? ` · ${sessDurMin(s)} min` : ''}${i.prs.length ? ` · ${i.prs.length} PR${i.prs.length > 1 ? 's' : ''}` : ''}${i.earning ? '' : ' · bonus, no XP'}</small></span><span class="h-xp">+${fmt(i.xp)}</span></summary>
     <div class="h-body">${lines}<div class="btn-row mt6"><button class="btn btn-sm" data-act="summary" data-sid="${s.id}">Summary</button><button class="btn btn-sm btn-danger" data-act="del-session" data-sid="${s.id}">Delete</button></div></div></details></li>`;
 }
 function niceTicks(lo, hi, n){
@@ -4570,6 +4861,15 @@ const actions = {
   'rest-add': a => { if (Date.now() >= rest.end){ if (+a.dataset.s > 0) startRest(+a.dataset.s, $('#restSub').textContent); return; } rest.end += (+a.dataset.s) * 1000; rest.total = Math.max(rest.total, (rest.end - Date.now()) / 1000); clearTimeout(rest.timer); tickRest(); },
   'rest-skip': () => stopRest(),
   plates: a => openPlates(a.dataset.slot),
+  later: a => doLater(a.dataset.slot),
+  tvn: a => { state.tvn = +a.dataset.w; const y = window.scrollY; renderProgress(); window.scrollTo(0, y); },
+  year: a => openYear(+a.dataset.y),
+  'same-set': a => {
+    const row = a.closest('.set'), card = a.closest('.ex'); const pr = card && card.querySelector(`.set[data-i="${+row.dataset.i - 1}"]`); if (!pr) return;
+    const w = row.querySelector('.in-w'), r = row.querySelector('.in-r');
+    w.value = pr.querySelector('.in-w').value; r.value = pr.querySelector('.in-r').value;
+    onSetInput(w); onSetInput(r); haptic.tap(); a.textContent = 'Copied ✓';
+  },
   'lift-hist': a => { haptic.tap(); openLiftHistory(a.dataset.ex); },
   'hm-day': a => hmDay(a),
   'ss-muscle': a => { haptic.tap(); openSSMuscle(a.dataset.m); },
