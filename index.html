@@ -707,7 +707,7 @@ p,.lede,.meta,.notice{text-wrap:pretty}
 
 <div class="restbar" id="restBar" hidden>
   <div class="restbar-in">
-    <button type="button" class="rest-open" data-act="rest-full" aria-label="Open the timer full screen"><div class="rest-k"><span id="restK">Rest</span><svg class="rest-ex" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg></div><div class="rest-t" id="restT">2:00</div></button>
+    <button type="button" class="rest-open" data-act="rest-full" aria-label="Open the timer full screen"><div class="rest-k"><span id="restK">Rest</span><svg class="rest-ex" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg></div><div class="rest-t" id="restT">3:00</div></button>
     <div class="rest-sub" id="restSub"></div>
     <div class="rest-btns">
       <button type="button" data-act="rest-add" data-s="-15" aria-label="15 seconds less">−15</button>
@@ -722,7 +722,7 @@ p,.lede,.meta,.notice{text-wrap:pretty}
   <button type="button" class="restfs-x" data-act="rest-min" aria-label="Shrink the timer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
   <div class="restfs-k" id="restFsK">Rest</div>
   <div class="ring"><svg viewBox="0 0 200 200" aria-hidden="true"><circle class="ring-bg" cx="100" cy="100" r="90"/><circle class="ring-fg" id="restRing" cx="100" cy="100" r="90" stroke-dasharray="565.49" stroke-dashoffset="0"/></svg>
-    <div class="ring-c"><div class="restfs-t" id="restFsT" aria-live="off">2:00</div><div class="restfs-p" id="restFsP">100% left</div></div></div>
+    <div class="ring-c"><div class="restfs-t" id="restFsT" aria-live="off">3:00</div><div class="restfs-p" id="restFsP">100% left</div></div></div>
   <div class="restfs-sub" id="restFsSub"></div>
   <div class="restfs-btns">
     <button type="button" data-act="rest-add" data-s="-15" aria-label="15 seconds less">−15</button>
@@ -832,38 +832,38 @@ const LEGACY_MISSIONS = [
   { id: 'A', dow: 1, day: 'Monday', code: 'Upper A', short: 'Chest', name: 'Chest & Shoulders', mins: 65,
     focus: [['Chest', 1], ['Side delts', 1], ['Triceps', 0], ['Lats', 0]],
     slots: [
-      { id: 'A1', ex: 'bench', alts: ['smith_bench', 'chest_press'], sets: 3, lo: 6, hi: 8, rest: 150 },
-      { id: 'A2', ex: 'incline_machine', alts: ['incline_smith', 'incline_bb'], sets: 3, lo: 8, hi: 10, rest: 120 },
-      { id: 'A3', ex: 'lat_pulldown', alts: ['pullup', 'close_pulldown'], sets: 3, lo: 8, hi: 10, rest: 120 },
-      { id: 'A4', ex: 'shoulder_press', alts: ['smith_ohp'], sets: 2, lo: 8, hi: 10, rest: 120 },
-      { id: 'A5', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 3, lo: 12, hi: 15, rest: 75, od: 1, tech: 'drop' },
-      { id: 'A6', ex: 'pec_deck', alts: ['cable_fly'], sets: 2, lo: 10, hi: 15, rest: 90 },
-      { id: 'A7', ex: 'rope_pushdown', alts: ['bar_pushdown'], sets: 3, lo: 10, hi: 12, rest: 75, pair: 'A8', tech: 'drop' },
-      { id: 'A8', ex: 'hammer_curl', alts: ['rope_hammer'], sets: 2, lo: 10, hi: 12, rest: 75, pair: 'A7' }
+      { id: 'A1', ex: 'bench', alts: ['smith_bench', 'chest_press'], sets: 3, lo: 6, hi: 8, rest: 180 },
+      { id: 'A2', ex: 'incline_machine', alts: ['incline_smith', 'incline_bb'], sets: 3, lo: 8, hi: 10, rest: 180 },
+      { id: 'A3', ex: 'lat_pulldown', alts: ['pullup', 'close_pulldown'], sets: 3, lo: 8, hi: 10, rest: 180 },
+      { id: 'A4', ex: 'shoulder_press', alts: ['smith_ohp'], sets: 2, lo: 8, hi: 10, rest: 180 },
+      { id: 'A5', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 3, lo: 12, hi: 15, rest: 180, od: 1, tech: 'drop' },
+      { id: 'A6', ex: 'pec_deck', alts: ['cable_fly'], sets: 2, lo: 10, hi: 15, rest: 180 },
+      { id: 'A7', ex: 'rope_pushdown', alts: ['bar_pushdown'], sets: 3, lo: 10, hi: 12, rest: 180, pair: 'A8', tech: 'drop' },
+      { id: 'A8', ex: 'hammer_curl', alts: ['rope_hammer'], sets: 2, lo: 10, hi: 12, rest: 180, pair: 'A7' }
     ] },
   { id: 'B', dow: 4, day: 'Thursday', code: 'Upper B', short: 'Back', name: 'Back & Arms', mins: 65,
     focus: [['Upper chest', 1], ['Lats', 0], ['Biceps', 1], ['Rear delts', 0], ['Side delts', 1]],
     slots: [
-      { id: 'B1', ex: 'incline_bb', alts: ['incline_smith', 'incline_machine'], sets: 3, lo: 6, hi: 10, rest: 150 },
-      { id: 'B2', ex: 'close_pulldown', alts: ['lat_pulldown', 'pullup'], sets: 3, lo: 8, hi: 10, rest: 120 },
-      { id: 'B3', ex: 'machine_row', alts: ['bb_row', 'cable_row'], sets: 3, lo: 8, hi: 10, rest: 120 },
-      { id: 'B4', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 3, lo: 12, hi: 15, rest: 75, od: 1, pair: 'B5' },
-      { id: 'B5', ex: 'face_pull', alts: ['reverse_pec'], sets: 3, lo: 12, hi: 15, rest: 75, pair: 'B4' },
-      { id: 'B6', ex: 'ez_curl', alts: ['bb_curl', 'cable_curl'], sets: 3, lo: 8, hi: 12, rest: 90, tech: 'myo' },
-      { id: 'B7', ex: 'cable_crunch', alts: ['machine_crunch'], sets: 3, lo: 10, hi: 15, rest: 60 }
+      { id: 'B1', ex: 'incline_bb', alts: ['incline_smith', 'incline_machine'], sets: 3, lo: 6, hi: 10, rest: 180 },
+      { id: 'B2', ex: 'close_pulldown', alts: ['lat_pulldown', 'pullup'], sets: 3, lo: 8, hi: 10, rest: 180 },
+      { id: 'B3', ex: 'machine_row', alts: ['bb_row', 'cable_row'], sets: 3, lo: 8, hi: 10, rest: 180 },
+      { id: 'B4', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 3, lo: 12, hi: 15, rest: 180, od: 1, pair: 'B5' },
+      { id: 'B5', ex: 'face_pull', alts: ['reverse_pec'], sets: 3, lo: 12, hi: 15, rest: 180, pair: 'B4' },
+      { id: 'B6', ex: 'ez_curl', alts: ['bb_curl', 'cable_curl'], sets: 3, lo: 8, hi: 12, rest: 180, tech: 'myo' },
+      { id: 'B7', ex: 'cable_crunch', alts: ['machine_crunch'], sets: 3, lo: 10, hi: 15, rest: 180 }
     ] },
   { id: 'C', dow: 6, day: 'Saturday', code: 'Lower + Arms', short: 'Legs', name: 'Legs, Arms & Abs', mins: 70,
     focus: [['Legs', 0], ['Biceps', 1], ['Triceps', 0], ['Side delts', 1], ['Abs', 0]],
     slots: [
-      { id: 'C1', ex: 'hack_squat', alts: ['leg_press'], sets: 3, lo: 8, hi: 10, rest: 150 },
-      { id: 'C2', ex: 'back_ext', alts: ['seated_leg_curl'], sets: 3, lo: 10, hi: 15, rest: 90 },
-      { id: 'C3', ex: 'leg_press', alts: ['leg_ext'], sets: 2, lo: 10, hi: 12, rest: 120 },
-      { id: 'C4', ex: 'leg_curl', alts: ['seated_leg_curl'], sets: 2, lo: 10, hi: 12, rest: 90 },
-      { id: 'C5', ex: 'calf_raise', alts: ['lp_calf'], sets: 3, lo: 10, hi: 15, rest: 60 },
-      { id: 'C6', ex: 'incline_db_curl', alts: ['preacher_curl'], sets: 3, lo: 10, hi: 12, rest: 75, od: 1, pair: 'C7', tech: 'myo' },
-      { id: 'C7', ex: 'overhead_ext', alts: ['skullcrusher'], sets: 3, lo: 10, hi: 12, rest: 75, pair: 'C6' },
-      { id: 'C8', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 3, lo: 12, hi: 20, rest: 60, od: 1, pair: 'C9', tech: 'partials' },
-      { id: 'C9', ex: 'hanging_leg_raise', alts: ['captains_chair'], sets: 3, lo: 10, hi: 15, rest: 60, pair: 'C8' }
+      { id: 'C1', ex: 'hack_squat', alts: ['leg_press'], sets: 3, lo: 8, hi: 10, rest: 180 },
+      { id: 'C2', ex: 'back_ext', alts: ['seated_leg_curl'], sets: 3, lo: 10, hi: 15, rest: 180 },
+      { id: 'C3', ex: 'leg_press', alts: ['leg_ext'], sets: 2, lo: 10, hi: 12, rest: 180 },
+      { id: 'C4', ex: 'leg_curl', alts: ['seated_leg_curl'], sets: 2, lo: 10, hi: 12, rest: 180 },
+      { id: 'C5', ex: 'calf_raise', alts: ['lp_calf'], sets: 3, lo: 10, hi: 15, rest: 180 },
+      { id: 'C6', ex: 'incline_db_curl', alts: ['preacher_curl'], sets: 3, lo: 10, hi: 12, rest: 180, od: 1, pair: 'C7', tech: 'myo' },
+      { id: 'C7', ex: 'overhead_ext', alts: ['skullcrusher'], sets: 3, lo: 10, hi: 12, rest: 180, pair: 'C6' },
+      { id: 'C8', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 3, lo: 12, hi: 20, rest: 180, od: 1, pair: 'C9', tech: 'partials' },
+      { id: 'C9', ex: 'hanging_leg_raise', alts: ['captains_chair'], sets: 3, lo: 10, hi: 15, rest: 180, pair: 'C8' }
     ] }
 ];
 // the plan from 6 to 7 Nov 2026 (2 × 6–8 on everything). Sessions logged then keep it.
@@ -871,35 +871,35 @@ const V2_MISSIONS = [
   { id: 'A', dow: 1, day: 'Monday', code: 'Upper A', short: 'Chest', name: 'Chest & Shoulders', mins: 45,
     focus: [['Chest', 1], ['Side delts', 1], ['Triceps', 0], ['Lats', 0]],
     slots: [
-      { id: 'A1', ex: 'bench', alts: ['smith_bench', 'chest_press'], sets: 2, lo: 6, hi: 8, rest: 150 },
-      { id: 'A2', ex: 'incline_machine', alts: ['incline_smith', 'incline_bb'], sets: 2, lo: 6, hi: 8, rest: 120 },
-      { id: 'A3', ex: 'lat_pulldown', alts: ['pullup', 'close_pulldown'], sets: 2, lo: 6, hi: 8, rest: 120 },
-      { id: 'A4', ex: 'shoulder_press', alts: ['smith_ohp'], sets: 2, lo: 6, hi: 8, rest: 120 },
-      { id: 'A5', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 6, hi: 8, rest: 90, tech: 'drop' },
-      { id: 'A6', ex: 'pec_deck', alts: ['cable_fly'], sets: 2, lo: 6, hi: 8, rest: 90 },
-      { id: 'A7', ex: 'rope_pushdown', alts: ['bar_pushdown'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'A8', tech: 'drop' },
-      { id: 'A8', ex: 'hammer_curl', alts: ['rope_hammer'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'A7' }
+      { id: 'A1', ex: 'bench', alts: ['smith_bench', 'chest_press'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'A2', ex: 'incline_machine', alts: ['incline_smith', 'incline_bb'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'A3', ex: 'lat_pulldown', alts: ['pullup', 'close_pulldown'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'A4', ex: 'shoulder_press', alts: ['smith_ohp'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'A5', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 6, hi: 8, rest: 180, tech: 'drop' },
+      { id: 'A6', ex: 'pec_deck', alts: ['cable_fly'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'A7', ex: 'rope_pushdown', alts: ['bar_pushdown'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'A8', tech: 'drop' },
+      { id: 'A8', ex: 'hammer_curl', alts: ['rope_hammer'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'A7' }
     ] },
   { id: 'B', dow: 4, day: 'Thursday', code: 'Upper B', short: 'Back', name: 'Back & Arms', mins: 40,
     focus: [['Upper chest', 1], ['Lats', 0], ['Biceps', 1], ['Rear delts', 0], ['Side delts', 1]],
     slots: [
-      { id: 'B1', ex: 'incline_bb', alts: ['incline_smith', 'incline_machine'], sets: 2, lo: 6, hi: 8, rest: 150 },
-      { id: 'B2', ex: 'close_pulldown', alts: ['lat_pulldown', 'pullup'], sets: 2, lo: 6, hi: 8, rest: 120 },
-      { id: 'B3', ex: 'machine_row', alts: ['bb_row', 'cable_row'], sets: 2, lo: 6, hi: 8, rest: 120 },
-      { id: 'B4', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'B5' },
-      { id: 'B5', ex: 'face_pull', alts: ['reverse_pec'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'B4' },
-      { id: 'B6', ex: 'ez_curl', alts: ['bb_curl', 'cable_curl'], sets: 2, lo: 6, hi: 8, rest: 90, tech: 'myo' },
-      { id: 'B7', ex: 'cable_crunch', alts: ['machine_crunch'], sets: 2, lo: 6, hi: 8, rest: 75 }
+      { id: 'B1', ex: 'incline_bb', alts: ['incline_smith', 'incline_machine'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'B2', ex: 'close_pulldown', alts: ['lat_pulldown', 'pullup'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'B3', ex: 'machine_row', alts: ['bb_row', 'cable_row'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'B4', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'B5' },
+      { id: 'B5', ex: 'face_pull', alts: ['reverse_pec'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'B4' },
+      { id: 'B6', ex: 'ez_curl', alts: ['bb_curl', 'cable_curl'], sets: 2, lo: 6, hi: 8, rest: 180, tech: 'myo' },
+      { id: 'B7', ex: 'cable_crunch', alts: ['machine_crunch'], sets: 2, lo: 6, hi: 8, rest: 180 }
     ] },
   { id: 'C', dow: 6, day: 'Saturday', code: 'Lower + Arms', short: 'Legs', name: 'Legs, Arms & Abs', mins: 35,
     focus: [['Legs', 0], ['Biceps', 1], ['Triceps', 0], ['Side delts', 1], ['Abs', 0]],
     slots: [
-      { id: 'C1', ex: 'hack_squat', alts: ['leg_press'], sets: 2, lo: 6, hi: 8, rest: 150 },
-      { id: 'C2', ex: 'back_ext', alts: ['seated_leg_curl'], sets: 2, lo: 6, hi: 8, rest: 120 },
-      { id: 'C3', ex: 'incline_db_curl', alts: ['preacher_curl'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'C4', tech: 'myo' },
-      { id: 'C4', ex: 'overhead_ext', alts: ['skullcrusher'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'C3' },
-      { id: 'C5', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'C6', tech: 'partials' },
-      { id: 'C6', ex: 'hanging_leg_raise', alts: ['captains_chair'], sets: 2, lo: 6, hi: 8, rest: 75, pair: 'C5' }
+      { id: 'C1', ex: 'hack_squat', alts: ['leg_press'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'C2', ex: 'back_ext', alts: ['seated_leg_curl'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'C3', ex: 'incline_db_curl', alts: ['preacher_curl'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'C4', tech: 'myo' },
+      { id: 'C4', ex: 'overhead_ext', alts: ['skullcrusher'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'C3' },
+      { id: 'C5', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'C6', tech: 'partials' },
+      { id: 'C6', ex: 'hanging_leg_raise', alts: ['captains_chair'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'C5' }
     ] }
 ];
 // the plan from 7 Nov 2026, after the body scan: 2 × 6–8 everywhere except lateral raises (10–15, strict),
@@ -908,35 +908,35 @@ const V3_MISSIONS = [
   { id: 'A', dow: 1, day: 'Monday', code: 'Upper A', short: 'Chest', name: 'Chest & Shoulders', mins: 45,
     focus: [['Upper chest', 1], ['Side delts', 1], ['Chest', 0], ['Triceps', 0], ['Lats', 0]],
     slots: [
-      { id: 'A1', ex: 'incline_machine', alts: ['incline_smith', 'incline_bb'], sets: 2, lo: 6, hi: 8, rest: 150 },
-      { id: 'A2', ex: 'bench', alts: ['smith_bench', 'chest_press'], sets: 2, lo: 6, hi: 8, rest: 150 },
-      { id: 'A3', ex: 'lat_pulldown', alts: ['pullup', 'close_pulldown'], sets: 2, lo: 6, hi: 8, rest: 120 },
-      { id: 'A4', ex: 'shoulder_press', alts: ['smith_ohp'], sets: 2, lo: 6, hi: 8, rest: 120 },
-      { id: 'A5', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 75, tech: 'drop' },
-      { id: 'A6', ex: 'pec_deck', alts: ['cable_fly'], sets: 2, lo: 6, hi: 8, rest: 90 },
-      { id: 'A7', ex: 'rope_pushdown', alts: ['bar_pushdown'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'A8', tech: 'drop' },
-      { id: 'A8', ex: 'hammer_curl', alts: ['rope_hammer'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'A7' }
+      { id: 'A1', ex: 'incline_machine', alts: ['incline_smith', 'incline_bb'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'A2', ex: 'bench', alts: ['smith_bench', 'chest_press'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'A3', ex: 'lat_pulldown', alts: ['pullup', 'close_pulldown'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'A4', ex: 'shoulder_press', alts: ['smith_ohp'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'A5', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 180, tech: 'drop' },
+      { id: 'A6', ex: 'pec_deck', alts: ['cable_fly'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'A7', ex: 'rope_pushdown', alts: ['bar_pushdown'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'A8', tech: 'drop' },
+      { id: 'A8', ex: 'hammer_curl', alts: ['rope_hammer'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'A7' }
     ] },
   { id: 'B', dow: 4, day: 'Thursday', code: 'Upper B', short: 'Back', name: 'Back & Arms', mins: 40,
     focus: [['Upper chest', 1], ['Lats', 0], ['Biceps', 1], ['Rear delts', 0], ['Side delts', 1]],
     slots: [
-      { id: 'B1', ex: 'incline_bb', alts: ['incline_smith', 'incline_machine'], sets: 2, lo: 6, hi: 8, rest: 150 },
-      { id: 'B2', ex: 'close_pulldown', alts: ['lat_pulldown', 'pullup'], sets: 2, lo: 6, hi: 8, rest: 120 },
-      { id: 'B3', ex: 'machine_row', alts: ['bb_row', 'cable_row'], sets: 2, lo: 6, hi: 8, rest: 120 },
-      { id: 'B4', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 75, pair: 'B5' },
-      { id: 'B5', ex: 'face_pull', alts: ['reverse_pec'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'B4' },
-      { id: 'B6', ex: 'ez_curl', alts: ['bb_curl', 'cable_curl'], sets: 2, lo: 6, hi: 8, rest: 90, tech: 'myo' },
-      { id: 'B7', ex: 'cable_crunch', alts: ['machine_crunch'], sets: 2, lo: 6, hi: 8, rest: 75 }
+      { id: 'B1', ex: 'incline_bb', alts: ['incline_smith', 'incline_machine'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'B2', ex: 'close_pulldown', alts: ['lat_pulldown', 'pullup'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'B3', ex: 'machine_row', alts: ['bb_row', 'cable_row'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'B4', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 180, pair: 'B5' },
+      { id: 'B5', ex: 'face_pull', alts: ['reverse_pec'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'B4' },
+      { id: 'B6', ex: 'ez_curl', alts: ['bb_curl', 'cable_curl'], sets: 2, lo: 6, hi: 8, rest: 180, tech: 'myo' },
+      { id: 'B7', ex: 'cable_crunch', alts: ['machine_crunch'], sets: 2, lo: 6, hi: 8, rest: 180 }
     ] },
   { id: 'C', dow: 6, day: 'Saturday', code: 'Lower + Arms', short: 'Legs', name: 'Legs, Arms & Abs', mins: 35,
     focus: [['Legs', 0], ['Biceps', 1], ['Triceps', 0], ['Side delts', 1], ['Abs', 0]],
     slots: [
-      { id: 'C1', ex: 'hack_squat', alts: ['leg_press'], sets: 2, lo: 6, hi: 8, rest: 150 },
-      { id: 'C2', ex: 'back_ext', alts: ['seated_leg_curl'], sets: 2, lo: 6, hi: 8, rest: 120 },
-      { id: 'C3', ex: 'incline_db_curl', alts: ['preacher_curl'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'C4', tech: 'myo' },
-      { id: 'C4', ex: 'overhead_ext', alts: ['db_overhead_ext'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'C3' },
-      { id: 'C5', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 75, pair: 'C6', tech: 'partials' },
-      { id: 'C6', ex: 'hanging_leg_raise', alts: ['captains_chair'], sets: 2, lo: 6, hi: 8, rest: 75, pair: 'C5' }
+      { id: 'C1', ex: 'hack_squat', alts: ['leg_press'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'C2', ex: 'back_ext', alts: ['seated_leg_curl'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'C3', ex: 'incline_db_curl', alts: ['preacher_curl'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'C4', tech: 'myo' },
+      { id: 'C4', ex: 'overhead_ext', alts: ['db_overhead_ext'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'C3' },
+      { id: 'C5', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 180, pair: 'C6', tech: 'partials' },
+      { id: 'C6', ex: 'hanging_leg_raise', alts: ['captains_chair'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'C5' }
     ] }
 ];
 // the plan from 7 Nov 2026, evening: Saturday's quad swap is the leg extension (no leg press),
@@ -945,35 +945,35 @@ const V4_MISSIONS = [
   { id: 'A', dow: 1, day: 'Monday', code: 'Upper A', short: 'Chest', name: 'Chest & Shoulders', mins: 45,
     focus: [['Upper chest', 1], ['Side delts', 1], ['Chest', 0], ['Triceps', 0], ['Lats', 0]],
     slots: [
-      { id: 'A1', ex: 'incline_machine', alts: ['incline_smith', 'incline_bb'], sets: 2, lo: 6, hi: 8, rest: 150 },
-      { id: 'A2', ex: 'bench', alts: ['smith_bench', 'chest_press'], sets: 2, lo: 6, hi: 8, rest: 150 },
-      { id: 'A3', ex: 'lat_pulldown', alts: ['pullup', 'close_pulldown'], sets: 2, lo: 6, hi: 8, rest: 120 },
-      { id: 'A4', ex: 'shoulder_press', alts: ['smith_ohp'], sets: 2, lo: 6, hi: 8, rest: 120 },
-      { id: 'A5', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 75, tech: 'drop' },
-      { id: 'A6', ex: 'pec_deck', alts: ['cable_fly'], sets: 2, lo: 6, hi: 8, rest: 90 },
-      { id: 'A7', ex: 'rope_pushdown', alts: ['bar_pushdown'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'A8', tech: 'drop' },
-      { id: 'A8', ex: 'hammer_curl', alts: ['rope_hammer'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'A7' }
+      { id: 'A1', ex: 'incline_machine', alts: ['incline_smith', 'incline_bb'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'A2', ex: 'bench', alts: ['smith_bench', 'chest_press'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'A3', ex: 'lat_pulldown', alts: ['pullup', 'close_pulldown'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'A4', ex: 'shoulder_press', alts: ['smith_ohp'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'A5', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 180, tech: 'drop' },
+      { id: 'A6', ex: 'pec_deck', alts: ['cable_fly'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'A7', ex: 'rope_pushdown', alts: ['bar_pushdown'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'A8', tech: 'drop' },
+      { id: 'A8', ex: 'hammer_curl', alts: ['rope_hammer'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'A7' }
     ] },
   { id: 'B', dow: 4, day: 'Thursday', code: 'Upper B', short: 'Back', name: 'Back & Arms', mins: 40,
     focus: [['Upper chest', 1], ['Lats', 0], ['Biceps', 1], ['Rear delts', 0], ['Side delts', 1]],
     slots: [
-      { id: 'B1', ex: 'incline_bb', alts: ['incline_smith', 'incline_machine'], sets: 2, lo: 6, hi: 8, rest: 150 },
-      { id: 'B2', ex: 'close_pulldown', alts: ['lat_pulldown', 'pullup'], sets: 2, lo: 6, hi: 8, rest: 120 },
-      { id: 'B3', ex: 'machine_row', alts: ['bb_row', 'cable_row'], sets: 2, lo: 6, hi: 8, rest: 120 },
-      { id: 'B4', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 75, pair: 'B5' },
-      { id: 'B5', ex: 'face_pull', alts: ['reverse_pec'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'B4' },
-      { id: 'B6', ex: 'ez_curl', alts: ['bb_curl', 'cable_curl'], sets: 2, lo: 6, hi: 8, rest: 90, tech: 'myo' },
-      { id: 'B7', ex: 'cable_crunch', alts: ['machine_crunch'], sets: 2, lo: 6, hi: 8, rest: 75 }
+      { id: 'B1', ex: 'incline_bb', alts: ['incline_smith', 'incline_machine'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'B2', ex: 'close_pulldown', alts: ['lat_pulldown', 'pullup'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'B3', ex: 'machine_row', alts: ['bb_row', 'cable_row'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'B4', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 180, pair: 'B5' },
+      { id: 'B5', ex: 'face_pull', alts: ['reverse_pec'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'B4' },
+      { id: 'B6', ex: 'ez_curl', alts: ['bb_curl', 'cable_curl'], sets: 2, lo: 6, hi: 8, rest: 180, tech: 'myo' },
+      { id: 'B7', ex: 'cable_crunch', alts: ['machine_crunch'], sets: 2, lo: 6, hi: 8, rest: 180 }
     ] },
   { id: 'C', dow: 6, day: 'Saturday', code: 'Lower + Arms', short: 'Legs', name: 'Legs, Arms & Abs', mins: 35,
     focus: [['Legs', 0], ['Biceps', 1], ['Triceps', 0], ['Side delts', 1], ['Abs', 0]],
     slots: [
-      { id: 'C1', ex: 'hack_squat', alts: ['leg_ext'], sets: 2, lo: 6, hi: 8, rest: 150 },
-      { id: 'C2', ex: 'back_ext', alts: ['seated_leg_curl'], sets: 2, lo: 6, hi: 8, rest: 120 },
-      { id: 'C3', ex: 'incline_db_curl', alts: ['preacher_curl'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'C4', tech: 'myo' },
-      { id: 'C4', ex: 'rope_pushdown', alts: ['bar_pushdown', 'db_overhead_ext'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'C3' },
-      { id: 'C5', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 75, pair: 'C6', tech: 'partials' },
-      { id: 'C6', ex: 'hanging_leg_raise', alts: ['captains_chair'], sets: 2, lo: 6, hi: 8, rest: 75, pair: 'C5' }
+      { id: 'C1', ex: 'hack_squat', alts: ['leg_ext'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'C2', ex: 'back_ext', alts: ['seated_leg_curl'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'C3', ex: 'incline_db_curl', alts: ['preacher_curl'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'C4', tech: 'myo' },
+      { id: 'C4', ex: 'rope_pushdown', alts: ['bar_pushdown', 'db_overhead_ext'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'C3' },
+      { id: 'C5', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 180, pair: 'C6', tech: 'partials' },
+      { id: 'C6', ex: 'hanging_leg_raise', alts: ['captains_chair'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'C5' }
     ] }
 ];
 // the plan from 8 Nov 2026: the body video showed the V-taper comes from the delts alone (torso under the
@@ -983,36 +983,36 @@ const MISSIONS = [
   { id: 'A', dow: 1, day: 'Monday', code: 'Upper A', short: 'Chest', name: 'Chest & Shoulders', mins: 45,
     focus: [['Upper chest', 1], ['Side delts', 1], ['Chest', 0], ['Triceps', 0], ['Lats', 0]],
     slots: [
-      { id: 'A1', ex: 'incline_machine', alts: ['incline_smith', 'incline_bb'], sets: 2, lo: 6, hi: 8, rest: 150 },
-      { id: 'A2', ex: 'bench', alts: ['smith_bench', 'chest_press'], sets: 2, lo: 6, hi: 8, rest: 150 },
-      { id: 'A3', ex: 'lat_pulldown', alts: ['pullup', 'close_pulldown'], sets: 2, lo: 6, hi: 8, rest: 120 },
-      { id: 'A4', ex: 'shoulder_press', alts: ['smith_ohp'], sets: 2, lo: 6, hi: 8, rest: 120 },
-      { id: 'A5', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 75, tech: 'drop' },
-      { id: 'A6', ex: 'pec_deck', alts: ['cable_fly'], sets: 2, lo: 6, hi: 8, rest: 90 },
-      { id: 'A7', ex: 'rope_pushdown', alts: ['bar_pushdown'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'A8', tech: 'drop' },
-      { id: 'A8', ex: 'hammer_curl', alts: ['rope_hammer'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'A7' }
+      { id: 'A1', ex: 'incline_machine', alts: ['incline_smith', 'incline_bb'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'A2', ex: 'bench', alts: ['smith_bench', 'chest_press'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'A3', ex: 'lat_pulldown', alts: ['pullup', 'close_pulldown'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'A4', ex: 'shoulder_press', alts: ['smith_ohp'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'A5', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 180, tech: 'drop' },
+      { id: 'A6', ex: 'pec_deck', alts: ['cable_fly'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'A7', ex: 'rope_pushdown', alts: ['bar_pushdown'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'A8', tech: 'drop' },
+      { id: 'A8', ex: 'hammer_curl', alts: ['rope_hammer'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'A7' }
     ] },
   { id: 'B', dow: 4, day: 'Thursday', code: 'Upper B', short: 'Back', name: 'Back & Arms', mins: 40,
     focus: [['Upper chest', 1], ['Lats', 0], ['Biceps', 1], ['Rear delts', 0], ['Side delts', 1]],
     slots: [
-      { id: 'B1', ex: 'incline_bb', alts: ['incline_smith', 'incline_machine'], sets: 2, lo: 6, hi: 8, rest: 150 },
-      { id: 'B2', ex: 'close_pulldown', alts: ['lat_pulldown', 'pullup'], sets: 2, lo: 6, hi: 8, rest: 120 },
-      { id: 'B3', ex: 'machine_row', alts: ['bb_row', 'cable_row'], sets: 2, lo: 6, hi: 8, rest: 120 },
-      { id: 'B4', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 75, pair: 'B5' },
-      { id: 'B5', ex: 'face_pull', alts: ['reverse_pec'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'B4' },
-      { id: 'B6', ex: 'ez_curl', alts: ['bb_curl', 'cable_curl'], sets: 2, lo: 6, hi: 8, rest: 90, tech: 'myo' },
-      { id: 'B7', ex: 'cable_crunch', alts: ['machine_crunch'], sets: 2, lo: 6, hi: 8, rest: 75 }
+      { id: 'B1', ex: 'incline_bb', alts: ['incline_smith', 'incline_machine'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'B2', ex: 'close_pulldown', alts: ['lat_pulldown', 'pullup'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'B3', ex: 'machine_row', alts: ['bb_row', 'cable_row'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'B4', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 180, pair: 'B5' },
+      { id: 'B5', ex: 'face_pull', alts: ['reverse_pec'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'B4' },
+      { id: 'B6', ex: 'ez_curl', alts: ['bb_curl', 'cable_curl'], sets: 2, lo: 6, hi: 8, rest: 180, tech: 'myo' },
+      { id: 'B7', ex: 'cable_crunch', alts: ['machine_crunch'], sets: 2, lo: 6, hi: 8, rest: 180 }
     ] },
   { id: 'C', dow: 6, day: 'Saturday', code: 'Lower + Arms', short: 'Legs', name: 'Legs, Arms & Abs', mins: 40,
     focus: [['Legs', 0], ['Lats', 0], ['Biceps', 1], ['Triceps', 0], ['Side delts', 1], ['Abs', 0]],
     slots: [
-      { id: 'C1', ex: 'hack_squat', alts: ['leg_ext'], sets: 2, lo: 6, hi: 8, rest: 150 },
-      { id: 'C2', ex: 'back_ext', alts: ['seated_leg_curl'], sets: 2, lo: 6, hi: 8, rest: 120 },
-      { id: 'C3', ex: 'lat_pulldown', alts: ['pullup', 'close_pulldown'], sets: 2, lo: 6, hi: 8, rest: 120 },
-      { id: 'C4', ex: 'incline_db_curl', alts: ['preacher_curl'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'C5', tech: 'myo' },
-      { id: 'C5', ex: 'rope_pushdown', alts: ['bar_pushdown', 'db_overhead_ext'], sets: 2, lo: 6, hi: 8, rest: 90, pair: 'C4' },
-      { id: 'C6', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 75, pair: 'C7', tech: 'partials' },
-      { id: 'C7', ex: 'hanging_leg_raise', alts: ['captains_chair'], sets: 2, lo: 6, hi: 8, rest: 75, pair: 'C6' }
+      { id: 'C1', ex: 'hack_squat', alts: ['leg_ext'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'C2', ex: 'back_ext', alts: ['seated_leg_curl'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'C3', ex: 'lat_pulldown', alts: ['pullup', 'close_pulldown'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'C4', ex: 'incline_db_curl', alts: ['preacher_curl'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'C5', tech: 'myo' },
+      { id: 'C5', ex: 'rope_pushdown', alts: ['bar_pushdown', 'db_overhead_ext'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'C4' },
+      { id: 'C6', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 180, pair: 'C7', tech: 'partials' },
+      { id: 'C7', ex: 'hanging_leg_raise', alts: ['captains_chair'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'C6' }
     ] }
 ];
 // every plan Chisel has used. A session carries pv (its plan version); sessions without one are plan 1.
@@ -3075,7 +3075,9 @@ function upcoming(t, done){
   return null;
 }
 function focusChips(mm){ return mm.focus.map(([n, f]) => `<span class="chip${f ? ' focus' : ''}">${esc(n)}</span>`).join(''); }
-function missionLine(mm, ph, slots){ slots = slots || mm.slots; const sets = slots.reduce((a, s) => a + plannedSets(s, ph), 0); return `${slots.length} exercises · ${sets} sets · about ${mm.mins} min`; }
+// about 6 min warm-up, 1 min per set, 3 min rest between sets, rounded to 5
+function sessionMins(sets){ return Math.max(5, Math.round((6 + sets + Math.max(0, sets - 1) * 3) / 5) * 5); }
+function missionLine(mm, ph, slots){ slots = slots || mm.slots; const sets = slots.reduce((a, s) => a + plannedSets(s, ph), 0); return `${slots.length} exercises · ${sets} sets · about ${sessionMins(sets)} min`; }
 function unlocked(key){ const sk = SKILLS.find(s => s.key === key); return sk && G.level >= sk.lv; }
 
 /* ---------- views ---------- */
@@ -3494,7 +3496,7 @@ function onCheck(btn){
   let nextTxt = '';
   if (doneCount < p) nextTxt = sl.pair ? `Next: ${EX[currentEx(sl.pair, s)].n}, then set ${doneCount + 1}` : `Next: ${ex.n}, set ${doneCount + 1}`;
   else { const sls = slotsOf(s); const idx = sls.findIndex(x => x.id === slotId); const nx = sls.slice(idx + 1).find(x => doneSets(s.sets[x.id]).length < plannedSets(x, info.ph)); nextTxt = nx ? `Next: ${EX[currentEx(nx.id, s)].n}` : ''; }
-  if (!info.flawless) startRest(sl.pair ? Math.max(45, Math.round(sl.rest * 0.6)) : sl.rest, nextTxt);
+  if (!info.flawless) startRest(sl.rest, nextTxt);
   else stopRest();
   afterChange(prev);
   if (summaryNext) setTimeout(() => showSummary(s.id, true, true), 450);
@@ -3632,7 +3634,7 @@ function renderPlan(){
       <p><b>Effort.</b> Reps in reserve means how many more reps you could have done. Most growth comes from sets that end 0–3 reps short of failure. Your phase tells you how close to go.</p>
       <p><b>Progression.</b> Every exercise has a rep range: 6–8 on most, 10–15 on lateral raises. Keep the same weight until you hit the top of the range on every set, then add the smallest step: 2.5 kg on most lifts, 5 kg on hack squats and the leg press, the next dumbbell for curls. The Train tab does this math for you.</p>
       <p><b>Form.</b> About 2 seconds down, full range, no bouncing. If form breaks, the set is over. Watch the 3D demo before any new exercise.</p>
-      <p><b>Rest.</b> 2–3 minutes on the big lifts, 60–90 seconds on isolation. The timer starts when you log a set. Paired exercises alternate with shorter rest.</p>
+      <p><b>Rest.</b> 3 minutes between every set, paired exercises included. The timer starts when you log a set.</p>
       <p><b>Missed a day.</b> Do the next mission on your next free day and keep the order A, B, C. Never two missions on one day. A 4th session in a week earns no XP.</p>
       <p><b>Pain.</b> Sharp pain or pain in a joint means stop and swap the exercise. Muscle burn and next-day soreness are normal.</p>
     </div></details>
@@ -4012,7 +4014,7 @@ function exportCSV(){
 function planDocHTML(){
   const p = P(); const t = todayStr();
   const e = s => esc(s);
-  const missions = MISSIONS.map(mm => `<h2>${mm.day} · Mission ${mm.id}: ${e(mm.name)}</h2><p class="sub">${e(mm.focus.map(x => x[0]).join(' · '))} · about ${mm.mins} min</p>
+  const missions = MISSIONS.map(mm => `<h2>${mm.day} · Mission ${mm.id}: ${e(mm.name)}</h2><p class="sub">${e(mm.focus.map(x => x[0]).join(' · '))} · about ${sessionMins(mm.slots.reduce((a, s) => a + s.sets, 0))} min</p>
     <table><thead><tr><th>#</th><th>Exercise</th><th>Sets × reps</th><th>Rest</th></tr></thead><tbody>${mm.slots.map(sl => { const ex = EX[currentEx(sl.id, null)]; return `<tr><td>${sl.id}</td><td><b>${e(ex.n)}</b><br><span>${e(ex.cue)}</span>${sl.pair ? `<br><span>Pair with ${sl.pair}.</span>` : ''}<br><span>Swaps: ${e(sl.alts.map(a => EX[a].n).join(', '))}</span></td><td>${sl.sets} × ${sl.lo}–${sl.hi}</td><td>${restLabel(sl.rest)}</td></tr>`; }).join('')}</tbody></table>`).join('');
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Chisel Program${p.name ? ' · ' + e(p.name) : ''}</title>
 <style>body{font:15px/1.55 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:#0D0D0D;background:#FFFFFF;max-width:760px;margin:0 auto;padding:32px 20px 64px}h1{font:900 44px/1 "Arial Narrow","Helvetica Neue",Arial,sans-serif;letter-spacing:-.01em;margin:0 0 8px;color:#0D0D0D;text-transform:uppercase}h2{font:800 22px/1.2 "Arial Narrow","Helvetica Neue",Arial,sans-serif;margin:34px 0 6px;padding-bottom:6px;border-bottom:3px solid #E2231A;color:#0D0D0D;text-transform:uppercase;letter-spacing:.01em}.sub{color:#5C5C58;margin:0 0 10px}table{width:100%;border-collapse:collapse;margin:8px 0 4px}th,td{text-align:left;vertical-align:top;padding:9px 6px;border-bottom:1px solid #E4E4E0}th{font-size:12px;font-weight:700;color:#5C5C58}td span{color:#4A4A47;font-size:13.5px}ul{padding-left:20px}li{margin:5px 0}.box{background:#F1F1EE;border-left:4px solid #E2231A;border-radius:6px;padding:13px 15px;margin:12px 0}@media print{body{padding:0}}</style></head><body>
