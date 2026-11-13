@@ -392,6 +392,60 @@ details > summary::-webkit-details-marker{display:none}
 .rest-t{font-family:var(--f-display);font-weight:900;font-size:36px;line-height:.9;font-variant-numeric:tabular-nums;color:#FF4A3F}
 .rest-sub{font-size:13.5px;color:#D9D9D4;min-width:0;line-height:1.3}
 .rest-mid{min-width:0}
+/* lift history */
+.lh-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.lh-tiles div{background:var(--card-2);border-radius:14px;padding:11px 12px;min-width:0}
+.lh-tiles span{display:block;font-size:12.5px;font-weight:600;color:var(--muted)}
+.lh-tiles b{display:block;font-family:var(--f-display);font-weight:900;font-size:25px;line-height:1.05;margin-top:4px;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lh-list{list-style:none;margin:0;padding:0}
+.lh-list li{padding:11px 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:7px}
+.lh-list li:first-child{border-top:0;padding-top:0}
+.lh-d{display:flex;justify-content:space-between;gap:10px;font-weight:650;font-size:15px}
+.lh-d small{font-weight:500;color:var(--muted);font-size:13.5px}
+.lh-sets{display:flex;flex-wrap:wrap;gap:5px}
+.lh-sets span{font-size:14px;font-weight:650;padding:4px 9px;border-radius:9px;background:var(--card-2);font-variant-numeric:tabular-nums}
+.lh-sets span.lh-top{background:var(--ink);color:#fff}
+.lh-rec{font-size:12px;font-weight:750;color:var(--gold);background:var(--gold-wash);padding:2px 8px;border-radius:999px;align-self:center}
+.rc-row{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;border:0;background:none;padding:0;text-align:left;color:inherit;font:inherit;cursor:pointer}
+.rc-row .rc-v::after{content:"›";font-family:var(--f-body);font-weight:500;color:var(--faint);margin-left:8px}
+
+/* weekly recap */
+.recap{background:var(--ink);color:#fff;display:flex;flex-direction:column;gap:14px;box-shadow:0 18px 36px -22px rgba(0,0,0,.7)}
+.recap .eyebrow{color:var(--on-ink-2)}
+.recap .h2{color:#fff}
+.wr-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.wr-stats div{background:rgba(255,255,255,.07);border-radius:14px;padding:12px 14px;min-width:0}
+.wr-stats span{display:block;font-size:13px;font-weight:600;color:var(--on-ink-2)}
+.wr-stats b{display:block;font-family:var(--f-display);font-weight:900;font-size:34px;line-height:1;margin-top:4px;font-variant-numeric:tabular-nums}
+.wr-stats small{display:block;font-size:12.5px;font-weight:650;color:var(--on-ink-2);margin-top:4px}
+.wr-stats small.up{color:#4ADE80}
+.wr-stats small.down{color:#FF8A80}
+.wr-h{font-size:13px;font-weight:650;color:var(--on-ink-2);margin-bottom:6px}
+.wr-prs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.wr-prs li{display:flex;justify-content:space-between;gap:10px;font-size:15px}
+.wr-prs b{font-family:var(--f-display);font-weight:800;font-size:19px;color:#F5C400;white-space:nowrap;font-variant-numeric:tabular-nums}
+.wr-grew{font-size:15px;color:#D9D9D4;line-height:1.45}
+.wr-grew b{color:#fff}
+
+/* training heatmap */
+.hm-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0 -4px;padding:0 4px}
+.hm-scroll::-webkit-scrollbar{display:none}
+.hm-svg{display:block;height:auto}
+.hm-svg text{font-size:10.5px;fill:var(--muted);font-weight:600}
+.hm-svg rect{rx:2.5px}
+.hm-svg .hm0{fill:var(--card-3)}
+.hm-svg .hm1{fill:rgba(226,35,26,.24)}
+.hm-svg .hm2{fill:rgba(226,35,26,.46)}
+.hm-svg .hm3{fill:rgba(226,35,26,.72)}
+.hm-svg .hm4{fill:var(--accent)}
+.hm-svg .hmf{fill:none}
+.hm-svg .hmt{stroke:var(--fg);stroke-width:1.6}
+.hm-svg .hm-sel{stroke:var(--ink);stroke-width:2}
+.hm-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px;font-size:13px;color:var(--muted);flex-wrap:wrap}
+.hm-key{display:flex;align-items:center;gap:3px}
+.hm-key i{width:11px;height:11px;border-radius:3px;display:inline-block}
+.hm-info{font-size:14px;color:var(--fg-2);margin-top:8px;min-height:1.4em;font-variant-numeric:tabular-nums}
+.hm-info b{color:var(--fg)}
 /* time left + finish clock under the progress bar */
 .tleft{display:flex;align-items:center;gap:7px;font-size:14.5px;color:var(--fg-2);margin-top:-10px;font-variant-numeric:tabular-nums}
 .tleft:empty{display:none}
@@ -3199,6 +3253,7 @@ function renderToday(){
       </div>
     </section>
     ${nextCardHTML()}
+    ${todayRecapHTML()}
     ${weekStripHTML()}
     ${muscleMapHTML()}
     ${needTape ? `<section class="card"><div class="sec-h" style="margin-bottom:8px"><h2 class="h3">Finish your check-in</h2><span class="tag gold">Baseline</span></div><p class="lede">Your weight is in: ${fmtKg(wkW.weight)} kg. Add your waist and shoulders to start your golden ratio and waist trend.</p><a class="btn btn-block mt14" href="#progress" data-act="go-checkin">Add measurements</a></section>` : ''}
@@ -3544,7 +3599,7 @@ function exCardHTML(sl, s, ph, isCur){
       ${complete ? `<button class="ex-count linkish" data-act="ex-tog" data-slot="${sl.id}" aria-expanded="true" aria-label="Fold ${esc(ex.n)} away">${Math.min(ds.length, p)}/${p}</button>` : `<span class="ex-count" aria-label="${Math.min(ds.length, p)} of ${p} sets done">${Math.min(ds.length, p)}/${p}</span>`}
     </div>
     <p class="ex-cue">${esc(ex.cue)}</p>
-    <div class="ex-meta"><span><b>${p} × ${sl.lo}–${sl.hi}</b> reps · rest ${restLabel(sl.rest)}</span><span class="ex-meta-r">${PLATE_EX[exId] !== undefined ? `<button class="linkish" data-act="plates" data-slot="${sl.id}">Plates</button>` : ''}<button class="linkish" data-act="swap" data-slot="${sl.id}" aria-expanded="${state.swapOpen === sl.id ? 'true' : 'false'}">Swap</button></span></div>
+    <div class="ex-meta"><span><b>${p} × ${sl.lo}–${sl.hi}</b> reps · rest ${restLabel(sl.rest)}</span><span class="ex-meta-r">${G.bests[exId] ? `<button class="linkish" data-act="lift-hist" data-ex="${exId}">History</button>` : ''}${PLATE_EX[exId] !== undefined ? `<button class="linkish" data-act="plates" data-slot="${sl.id}">Plates</button>` : ''}<button class="linkish" data-act="swap" data-slot="${sl.id}" aria-expanded="${state.swapOpen === sl.id ? 'true' : 'false'}">Swap</button></span></div>
     ${state.swapOpen === sl.id ? `<div class="swaprow"><label for="sw-${sl.id}">${anyDone ? 'Sets are already logged today, so the swap applies from next session.' : 'Machine taken? Pick another option. Same XP.'}</label><select class="sel" id="sw-${sl.id}" data-swap="${sl.id}">${altList.map(a => `<option value="${a}"${a === exId ? ' selected' : ''}>${esc(EX[a].n)}</option>`).join('')}</select></div>` : ''}
     <div class="ex-last${sug.up ? ' up' : ''}">${sug.last ? esc(sug.last) + '. ' : ''}<b>${esc(sug.text)}</b></div>
     ${projLineHTML(exId, sl)}
@@ -3697,6 +3752,107 @@ function paintSessLeft(){
 }
 // the finish time moves with the clock even while you're mid-set
 setInterval(() => { if (state.view === 'train' || !$('#restBar').hidden) paintSessLeft(); }, 15000);
+
+/* lift history: every session of one lift, with a graph of the heaviest set */
+function liftHistory(exId){
+  const out = [];
+  for (const s of allSessions()) for (const sl of slotsOf(s)){
+    const rec = s.sets && s.sets[sl.id]; if (!rec || (EX[rec.ex] ? rec.ex : sl.ex) !== exId) continue;
+    const ds = doneSets(rec); if (!ds.length) continue;
+    out.push({ date: s.date, m: s.m, sets: ds.map(x => ({ w: +x.w || 0, r: +x.r })) });
+  }
+  return out;
+}
+function openLiftHistory(exId){
+  const ex = EX[exId]; if (!ex) return; const bw = ex.k === 'bw';
+  const H = liftHistory(exId); const best = G.bests[exId];
+  const fmtS = x => bw ? `${x.r}${x.w ? ` +${fmtKg(x.w)}` : ''}` : `${fmtKg(x.w)} × ${x.r}`;
+  const topOf = h => h.sets.reduce((a, x) => !a || metric(ex, x) > metric(ex, a) ? x : a, null);
+  const val = h => bw ? Math.max(...h.sets.map(x => x.r)) : Math.max(...h.sets.map(x => x.w));
+  const pts = H.map(h => ({ date: h.date, v: val(h) }));
+  const nSets = H.reduce((a, h) => a + h.sets.length, 0);
+  const change = H.length > 1 ? round1(pts[pts.length - 1].v - pts[0].v) : 0;
+  const rows = H.slice().reverse().map(h => { const t = topOf(h); const rec = best && best.date === h.date && metric(ex, t) >= best.e - 1e-9;
+    return `<li><div class="lh-d"><span>${prettyDate(h.date)} <small>· Mission ${h.m}</small></span>${rec ? '<span class="lh-rec">Record</span>' : ''}</div><div class="lh-sets">${h.sets.map(x => `<span${x === t ? ' class="lh-top"' : ''}>${fmtS(x)}</span>`).join('')}</div></li>`; }).join('');
+  openSheet(`<header class="stack" style="gap:6px"><p class="eyebrow">Lift history</p><h2 class="h2" id="lh-title">${esc(ex.n)}</h2></header>
+    ${H.length ? `<div class="lh-tiles"><div><span>Best set</span><b>${best ? fmtS(best) : '–'}</b></div><div><span>Sessions</span><b>${H.length}</b></div><div><span>Sets</span><b>${nSets}</b></div></div>
+    <div><div class="chart-t">${bw ? 'Most reps' : 'Heaviest set'}<span>${H.length > 1 ? `${change > 0 ? '+' : ''}${fmtKg(change)} ${bw ? 'reps' : 'kg'} since ${shortDate(H[0].date)}` : 'every session'}</span></div><div class="chart" id="lh-chart"></div></div>
+    <ul class="lh-list">${rows}</ul>` : '<p class="lede">No sets on this lift yet. Log one and its history starts here.</p>'}
+    <button class="btn btn-block" data-act="close">Close</button>`, '', null, sh => {
+    sh.setAttribute('aria-labelledby', 'lh-title');
+    if (!H.length) return;
+    const el = sh.querySelector('#lh-chart');
+    if (pts.length < 2){ el.innerHTML = `<p class="muted" style="font-size:14px">${bw ? `${pts[0].v} reps` : `${fmtKg(pts[0].v)} kg`} on ${shortDate(pts[0].date)}. The graph starts after your second session.</p>`; return; }
+    requestAnimationFrame(() => lineChart(el, pts, bw ? 'reps' : 'kg', bw ? 'Most reps' : 'Heaviest set'));
+  });
+}
+
+/* weekly recap: missions, sets, XP and kilos for one week against the week before */
+function weekRecap(mon){
+  const inW = (d, a) => d >= a && d <= addDays(a, 6);
+  const live = s => G.info[s.id] && !G.info[s.id].empty;
+  const all = allSessions(); const sess = all.filter(s => inW(s.date, mon) && live(s)), prev = all.filter(s => inW(s.date, addDays(mon, -7)) && live(s));
+  const tally = list => { let sets = 0, vol = 0; const mus = {}; for (const s of list) for (const sl of slotsOf(s)){ const rec = s.sets && s.sets[sl.id]; if (!rec) continue; const ex = EX[EX[rec.ex] ? rec.ex : sl.ex]; const ds = doneSets(rec); sets += ds.length; mus[ex.m] = (mus[ex.m] || 0) + ds.length; for (const x of ds) vol += (+x.w || 0) * (+x.r || 0); } return { sets, vol, mus }; };
+  const a = tally(sess), b = tally(prev);
+  const prs = sess.flatMap(s => G.info[s.id].prs);
+  const xp = G.ev.filter(e => inW(e.date, mon)).reduce((t, e) => t + (+e.xp || 0), 0);
+  const grew = Object.entries(a.mus).sort((x, y) => y[1] - x[1]);
+  return { mon, n: sess.length, missions: new Set(sess.filter(s => G.info[s.id].earning && G.info[s.id].complete).map(s => s.m)).size, sets: a.sets, prevSets: b.sets, vol: a.vol, prevVol: b.vol, hadPrev: prev.length > 0, prs, xp, grew };
+}
+function recapHTML(mon, label){
+  const r = weekRecap(mon); if (!r.n) return '';
+  const partial = addDays(mon, 6) > todayStr() && isoDow(todayStr()) !== 7;
+  const head = r.missions >= 3 ? 'Full week. Every mission done.' : r.missions === 2 ? 'Two of three missions.' : r.missions === 1 ? 'One mission in.' : `${r.n} session${r.n > 1 ? 's' : ''}, none finished yet.`;
+  const delta = (now, was, unit) => { if (!r.hadPrev) return '<small>first tracked week</small>'; if (partial) return `<small>last week ${unit(was)}</small>`; const d = now - was; return d === 0 ? '<small>same as last week</small>' : `<small class="${d > 0 ? 'up' : 'down'}">${d > 0 ? '▲ +' : '▼ '}${unit(Math.abs(d))} vs last week</small>`; };
+  const tons = v => v >= 1000 ? `${(v / 1000).toFixed(1)} t` : `${fmt(Math.round(v))} kg`;
+  const prs = r.prs.slice(-3).reverse().map(p => { const e = EX[p.exId]; return `<li><span>${esc(e.n)}</span><b>${e.k === 'bw' ? `${p.r} reps` : `${fmtKg(p.w)} × ${p.r}`}</b></li>`; }).join('');
+  const g = r.grew[0], g2 = r.grew[1];
+  return `<section class="card recap"><div><p class="eyebrow">${esc(label)} · Week ${weekNum(mon)}, ${shortDate(mon)}–${shortDate(addDays(mon, 6))}</p><h2 class="h2" style="margin-top:6px">${head}</h2></div>
+    <div class="wr-stats">
+      <div><span>Missions</span><b>${r.missions}/3</b></div>
+      <div><span>Sets</span><b>${r.sets}</b>${delta(r.sets, r.prevSets, v => v)}</div>
+      <div><span>XP earned</span><b>+${fmt(r.xp)}</b></div>
+      <div><span>Lifted</span><b>${tons(r.vol)}</b>${delta(Math.round(r.vol), Math.round(r.prevVol), tons)}</div>
+    </div>
+    ${prs ? `<div><div class="wr-h">${r.prs.length} new record${r.prs.length > 1 ? 's' : ''}</div><ul class="wr-prs">${prs}</ul></div>` : ''}
+    ${g ? `<p class="wr-grew">Grew most: <b>${esc(MUSCLES[g[0]].n)}</b>, ${g[1]} sets${g2 ? `. Then ${esc(MUSCLES[g2[0]].n)}, ${g2[1]}.` : '.'}</p>` : ''}
+  </section>`;
+}
+// Sunday shows this week; Monday looks back at last week
+function todayRecapHTML(){ const t = todayStr(), d = isoDow(t); return d === 7 ? recapHTML(mondayOf(t), 'Your week') : d === 1 ? recapHTML(addDays(mondayOf(t), -7), 'Last week') : ''; }
+
+/* training heatmap: the last 53 weeks, one square a day, redder the more of the mission you did */
+function heatmapHTML(){
+  const t = todayStr(), lastMon = mondayOf(t), first = addDays(lastMon, -52 * 7);
+  const day = {}; let days = 0, sets = 0;
+  for (const s of allSessions()){ const i = G.info[s.id]; if (!i || i.empty || s.date < first) continue;
+    const d = day[s.date] || (day[s.date] = { done: 0, planned: 0, m: [] }); if (!d.m.length) days++; d.done += i.done; d.planned += i.planned; d.m.push(s.m); sets += i.done; }
+  const C = 12, G2 = 3, S = C + G2, L = 20, T = 16, W = L + 53 * S, H = T + 7 * S;
+  let cells = '', months = '';
+  for (let w = 0; w < 53; w++){
+    const mon = addDays(first, w * 7);
+    for (let k = 0; k < 7; k++){
+      const d = addDays(mon, k); const x = L + w * S, y = T + k * S;
+      // month name over its first Monday; the very first column gets one only if the next label is far enough away
+      if (k === 0){ const dd = toDate(d); if (w > 0 ? dd.getDate() <= 7 : dd.getDate() <= 17) months += `<text x="${x}" y="11">${MONTHS[dd.getMonth()]}</text>`; }
+      if (d > t){ cells += `<rect class="hmf" x="${x}" y="${y}" width="${C}" height="${C}"/>`; continue; }
+      const v = day[d]; const lv = !v ? 0 : v.done >= v.planned ? 4 : v.done / v.planned >= .66 ? 3 : v.done / v.planned >= .33 ? 2 : 1;
+      cells += `<rect class="hm${lv}${d === t ? ' hmt' : ''}" x="${x}" y="${y}" width="${C}" height="${C}" data-act="hm-day" data-d="${d}"><title>${prettyDate(d)}${v ? `: Mission ${v.m.join(' + ')}, ${v.done} sets` : ''}</title></rect>`;
+    }
+  }
+  const lab = ['M', '', 'W', '', 'F', '', 'S'].map((l, k) => l ? `<text x="2" y="${T + k * S + 10}">${l}</text>` : '').join('');
+  return `<section class="card"><div class="sec-h"><h2 class="h3">Your year</h2><span class="muted">${days} day${days === 1 ? '' : 's'} trained · ${fmt(sets)} sets</span></div>
+    <div class="hm-scroll"><svg class="hm-svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Training days over the last 12 months: ${days} days, ${sets} sets">${months}${lab}${cells}</svg></div>
+    <p class="hm-info" id="hm-info">Tap a day to see it.</p>
+    <div class="hm-foot"><span>Rest days are grey. Full red is every planned set.</span><span class="hm-key">Less <i style="background:var(--card-3)"></i><i style="background:rgba(226,35,26,.24)"></i><i style="background:rgba(226,35,26,.46)"></i><i style="background:rgba(226,35,26,.72)"></i><i style="background:var(--accent)"></i> More</span></div>
+  </section>`;
+}
+function hmDay(a){
+  const d = a.dataset.d; const list = allSessions().filter(s => s.date === d && G.info[s.id] && !G.info[s.id].empty);
+  document.querySelectorAll('.hm-svg .hm-sel').forEach(x => x.classList.remove('hm-sel')); a.classList.add('hm-sel');
+  const info = $('#hm-info'); if (!info) return;
+  info.innerHTML = list.length ? `<b>${prettyDate(d)}</b> · ${list.map(s => `Mission ${s.m} (${esc(MISSION_BY_ID[s.m].short)}), ${G.info[s.id].done}/${G.info[s.id].planned} sets`).join(' · ')}` : `<b>${prettyDate(d)}</b> · Rest day`;
+}
 
 /* plate calculator: barbell lifts count the bar in the logged weight; plate-loaded machines count plates only */
 const PLATE_EX = { bench: 20, incline_bb: 20, bb_row: 20, bb_curl: 20, squat: 20, rdl: 20, ez_curl: 10, skullcrusher: 10,
@@ -3914,7 +4070,7 @@ function renderProgress(){
     ${scanCardHTML(cis)}`;
   } else if (tab === 'lifts'){
     const recIds = []; [...MISSIONS, ...V4_MISSIONS, ...V3_MISSIONS, ...V2_MISSIONS, ...LEGACY_MISSIONS].forEach(mm => mm.slots.forEach(sl => [sl.ex, ...sl.alts].forEach(a => { if (G.bests[a] && !recIds.includes(a)) recIds.push(a); })));
-    const records = recIds.map(id => { const b = G.bests[id]; const e = EX[id]; return `<li><span class="rc-n">${esc(e.n)}<small>${shortDate(b.date)}${e.k === 'bw' ? '' : ` · est. max ${fmtKg(Math.round(b.e * 2) / 2)} kg`}</small></span><b class="rc-v">${e.k === 'bw' ? `${b.r} reps${b.w ? ` +${fmtKg(b.w)}` : ''}` : `${fmtKg(b.w)} × ${b.r}`}</b></li>`; }).join('');
+    const records = recIds.map(id => { const b = G.bests[id]; const e = EX[id]; return `<li><button class="rc-row" data-act="lift-hist" data-ex="${id}" aria-label="${esc(e.n)} history"><span class="rc-n">${esc(e.n)}<small>${shortDate(b.date)}${e.k === 'bw' ? '' : ` · est. max ${fmtKg(Math.round(b.e * 2) / 2)} kg`}</small></span><b class="rc-v">${e.k === 'bw' ? `${b.r} reps${b.w ? ` +${fmtKg(b.w)}` : ''}` : `${fmtKg(b.w)} × ${b.r}`}</b></button></li>`; }).join('');
     const fcl = fcListHTML();
     body = `
     <section class="card"><div class="sec-h" style="margin-bottom:4px"><h2 class="h3">Strength forecast</h2><span class="muted">now → in 12 weeks</span></div>
@@ -3926,7 +4082,7 @@ function renderProgress(){
       <div class="tile"><div class="t-l">Full-week streak</div><div class="t-v">${G.streak}<small>wk</small></div></div>
       <div class="tile"><div class="t-l">Lifted</div><div class="t-v">${G.volume >= 10000 ? (G.volume / 1000).toFixed(1) + '<small>t</small>' : fmt(G.volume) + '<small>kg</small>'}</div></div>
     </div>
-    <section class="card"><div class="sec-h"><h2 class="h3">Records</h2><span class="muted">best set, kg × reps</span></div>
+    <section class="card"><div class="sec-h"><h2 class="h3">Records</h2><span class="muted">best set · tap for history</span></div>
       ${records ? `<ul class="recs">${records}</ul>` : '<p class="lede">Log a mission to set your first records. Every one after that is a PR worth 30 XP.</p>'}
     </section>`;
   } else if (tab === 'badges'){
@@ -3936,7 +4092,9 @@ function renderProgress(){
   } else {
     const sess = allSessions().filter(s => G.info[s.id] && !G.info[s.id].empty).reverse();
     const shown = state.showAllHist ? sess : sess.slice(0, 8);
-    body = `<section class="card"><div class="sec-h"><h2 class="h3">History</h2><span class="muted">${sess.length} session${sess.length === 1 ? '' : 's'}</span></div>
+    const t0 = todayStr(); const wkNow = mondayOf(t0);
+    const recap = recapHTML(wkNow, isoDow(t0) === 7 ? 'Your week' : 'This week so far') || recapHTML(addDays(wkNow, -7), 'Last week');
+    body = `${recap}${heatmapHTML()}<section class="card"><div class="sec-h"><h2 class="h3">History</h2><span class="muted">${sess.length} session${sess.length === 1 ? '' : 's'}</span></div>
       ${sess.length ? `<ul class="hist">${shown.map(s => historyItem(s)).join('')}</ul>${sess.length > 8 ? `<button class="btn btn-sm mt10" data-act="hist-all">${state.showAllHist ? 'Show fewer' : `Show all ${sess.length}`}</button>` : ''}` : '<p class="lede">Your missions will show up here.</p>'}
     </section>
     <section class="card"><div class="sec-h"><h2 class="h3">XP log</h2><span class="muted">${fmt(G.xp)} total</span></div>
@@ -3946,6 +4104,7 @@ function renderProgress(){
   }
   el.innerHTML = head + body;
   if (tab === 'body') drawCharts();
+  const hm = el.querySelector('.hm-scroll'); if (hm) hm.scrollLeft = hm.scrollWidth;
   Viz.hydrate();
 }
 function scanCardHTML(cis){
@@ -4277,6 +4436,8 @@ const actions = {
   'rest-add': a => { if (Date.now() >= rest.end){ if (+a.dataset.s > 0) startRest(+a.dataset.s, $('#restSub').textContent); return; } rest.end += (+a.dataset.s) * 1000; rest.total = Math.max(rest.total, (rest.end - Date.now()) / 1000); clearTimeout(rest.timer); tickRest(); },
   'rest-skip': () => stopRest(),
   plates: a => openPlates(a.dataset.slot),
+  'lift-hist': a => { haptic.tap(); openLiftHistory(a.dataset.ex); },
+  'hm-day': a => hmDay(a),
   'rest-full': () => restFull(true),
   'rest-min': () => restFull(false),
   close: a => { const then = a && a.dataset && a.dataset.then; closeSheet(); if (then && state.view !== then) location.hash = then; },
