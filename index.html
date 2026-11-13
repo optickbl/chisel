@@ -391,6 +391,9 @@ details > summary::-webkit-details-marker{display:none}
 .rest-k{font-size:12px;font-weight:650;color:var(--on-ink-2)}
 .rest-t{font-family:var(--f-display);font-weight:900;font-size:36px;line-height:.9;font-variant-numeric:tabular-nums;color:#FF4A3F}
 .rest-sub{font-size:13.5px;color:#D9D9D4;min-width:0;line-height:1.3}
+.rest-mid{min-width:0}
+.rest-left{font-size:12.5px;font-weight:650;color:var(--on-ink-2);margin-top:3px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rest-left:empty{display:none}
 .rest-btns{display:flex;gap:6px}
 .rest-btns button{min-width:44px;height:44px;border-radius:14px;border:0;background:rgba(255,255,255,.1);font-weight:650;font-size:14.5px;padding:0 10px;color:#fff}
 .rest-btns button:active{background:rgba(255,255,255,.18)}
@@ -417,6 +420,8 @@ details > summary::-webkit-details-marker{display:none}
 .restfs-t{font-family:var(--f-display);font-weight:900;font-size:clamp(92px,30vw,140px);line-height:.85;font-variant-numeric:tabular-nums;color:#FF4A3F;text-shadow:0 0 28px rgba(255,74,63,.35)}
 .restfs-p{font-size:15px;font-weight:650;color:var(--on-ink-2);font-variant-numeric:tabular-nums}
 .restfs-sub{font-size:16.5px;color:#D9D9D4;text-align:center;max-width:32ch;min-height:1.4em;text-wrap:balance}
+.restfs-left{font-size:14.5px;font-weight:650;color:var(--on-ink-2);margin-top:-14px;font-variant-numeric:tabular-nums}
+.restfs-left:empty{display:none}
 .restfs-btns{display:flex;gap:10px;width:100%;max-width:380px}
 .restfs-btns button{flex:1;min-height:58px;border-radius:18px;border:0;background:rgba(255,255,255,.1);font-weight:700;font-size:18px;color:#fff}
 .restfs-btns button.skip{background:var(--accent);color:#fff;font-family:var(--f-display);font-weight:800;font-size:23px}
@@ -708,7 +713,7 @@ p,.lede,.meta,.notice{text-wrap:pretty}
 <div class="restbar" id="restBar" hidden>
   <div class="restbar-in">
     <button type="button" class="rest-open" data-act="rest-full" aria-label="Open the timer full screen"><div class="rest-k"><span id="restK">Rest</span><svg class="rest-ex" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg></div><div class="rest-t" id="restT">3:00</div></button>
-    <div class="rest-sub" id="restSub"></div>
+    <div class="rest-mid"><div class="rest-sub" id="restSub"></div><div class="rest-left" id="restLeft"></div></div>
     <div class="rest-btns">
       <button type="button" data-act="rest-add" data-s="-15" aria-label="15 seconds less">−15</button>
       <button type="button" data-act="rest-add" data-s="15" aria-label="15 seconds more">+15</button>
@@ -724,6 +729,7 @@ p,.lede,.meta,.notice{text-wrap:pretty}
   <div class="ring"><svg viewBox="0 0 200 200" aria-hidden="true"><circle class="ring-bg" cx="100" cy="100" r="90"/><circle class="ring-fg" id="restRing" cx="100" cy="100" r="90" stroke-dasharray="565.49" stroke-dashoffset="0"/></svg>
     <div class="ring-c"><div class="restfs-t" id="restFsT" aria-live="off">3:00</div><div class="restfs-p" id="restFsP">100% left</div></div></div>
   <div class="restfs-sub" id="restFsSub"></div>
+  <div class="restfs-left" id="restFsLeft"></div>
   <div class="restfs-btns">
     <button type="button" data-act="rest-add" data-s="-15" aria-label="15 seconds less">−15</button>
     <button type="button" data-act="rest-add" data-s="15" aria-label="15 seconds more">+15</button>
@@ -3076,7 +3082,8 @@ function upcoming(t, done){
 }
 function focusChips(mm){ return mm.focus.map(([n, f]) => `<span class="chip${f ? ' focus' : ''}">${esc(n)}</span>`).join(''); }
 // about 6 min warm-up, 1 min per set, 3 min rest between sets, rounded to 5
-function sessionMins(sets){ return Math.max(5, Math.round((6 + sets + Math.max(0, sets - 1) * 3) / 5) * 5); }
+const REST_SEC = 180;
+function sessionMins(sets){ return Math.max(5, Math.round((6 + sets + Math.max(0, sets - 1) * REST_SEC / 60) / 5) * 5); }
 function missionLine(mm, ph, slots){ slots = slots || mm.slots; const sets = slots.reduce((a, s) => a + plannedSets(s, ph), 0); return `${slots.length} exercises · ${sets} sets · about ${sessionMins(sets)} min`; }
 function unlocked(key){ const sk = SKILLS.find(s => s.key === key); return sk && G.level >= sk.lv; }
 
@@ -3338,6 +3345,8 @@ function renderTrain(){
   const sessXP = info && !info.empty ? info.xp : 0;
   // the first exercise with sets still to do is the one you're on
   const cur = slots.find(sl => doneSets(s && s.sets && s.sets[sl.id]).length < plannedSets(sl, ph));
+  sessLeft.sets = slots.reduce((a, sl) => a + Math.max(0, plannedSets(sl, ph) - doneSets(s && s.sets && s.sets[sl.id]).length), 0);
+  sessLeft.started = started; sessLeft.planned = planned;
   el.innerHTML = `
     <div class="seg" role="tablist" aria-label="Choose mission">
       ${MISSIONS.map(x => `<button role="tab" data-act="pick-m" data-m="${x.id}" aria-selected="${x.id === m ? 'true' : 'false'}"><b>${x.id}${doneWk.has(x.id) ? ` <span class="okm" aria-label="done this week">${I.ok}</span>` : ''}</b><small>${x.day.slice(0, 3)} · ${esc(x.short)}</small></button>`).join('')}
@@ -3348,7 +3357,7 @@ function renderTrain(){
       <p class="meta">${missionLine(mm, ph, slots)}</p>
     </header>
     ${warn}
-    <div class="prog" aria-live="polite"><div class="bar"><i style="width:${Math.round(done / Math.max(1, planned) * 100)}%"></i></div><span><b>${done}</b> of ${planned} sets${sessXP ? ` · <span class="xpb">+${fmt(sessXP)} XP</span>` : ''}</span></div>
+    <div class="prog" aria-live="polite"><div class="bar"><i style="width:${Math.round(done / Math.max(1, planned) * 100)}%"></i></div><span><b>${done}</b> of ${planned} sets<span id="tLeft">${sessLeftText(' · ')}</span>${sessXP ? ` · <span class="xpb">+${fmt(sessXP)} XP</span>` : ''}</span></div>
     ${started ? '' : `<div class="notice"><b>${PHASES[ph].n}.</b> ${esc(PHASES[ph].note)} ${esc(PHASES[ph].rir)}</div>
     <details class="warm"><summary><span>Warm-up, about 6 minutes</span><span class="muted">Not logged</span></summary><ol>
       <li>5 minutes easy on the bike, rower or an incline walk.</li>
@@ -3553,6 +3562,22 @@ function showSummary(sid, celebrate, fromTrain){
   setTimeout(() => { const bar = $('#sheet .carve .xpbar i'); if (bar) bar.style.width = bar.dataset.to + '%'; }, 450);
 }
 
+/* time left in the session: 1 min per set left, 3 min rest between them, plus what's left of the rest running now */
+const sessLeft = { sets: 0, started: false, planned: 0 };
+function sessLeftText(sep){
+  const L = sessLeft; if (!L.planned || (L.started && L.sets <= 0)) return '';
+  let min;
+  if (!L.started) min = sessionMins(L.planned);
+  else { const restLeft = !$('#restBar').hidden && Date.now() < rest.end ? (rest.end - Date.now()) / 1000 : 0;
+    min = Math.max(1, Math.ceil((restLeft + L.sets * 60 + Math.max(0, L.sets - 1) * REST_SEC) / 60)); }
+  return `${sep || ''}${min} min left`;
+}
+function paintSessLeft(){
+  const a = $('#tLeft'); if (a) a.textContent = sessLeftText(' · ');
+  const t = sessLeftText(); const b = $('#restLeft'); if (b){ b.textContent = t; b.title = t ? `Session: ${t}` : ''; }
+  const c = $('#restFsLeft'); if (c) c.textContent = t ? `Session: ${t}` : '';
+}
+
 /* rest timer */
 const rest = { end: 0, total: 0, timer: 0, goTimer: 0 };
 const RING_C = 565.49;
@@ -3571,6 +3596,7 @@ function tickRest(){
   $('#restLine').style.width = ((1 - frac) * 100).toFixed(1) + '%';
   $('#restRing').style.strokeDashoffset = (RING_C * (1 - frac)).toFixed(2);
   $('#restFsP').textContent = `${Math.ceil(frac * 100)}% left`;
+  paintSessLeft();
   if (left <= 0){
     const bar = $('#restBar'); bar.classList.add('go'); $('#restK').textContent = 'Go'; $('#restT').textContent = '0:00';
     $('#restFs').classList.add('go'); $('#restFsK').textContent = 'Rest over'; $('#restFsT').textContent = 'Go'; $('#restFsP').textContent = 'Next set';
@@ -3579,7 +3605,7 @@ function tickRest(){
   }
   rest.timer = setTimeout(tickRest, 250);
 }
-function stopRest(){ clearTimeout(rest.timer); clearTimeout(rest.goTimer); const bar = $('#restBar'); if (bar) bar.hidden = true; restFull(false); }
+function stopRest(){ clearTimeout(rest.timer); clearTimeout(rest.goTimer); const bar = $('#restBar'); if (bar) bar.hidden = true; restFull(false); paintSessLeft(); }
 function restFull(on){
   const fs = $('#restFs'); if (!fs) return;
   if (on && $('#restBar').hidden) return;
