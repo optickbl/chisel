@@ -425,6 +425,8 @@ details > summary::-webkit-details-marker{display:none}
 .lt-grid em i{position:absolute;inset:0 auto 0 0;background:var(--gold);border-radius:999px}
 .lt-grid small{display:block;font-size:12px;color:var(--muted);margin-top:5px}
 .lt-grid b .lt-u{display:inline;font-size:18px;color:var(--fg-2);margin-left:4px;font-weight:800}
+.lt-mini{display:flex;justify-content:space-between;gap:10px;font-size:14px;color:var(--muted);padding:2px 2px 0}
+.lt-mini b{color:var(--fg);font-weight:750;margin-left:4px;font-variant-numeric:tabular-nums}
 .lt-streak{display:flex;align-items:center;gap:14px;background:var(--ink);color:#fff;border-radius:14px;padding:13px 16px}
 .lt-streak b{font-family:var(--f-display);font-weight:900;font-size:40px;line-height:1;font-variant-numeric:tabular-nums}
 .lt-streak span{font-size:14.5px;color:#D9D9D4;line-height:1.35}
@@ -3275,7 +3277,7 @@ function viewerHTML(){
       <div class="vz-top"><div class="eyebrow">${sl ? `${sl.id} · Mission ${sl.mission}` : 'Exercise'}${n > 1 ? ` · ${vctx.i + 1} of ${n}` : ''}</div>${n > 1 ? `<div class="vz-nav"><button class="icon-btn" data-act="viz-prev" aria-label="Previous exercise">${I.prev}</button><button class="icon-btn" data-act="viz-next" aria-label="Next exercise">${I.next}</button></div>` : ''}</div>
       <h2 class="h2 vz-title" id="vz-title">${esc(ex.n)}</h2>
       <div class="vz-mus">${w.p.length ? `<div><span class="k"><i class="p"></i>Main</span><span>${names(w.p)}</span></div>` : ''}${w.s.length ? `<div><span class="k"><i class="s"></i>Helps</span><span>${names(w.s)}</span></div>` : ''}</div>
-      ${sl ? `<p class="vz-sr"><b>${plannedSets(sl, ph)} × ${sl.lo}–${sl.hi}</b> reps · rest ${restLabel(sl.rest)}${sl.pair ? ` · pair with ${sl.pair}` : ''}</p>` : ''}
+      ${sl ? `<p class="vz-sr"><b>${plannedSets(sl, ph)} × ${sl.lo}–${sl.hi}</b> reps${sl.pair ? ` · pair with ${sl.pair}` : ''}</p>` : ''}
       <p class="vz-cue">${esc(ex.cue)}</p>
       <div class="btn-row"><a class="btn btn-sm" href="${yt(ex.q)}" target="_blank" rel="noopener">Form video ↗</a><button class="btn btn-sm" data-act="close" data-autofocus>Close</button></div>
     </div>`;
@@ -3641,6 +3643,7 @@ function openForecast(exId){
 /* TRAIN */
 /* reps needed at this weight to beat your best (same maths as records), if it's within the rep range */
 function recNeed(ex, best, w, hi){
+  if (ex.k === 'bw' && Number.isNaN(w)) w = 0;
   if (!best || !(w >= 0)) return null; let r;
   if (ex.k === 'bw') r = Math.floor(best.e - w + 1e-6) + 1;
   else { if (!(w > 0)) return null; r = Math.floor(30 * (best.e / w - 1) + 1e-6) + 1; }
@@ -3809,9 +3812,9 @@ function exCardHTML(sl, s, ph, isCur, canLater){
       ${complete ? `<button class="ex-count linkish" data-act="ex-tog" data-slot="${sl.id}" aria-expanded="true" aria-label="Fold ${esc(ex.n)} away">${Math.min(ds.length, p)}/${p}</button>` : `<span class="ex-count" aria-label="${Math.min(ds.length, p)} of ${p} sets done">${Math.min(ds.length, p)}/${p}</span>`}
     </div>
     <p class="ex-cue">${esc(ex.cue)}</p>
-    <div class="ex-meta"><span><b>${p} × ${sl.lo}–${sl.hi}</b> reps · rest ${restLabel(sl.rest)}</span><span class="ex-meta-r">${canLater ? `<button class="linkish" data-act="later" data-slot="${sl.id}" aria-label="Do ${esc(ex.n)} later">Later</button>` : ''}${G.bests[exId] ? `<button class="linkish" data-act="lift-hist" data-ex="${exId}">History</button>` : ''}${PLATE_EX[exId] !== undefined ? `<button class="linkish" data-act="plates" data-slot="${sl.id}">Plates</button>` : ''}<button class="linkish" data-act="swap" data-slot="${sl.id}" aria-expanded="${state.swapOpen === sl.id ? 'true' : 'false'}">Swap</button></span></div>
+    <div class="ex-meta"><span><b>${p} × ${sl.lo}–${sl.hi}</b> reps</span><span class="ex-meta-r">${canLater ? `<button class="linkish" data-act="later" data-slot="${sl.id}" aria-label="Do ${esc(ex.n)} later">Later</button>` : ''}${G.bests[exId] ? `<button class="linkish" data-act="lift-hist" data-ex="${exId}">History</button>` : ''}${PLATE_EX[exId] !== undefined ? `<button class="linkish" data-act="plates" data-slot="${sl.id}">Plates</button>` : ''}<button class="linkish" data-act="swap" data-slot="${sl.id}" aria-expanded="${state.swapOpen === sl.id ? 'true' : 'false'}">Swap</button></span></div>
     ${state.swapOpen === sl.id ? `<div class="swaprow"><label for="sw-${sl.id}">${anyDone ? 'Sets are already logged today, so the swap applies from next session.' : 'Machine taken? Pick another option. Same XP.'}</label><select class="sel" id="sw-${sl.id}" data-swap="${sl.id}">${altList.map(a => `<option value="${a}"${a === exId ? ' selected' : ''}>${esc(EX[a].n)}</option>`).join('')}</select></div>` : ''}
-    <div class="ex-last${sug.up ? ' up' : ''}">${sug.last ? esc(sug.last) + '. ' : ''}<b>${esc(sug.text)}</b></div>
+    <div class="ex-last${sug.up ? ' up' : ''}">${sug.last && !L ? esc(sug.last) + '. ' : ''}<b>${esc(sug.text)}</b></div>
     ${projLineHTML(exId, sl)}
     ${tech}
     <div class="sets">
@@ -3977,7 +3980,7 @@ function tLeftHTML(){
   if (!min) return '';
   const ic = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg>';
   const pc = paceInfo();
-  return sessLeft.started ? `${ic}<span>${elapsedMin()} min in · <b>${min} min left</b> · done by ${clockIn(min)}</span>${pc ? `<span class="pace ${pc.cls}">${pc.t}</span>` : ''}` : `${ic}<span>About <b>${min} min</b> · done by ${clockIn(min)} if you start now</span>`;
+  return sessLeft.started ? `${ic}<span>${elapsedMin()} min in · <b>${min} min left</b> · done by ${clockIn(min)}</span>${pc ? `<span class="pace ${pc.cls}">${pc.t}</span>` : ''}` : `${ic}<span>Start now and you’re done by <b>${clockIn(min)}</b></span>`;
 }
 function paintSessLeft(){
   const a = $('#tLeft'); if (a) a.innerHTML = tLeftHTML();
@@ -4047,7 +4050,12 @@ function ssAt(date, sets, cis){
   const overall = Math.round(ms.length % 2 ? ms[mid] : (ms[mid - 1] + ms[mid]) / 2);
   return { date, bw, overall, muscles, lifts };
 }
+let ssMemo = null;
 function ssHistory(){
+  if (ssMemo && ssMemo.G === G && ssMemo.t === todayStr()) return ssMemo.v;
+  const v = ssHistoryRaw(); ssMemo = { G, t: todayStr(), v }; return v;
+}
+function ssHistoryRaw(){
   const sets = ssSets(); const cis = allCheckins(); const t = todayStr();
   const dates = [...new Set(sets.map(x => x.date))].filter(d => d <= t).sort(); if (dates[dates.length - 1] !== t) dates.push(t);
   return { now: ssAt(t, sets, cis), pts: dates.map(d => { const r = ssAt(d, sets, cis); return r && { date: d, v: r.overall }; }).filter(Boolean), sets, cis };
@@ -4065,7 +4073,7 @@ function ssCardHTML(){
     <div class="ss-top"><div class="ss-num">${S.overall}</div><div class="ss-lv"><b>${SS_LV[lv]}</b><small>${next ? `${next - S.overall} to ${SS_LV[lv + 1]}` : 'Top of the scale'}${d4 !== null ? ` · <span class="${d4 > 0 ? 'up' : d4 < 0 ? 'down' : ''}">${d4 > 0 ? '+' : ''}${d4}</span> in 4 weeks` : ''}</small></div></div>
     <div><div class="ss-scale"><i style="width:${S.overall}%"></i><u style="left:20%"></u><u style="left:40%"></u><u style="left:60%"></u><u style="left:80%"></u></div>
       <div class="ss-ticks" aria-hidden="true">${['Beg.', 'Novice', 'Inter.', 'Adv.', 'Elite'].map(l => `<span>${l}</span>`).join('')}</div></div>
-    <div><div class="chart-t">Over time<span>${H.pts.length > 1 ? `since ${shortDate(H.pts[0].date)}` : ''}</span></div><div class="chart" id="ss-chart"></div></div>
+    ${svwHTML(H.pts)}
     <ul class="ss-mus">${rows}</ul>
     <p class="fc-note">Your best set on each lift in the last 3 months, turned into an estimated 1-rep max and compared with strength standards for men your weight. A muscle’s score is the average of its lifts; the big number is the middle muscle score. Tap a muscle for its lifts.</p>
   </section>`;
@@ -4125,12 +4133,13 @@ function improvements(s){
   const da = sessDurMin(s), db = sessDurMin(p); if (da && db && da < db && G.info[s.id].done >= G.info[p.id].done) out.push([`${db - da} min faster`, `than last Mission ${s.m}`]);
   return out;
 }
+function isLatestSession(s){ const live = allSessions().filter(x => G.info[x.id] && !G.info[x.id].empty); return live.length && live[live.length - 1].id === s.id; }
 function summaryStatsHTML(s){
   const d = sessDurMin(s), v = sessVolume(s); const up = improvements(s); const like = likeLifting(v.v); const st = beatStreak();
   return `<div class="sum-stats"><div><span>Time</span><b>${d ? `${d} min` : '–'}</b></div><div><span>Sets</span><b>${v.n}</b></div><div><span>Lifted</span><b>${fmtMass(v.v)}</b></div></div>
     ${like ? `<p class="sum-like">${like}</p>` : ''}
     ${up.length ? `<div style="width:100%"><h3 class="h3" style="font-size:16px;margin-bottom:8px;color:var(--good)">Better than last time</h3><ul class="sum-up">${up.map(([a, b]) => `<li>▲ ${esc(a)} <span>· ${esc(b)}</span></li>`).join('')}</ul></div>` : ''}
-    ${st.cur >= 2 ? `<div class="lt-streak" style="width:100%"><b>${st.cur}</b><span>sessions in a row beating last time${st.cur >= st.best ? ' · <strong>your best yet</strong>' : ` · best ${st.best}`}</span></div>` : ''}`;
+    ${st.cur >= 2 && isLatestSession(s) ? `<div class="lt-streak" style="width:100%"><b>${st.cur}</b><span>sessions in a row beating last time${st.cur >= st.best ? ' · <strong>your best yet</strong>' : ` · best ${st.best}`}</span></div>` : ''}`;
 }
 
 // minutes per exercise: the time since your previous set counts toward this one (capped, in case you stopped)
@@ -4298,6 +4307,7 @@ function lifetimeHTML(){
       ${tile('Lifted', `${vol >= 1000 ? (vol / 1000).toFixed(1) : fmt(Math.round(vol))}<span class="lt-u">${vol >= 1000 ? 't' : 'kg'}</span>`, vol / 1000, [10, 50, 100, 250, 500, 1000, 2500], ' t')}
       ${tile('Time', `${(mins / 60).toFixed(1)}<span class="lt-u">h</span>`, mins / 60, [10, 25, 50, 100, 250, 500], ' h')}
     </div>
+    <div class="lt-mini"><span>Total XP <b>${fmt(G.xp)}</b></span><span>Full-week streak <b>${G.streak} wk</b></span></div>
     <p class="fc-note">The streak counts sessions where at least one lift beat the last time you did that mission.</p></section>`;
 }
 
@@ -4328,12 +4338,12 @@ function muscleTrendHTML(){
 }
 
 /* strength vs bodyweight: Strength Score and weight on one graph */
-function strengthVsWeightHTML(){
-  const ss = ssHistory().pts; const wmap = {};
+function svwHTML(ss){
+  const wmap = {};
   for (const sc of SCANS) if (sc.weight) wmap[sc.date] = +sc.weight;
   for (const c of allCheckins()) if (+c.weight > 0) wmap[c.date] = +c.weight;
   const wp = Object.entries(wmap).map(([date, v]) => ({ date, v })).sort((a, b) => a.date < b.date ? -1 : 1);
-  if (ss.length < 2 || !wp.length) return `<section class="card"><div class="sec-h"><h2 class="h3">Strength vs bodyweight</h2></div><p class="lede">${ss.length < 2 ? 'Shows after your second session.' : 'Add your weight in a weekly check-in to see this.'}</p></section>`;
+  if (ss.length < 2 || !wp.length) return `<div><div class="chart-t">Strength vs bodyweight</div><p class="muted" style="font-size:14px">${ss.length < 2 ? 'The graph starts after your second session.' : 'Add your weight in a weekly check-in to see this.'}</p></div>`;
   const d0 = [ss[0].date, wp[0].date].sort()[0], d1 = [ss[ss.length - 1].date, wp[wp.length - 1].date].sort().pop();
   const span = Math.max(1, daysBetween(d0, d1)); const W = 340, H = 170, L = 30, R = 34, T = 12, B = 140;
   const x = d => L + daysBetween(d0, d) / span * (W - L - R);
@@ -4351,9 +4361,9 @@ function strengthVsWeightHTML(){
     <path d="${path(ss, ys)}" fill="none" stroke="var(--accent)" stroke-width="2.5"/>${dots(ss.slice(-1), ys, 'var(--accent)')}</svg>`;
   const ds = ss[ss.length - 1].v - ss[0].v, dw = Math.round((wp[wp.length - 1].v - wp[0].v) * 10) / 10;
   const read = ds > 0 && dw > 0 ? 'stronger while gaining weight' : ds > 0 && dw < 0 ? 'stronger while getting lighter' : ds > 0 ? 'stronger at the same weight' : ds < 0 ? 'score down a little; it’s based on the last 3 months' : 'holding steady';
-  return `<section class="card"><div class="sec-h"><h2 class="h3">Strength vs bodyweight</h2></div>${svg}
+  return `<div><div class="chart-t">Strength vs bodyweight<span>since ${shortDate(d0)}</span></div>${svg}
     <div class="sb-key"><span><i style="background:var(--accent)"></i>Strength Score</span><span><i style="background:var(--fg)"></i>Bodyweight, kg</span></div>
-    <p class="sb-sum mt10">Score <b>${ds >= 0 ? '+' : ''}${ds}</b>, weight <b>${dw >= 0 ? '+' : ''}${fmtKg(dw)} kg</b> since ${shortDate(d0)}: ${read}.</p></section>`;
+    <p class="sb-sum mt10">${wp.length > 1 ? `Score <b>${ds >= 0 ? '+' : ''}${ds}</b>, weight <b>${dw >= 0 ? '+' : ''}${fmtKg(dw)} kg</b>: ${read}.` : `Score <b>${ds >= 0 ? '+' : ''}${ds}</b> so far. Log your weight in the weekly check-in and the black line fills in.`}</p></div>`;
 }
 
 /* lift history: every session of one lift, with a graph of the heaviest set */
@@ -4580,13 +4590,13 @@ function renderPlan(){
           <div class="px-body">
             <div class="ex-k"><span class="ex-n">${sl.id}</span>${sl.pair ? `<span>Pair with ${sl.pair}</span>` : ''}<button class="linkish px-sw" data-act="pswap" data-slot="${sl.id}" aria-expanded="${state.planSwap === sl.id ? 'true' : 'false'}" aria-label="Swap ${esc(ex.n)}">Swap</button></div>
             <div class="px-name">${esc(ex.n)}</div>
-            <div class="px-sr"><b>${plannedSets(sl, ph)} × ${sl.lo}–${sl.hi}</b> reps · rest ${restLabel(sl.rest)}</div>
+            <div class="px-sr"><b>${plannedSets(sl, ph)} × ${sl.lo}–${sl.hi}</b> reps</div>
             ${state.planSwap === sl.id ? `<div class="px-swap"><label class="muted" for="psw-${sl.id}">Use from now on</label><select class="sel" id="psw-${sl.id}" data-swap="${sl.id}">${alts.map(a => `<option value="${a}"${a === exId ? ' selected' : ''}>${esc(EX[a].n)}</option>`).join('')}</select></div>` : ''}
           </div>
         </li>`; }).join('')}</ul>
     </section>`).join('');
   el.innerHTML = `
-    <header><h1 class="h1">Program</h1><p class="lede">Three missions a week, built around what makes a physique look aesthetic: wide shoulders, a full upper chest and big arms. Tap any exercise to watch it in 3D.</p></header>
+    <header><h1 class="h1">Program</h1><p class="lede">Three missions a week, built around what makes a physique look aesthetic: wide shoulders, a full upper chest and big arms. Rest is 3 minutes between every set. Tap any exercise to watch it in 3D.</p></header>
     <section class="card">
       <div class="sec-h"><h2 class="h3">Season ${span.season}</h2><span class="muted">Week ${wk} of ${span.start + span.len - 1}</span></div>
       <div class="timeline" style="grid-template-columns:repeat(${span.len},minmax(0,1fr))">${cells.join('')}</div>
@@ -4629,7 +4639,7 @@ function renderPlan(){
 }
 
 /* PROGRESS */
-const PROG_TABS = [['body', 'Body'], ['lifts', 'Lifts'], ['badges', 'Badges'], ['log', 'Log']];
+const PROG_TABS = [['body', 'Body'], ['lifts', 'Lifts'], ['stats', 'Stats'], ['log', 'Log'], ['badges', 'Badges']];
 function renderProgress(){
   const el = $('#v-progress'); const t = todayStr(); const li = levelInfo(G.xp);
   const tab = PROG_TABS.some(x => x[0] === state.progTab) ? state.progTab : 'body';
@@ -4681,31 +4691,27 @@ function renderProgress(){
     const fcl = fcListHTML();
     body = `
     ${ssCardHTML()}
-    ${strengthVsWeightHTML()}
     ${thenNowHTML()}
     <section class="card"><div class="sec-h" style="margin-bottom:4px"><h2 class="h3">Strength forecast</h2><span class="muted">now → in 12 weeks</span></div>
       ${fcl ? `<p class="fc-note">Worked out from your own sets and how often you train. Tap a lift for its full forecast.</p>${fcl}` : '<p class="lede">Log a mission and every lift you train gets a forecast here: what you’ll be lifting in 4, 8 and 12 weeks.</p>'}
     </section>
-    <div class="tiles four">
-      <div class="tile"><div class="t-l">Total XP</div><div class="t-v">${fmt(G.xp)}</div></div>
-      <div class="tile"><div class="t-l">Missions</div><div class="t-v">${G.missions}</div></div>
-      <div class="tile"><div class="t-l">Full-week streak</div><div class="t-v">${G.streak}<small>wk</small></div></div>
-      <div class="tile"><div class="t-l">Lifted</div><div class="t-v">${G.volume >= 10000 ? (G.volume / 1000).toFixed(1) + '<small>t</small>' : fmt(G.volume) + '<small>kg</small>'}</div></div>
-    </div>
     <section class="card"><div class="sec-h"><h2 class="h3">Records</h2><span class="muted">best set · tap for history</span></div>
       ${records ? `<ul class="recs">${records}</ul>` : '<p class="lede">Log a mission to set your first records. Every one after that is a PR worth 30 XP.</p>'}
     </section>
     ${recordsTimelineHTML()}`;
   } else if (tab === 'badges'){
-    body = `${lifetimeHTML()}<section class="card"><div class="sec-h"><h2 class="h3">Badges</h2><span class="muted">${Object.keys(G.ach).length} of ${ACH.length}</span></div>
+    body = `<section class="card"><div class="sec-h"><h2 class="h3">Badges</h2><span class="muted">${Object.keys(G.ach).length} of ${ACH.length}</span></div>
       <div class="medals">${ACH.map(a => { const on = G.ach[a.id]; return `<div class="medal t${a.t}${on ? ' on' : ''}"><div class="disc" aria-hidden="true">${medalSvg(a.i)}</div><div class="mn">${esc(a.n)}</div><div class="md">${on ? `${TIER_NAME[a.t]} · ${shortDate(on)}` : `${esc(a.d)} +${TIER_XP[a.t]}`}</div></div>`; }).join('')}</div>
     </section>`;
+  } else if (tab === 'stats'){
+    const t0 = todayStr(); const wkNow = mondayOf(t0);
+    const recap = recapHTML(wkNow, isoDow(t0) === 7 ? 'Your week' : 'This week so far') || recapHTML(addDays(wkNow, -7), 'Last week');
+    const parts = [recap, consistencyHTML(), lifetimeHTML(), volumeCardHTML(), muscleTrendHTML(), timeCardHTML(), yearCardHTML(false)].filter(Boolean);
+    body = parts.length ? parts.join('') : '<section class="card"><p class="lede">Log your first mission and your stats start here: weekly recaps, consistency, kilos lifted, muscle trends and session times.</p></section>';
   } else {
     const sess = allSessions().filter(s => G.info[s.id] && !G.info[s.id].empty).reverse();
     const shown = state.showAllHist ? sess : sess.slice(0, 8);
-    const t0 = todayStr(); const wkNow = mondayOf(t0);
-    const recap = recapHTML(wkNow, isoDow(t0) === 7 ? 'Your week' : 'This week so far') || recapHTML(addDays(wkNow, -7), 'Last week');
-    body = `${recap}${consistencyHTML()}${yearCardHTML(false)}${volumeCardHTML()}${muscleTrendHTML()}${timeCardHTML()}${heatmapHTML()}<section class="card"><div class="sec-h"><h2 class="h3">History</h2><span class="muted">${sess.length} session${sess.length === 1 ? '' : 's'}</span></div>
+    body = `${heatmapHTML()}<section class="card"><div class="sec-h"><h2 class="h3">History</h2><span class="muted">${sess.length} session${sess.length === 1 ? '' : 's'}</span></div>
       ${sess.length ? `<ul class="hist">${shown.map(s => historyItem(s)).join('')}</ul>${sess.length > 8 ? `<button class="btn btn-sm mt10" data-act="hist-all">${state.showAllHist ? 'Show fewer' : `Show all ${sess.length}`}</button>` : ''}` : '<p class="lede">Your missions will show up here.</p>'}
     </section>
     <section class="card"><div class="sec-h"><h2 class="h3">XP log</h2><span class="muted">${fmt(G.xp)} total</span></div>
@@ -4715,8 +4721,7 @@ function renderProgress(){
   }
   el.innerHTML = head + body;
   if (tab === 'body') drawCharts();
-  if (tab === 'lifts') drawSSChart();
-  if (tab === 'log') drawTimeChart();
+  if (tab === 'stats') drawTimeChart();
   const hm = el.querySelector('.hm-scroll'); if (hm) hm.scrollLeft = hm.scrollWidth;
   Viz.hydrate();
 }
