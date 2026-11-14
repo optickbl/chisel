@@ -870,6 +870,10 @@ details > summary::-webkit-details-marker{display:none}
 .fd-note{margin:0;color:var(--muted);font-size:14px;line-height:1.45}
 .fd-foot{font-size:13.5px;margin-top:18px;line-height:1.45}
 .fd-empty{margin-top:16px}
+.fd-del{display:inline-flex;align-items:center;gap:7px;margin-top:12px;padding:8px 12px 8px 10px;border:0;border-radius:11px;background:var(--accent-wash);color:var(--accent-ink);font:inherit;font-size:14.5px;font-weight:650;cursor:pointer}
+.fd-del svg{width:17px;height:17px}
+.fd-restore{margin-top:18px}
+.fd-dl{margin:6px 0 4px}
 .subseg{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:3px;padding:3px;background:var(--card-2);border-radius:13px;position:sticky;top:calc(var(--top) + 64px);z-index:5;box-shadow:0 0 0 4px var(--bg)}
 .subseg button{border:0;background:none;border-radius:10px;padding:9px 4px;font-size:14.5px;font-weight:650;color:var(--fg-2);transition:background-color .25s var(--ease),color .2s}
 .subseg button[aria-selected="true"]{background:var(--ink);color:#fff}
@@ -3337,8 +3341,8 @@ function closeSheet(){
   };
   sh.addEventListener('pointerup', end); sh.addEventListener('pointercancel', end);
 })();
-function confirmSheet({ title, body, ok, danger, onOk }){
-  openSheet(`<h2 class="h2">${esc(title)}</h2><p class="lede">${esc(body)}</p><div class="btn-row"><button class="btn ${danger ? 'btn-danger' : 'btn-gold'}" data-act="sheet-ok">${esc(ok)}</button><button class="btn" data-act="close" data-autofocus>Cancel</button></div>`, '', null, sh => { sh._onOk = onOk; });
+function confirmSheet({ title, body, ok, no, danger, onOk }){
+  openSheet(`<h2 class="h2">${esc(title)}</h2><p class="lede">${esc(body)}</p><div class="btn-row"><button class="btn ${danger ? 'btn-danger' : 'btn-gold'}" data-act="sheet-ok">${esc(ok)}</button><button class="btn" data-act="close" data-autofocus>${esc(no || 'Cancel')}</button></div>`, '', null, sh => { sh._onOk = onOk; });
 }
 /* exercise viewer: the live 3D demo plus everything needed to do the lift; flips through the mission */
 let vctx = null;
@@ -3431,43 +3435,56 @@ function unlocked(key){ const sk = SKILLS.find(s => s.key === key); return sk &&
 
 /* ---------- views ---------- */
 /* ---------- FOOD: protein and calories lookup. Reference only; Chisel sets no food targets. ---------- */
-const FOOD_CATS = [['mine', 'Your orders'], ['meat', 'Meat'], ['fish', 'Fish'], ['dairy', 'Eggs & dairy'], ['plant', 'Beans & tofu'], ['carbs', 'Rice, bread & pasta'], ['fruit', 'Fruit'], ['veg', 'Veg'], ['nuts', 'Nuts & seeds'], ['greek', 'Greek food'], ['out', 'Eating out'], ['sauce', 'Oils & sauces'], ['snack', 'Snacks & sweets'], ['drink', 'Drinks'], ['supp', 'Supplements']];
+const FOOD_CATS = [['mine', 'Your orders'], ['yeia', 'Yeiaçaí'], ['meat', 'Meat'], ['fish', 'Fish'], ['dairy', 'Eggs & dairy'], ['plant', 'Beans & tofu'], ['carbs', 'Rice, bread & pasta'], ['fruit', 'Fruit'], ['veg', 'Veg'], ['nuts', 'Nuts & seeds'], ['greek', 'Greek food'], ['out', 'Eating out'], ['sauce', 'Oils & sauces'], ['snack', 'Snacks & sweets'], ['drink', 'Drinks'], ['supp', 'Supplements']];
 // [name, category, serving, grams per serving, kcal, protein, note]
 // With grams: kcal and protein are per 100 g (cooked unless it says raw or dry). With 0 grams: they are per serving.
 const FOOD_RAW = [
   // your orders and meals (estimates from the dish, not published numbers)
   ['Anchos Fajita Bowl', 'mine', '1 bowl', 0, 750, 40, 'Estimate: 650–850 kcal, 35–45 g protein. Chipotle mayo is the biggest variable.'],
-  ['Anchos Fajita Bowl, light chipotle mayo', 'mine', '1 bowl', 0, 610, 40, 'Estimate. Light or no mayo saves about 100–180 kcal.'],
   ['Anchos Fajita Bowl + crispy tortilla nest', 'mine', '1 bowl', 0, 950, 44, 'Estimate. The nest adds about 150–250 kcal.'],
-  ['Chicken shawarma wrap, large', 'mine', '1 wrap (€8.50)', 0, 850, 45, 'Estimate: 750–950 kcal, 40–50 g protein. Arabic pita, chicken, pickles, garlic sauce, spicy sauce. Light garlic sauce saves about 150–200 kcal.'],
-  ['Chicken shawarma wrap, medium', 'mine', '1 wrap', 0, 600, 32, 'Estimate: 530–680 kcal, 28–36 g protein, about 70% of the large.'],
-  ['Extra garlic sauce pot', 'mine', '1 pot', 0, 210, 1, 'Estimate. Garlic sauce (toum) is almost all oil.'],
-  ['Double smash cheeseburger', 'mine', '1 burger, no mustard, onion or pickles', 0, 725, 40, 'Estimate: 650–800 kcal, 35–45 g protein.'],
-  ['Chicken gyros pita with fries and chicken sauce', 'mine', '1 pita', 0, 725, 32, 'Estimate: 650–800 kcal, 30–35 g protein. Tzatziki instead of chicken sauce saves about 80–100 kcal.'],
-  ['Yeiaçaí Max bowl with ISO 100', 'mine', '0.5 L bowl', 0, 950, 32, 'Estimate: 900–1,100 kcal.'],
-  ['Yeiaçaí Max, no peanut butter, granola, coconut, cocoa or honey', 'mine', '0.5 L bowl', 0, 425, 30, 'Estimate: 400–450 kcal, keeps the ISO 100.'],
-  ['Yeiaçaí bowl with Nutella, Digestives, Oreo and condensed milk', 'mine', '0.5 L bowl', 0, 750, 10, 'Estimate: 650–850 kcal, 8–12 g protein.'],
-  ['Creamy Tuscan chicken pasta (meal prep)', 'mine', '1 box', 0, 720, 50, 'From the Sunday meal-prep recipe, 1 of 7 boxes.'],
+  ['Chicken shawarma wrap, large', 'mine', '1 wrap (€8.50)', 0, 850, 45, 'Estimate: 750–950 kcal, 40–50 g protein. Light garlic sauce saves about 150–200 kcal.'],
+  ['Chicken shawarma wrap, medium', 'mine', '1 wrap', 0, 600, 33, 'Estimate: 530–680 kcal, 28–36 g protein, a smaller pita and less chicken than the large.'],
+  ['Extra garlic sauce pot', 'mine', '1 small pot (30 g)', 0, 210, 1, 'Estimate. Garlic sauce (toum) is almost all oil.'],
+  ['Double smash cheeseburger', 'mine', '1 burger, no mustard, onion or pickles', 0, 700, 42, 'Estimate: 650–800 kcal, 38–45 g protein.'],
+  ['Chicken gyros pita with fries and chicken sauce', 'mine', '1 pita', 0, 750, 33, 'Estimate: 650–850 kcal, 30–36 g protein. Tzatziki instead of chicken sauce saves about 80–100 kcal.'],
+  ['Creamy Tuscan chicken pasta (meal prep)', 'mine', '1 box', 0, 735, 53, 'Worked out from the Sunday meal-prep recipe, 1 of 7 boxes.'],
+
+  // yeiaçaí: standard 0.5 L bowls, estimated from each bowl's toppings on the menu
+  ['Acai X Bowl', 'yeia', '0.5 L bowl', 0, 900, 17, 'Estimate. Yeiaçaí doesn’t publish nutrition. Peanut butter and granola are about 370 kcal of it.'],
+  ['Acai Max', 'yeia', '0.5 L bowl', 0, 1010, 42, 'Estimate: the Acai X plus a scoop of ISO 100 (about 110 kcal, 25 g protein).'],
+  ['Kagouras Bowl', 'yeia', '0.5 L bowl', 0, 1050, 18, 'Estimate: 1,000–1,150 kcal.'],
+  ['Kagouras Bowl, no peanut butter, banana or boba', 'yeia', '0.5 L bowl', 0, 750, 10, 'Estimate: 650–850 kcal, 8–12 g protein.'],
+  ['50/50', 'yeia', '0.5 L bowl', 0, 1000, 18, 'Estimate.'],
+  ['Zoara Bowl', 'yeia', '0.5 L bowl', 0, 890, 14, 'Estimate.'],
+  ['Magkas Bowl', 'yeia', '0.5 L bowl', 0, 1030, 23, 'Estimate. The peanut butter sorbet base is the least certain part.'],
+  ['Samurai', 'yeia', '0.5 L bowl', 0, 840, 18, 'Estimate.'],
+  ['Passion Bowl', 'yeia', '0.5 L bowl', 0, 750, 10, 'Estimate.'],
+  ['Acai Sketo', 'yeia', '0.5 L bowl', 0, 400, 4, 'Estimate, açaí sorbet only.'],
+  ['Tropic Thunder', 'yeia', '0.5 L bowl', 0, 540, 4, 'Estimate.'],
+  ['Sticky Mango Bowl', 'yeia', '0.5 L bowl', 0, 650, 7, 'Estimate.'],
+  ['Mandorla Siciliana Bowl', 'yeia', '0.5 L bowl', 0, 720, 9, 'Estimate.'],
+  ['Acai Muscle X (smoothie)', 'yeia', '1 smoothie', 0, 530, 36, 'Estimate, with one scoop of chocolate whey isolate.'],
+  ['Sun Shake (smoothie)', 'yeia', '1 smoothie', 0, 400, 28, 'Estimate, with one scoop of vanilla whey.'],
 
   // meat
   ['Chicken breast, grilled', 'meat', '1 breast', 150, 165, 31],
   ['Chicken breast, raw', 'meat', '1 breast', 200, 120, 22.5],
   ['Chicken thigh, skinless, cooked', 'meat', '2 thighs', 150, 209, 26],
   ['Chicken thigh, skinless, raw', 'meat', '2 thighs', 200, 121, 19.7],
-  ['Chicken wings, with skin', 'meat', '5 wings, meat only', 150, 290, 27],
+  ['Chicken wings, with skin', 'meat', '5 wings, without bones', 150, 290, 27],
   ['Rotisserie chicken, with skin', 'meat', '1 portion', 150, 215, 25],
   ['Chicken nuggets', 'meat', '6 pieces', 100, 296, 15],
   ['Turkey breast, cooked', 'meat', '1 portion', 150, 147, 30],
   ['Turkey slices (deli)', 'meat', '4 slices', 50, 104, 18],
-  ['Beef mince 5% fat, cooked', 'meat', '1 portion', 150, 165, 26],
+  ['Beef mince 5% fat, cooked', 'meat', '1 portion', 150, 175, 27],
   ['Beef mince 15% fat, cooked', 'meat', '1 portion', 150, 250, 26],
-  ['Beef mince 20% fat, cooked', 'meat', '1 portion', 150, 270, 25],
+  ['Beef mince 20% fat, cooked', 'meat', '1 portion', 150, 270, 26],
   ['Sirloin steak, grilled', 'meat', '1 steak', 200, 200, 30],
   ['Ribeye steak, grilled', 'meat', '1 steak', 250, 291, 24],
   ['Pork tenderloin, cooked', 'meat', '1 portion', 150, 143, 26],
-  ['Pork chop, grilled', 'meat', '1 chop', 150, 230, 27],
+  ['Pork chop, grilled', 'meat', '1 chop, without bone', 150, 230, 26],
   ['Lamb leg, roasted', 'meat', '1 portion', 150, 258, 26],
-  ['Lamb chops, grilled', 'meat', '3 chops, meat only', 120, 294, 25],
+  ['Lamb chops, grilled', 'meat', '3 chops, without bones', 120, 294, 25],
   ['Bacon, cooked', 'meat', '3 rashers', 25, 541, 37],
   ['Ham, sliced', 'meat', '3 slices', 45, 120, 18],
   ['Salami', 'meat', '6 slices', 30, 380, 22],
@@ -3498,7 +3515,7 @@ const FOOD_RAW = [
   ['Scrambled eggs', 'dairy', '2 eggs', 120, 149, 10],
   ['Greek yogurt 0% (Fage)', 'dairy', '1 pot', 170, 54, 10.3],
   ['Greek yogurt 2% (Fage)', 'dairy', '1 pot', 170, 73, 9.9],
-  ['Greek yogurt 5%', 'dairy', '1 pot', 170, 96, 9],
+  ['Greek yogurt 5% (Fage)', 'dairy', '1 pot', 170, 93, 9],
   ['Skyr', 'dairy', '1 pot', 150, 63, 11],
   ['Cottage cheese', 'dairy', 'half a tub', 125, 90, 11],
   ['High-protein pudding', 'dairy', '1 pot', 200, 75, 10],
@@ -3627,10 +3644,10 @@ const FOOD_RAW = [
   // greek food
   ['Chicken souvlaki skewer', 'greek', '1 skewer', 60, 180, 27],
   ['Pork souvlaki skewer', 'greek', '1 skewer', 60, 240, 26],
-  ['Chicken souvlaki pita', 'greek', '1 pita, with tzatziki', 0, 450, 28, 'Estimate.'],
-  ['Pork souvlaki pita', 'greek', '1 pita, with tzatziki', 0, 520, 26, 'Estimate.'],
-  ['Chicken gyros pita (tzatziki, fries)', 'greek', '1 pita', 0, 580, 30, 'Estimate.'],
-  ['Pork gyros pita (tzatziki, fries)', 'greek', '1 pita', 0, 700, 28, 'Estimate.'],
+  ['Chicken souvlaki pita', 'greek', '1 pita, tzatziki, no fries', 0, 420, 24, 'Estimate. Fries inside add about 120 kcal.'],
+  ['Pork souvlaki pita', 'greek', '1 pita, tzatziki, no fries', 0, 450, 23, 'Estimate. Fries inside add about 120 kcal.'],
+  ['Chicken gyros pita (tzatziki, fries)', 'greek', '1 pita', 0, 600, 31, 'Estimate.'],
+  ['Pork gyros pita (tzatziki, fries)', 'greek', '1 pita', 0, 700, 29, 'Estimate.'],
   ['Chicken gyros meat', 'greek', '1 portion', 100, 190, 22],
   ['Pork gyros meat', 'greek', '1 portion', 100, 280, 20],
   ['Bifteki (Greek burger patty)', 'greek', '1 patty', 150, 230, 20],
@@ -3655,11 +3672,11 @@ const FOOD_RAW = [
   ['Freddo cappuccino, no sugar', 'greek', '1 cup', 0, 70, 4, 'Estimate, with semi-skimmed milk foam.'],
 
   // eating out
-  ['Big Mac', 'out', '1 burger', 0, 508, 26, 'Typical published value; varies by country.'],
+  ['Big Mac', 'out', '1 burger', 0, 508, 26, 'McDonald’s UK value; varies a little by country.'],
   ['Cheeseburger (McDonald’s)', 'out', '1 burger', 0, 300, 15, 'Typical published value.'],
-  ['McChicken', 'out', '1 burger', 0, 390, 17, 'Typical published value.'],
+  ['McChicken', 'out', '1 burger', 0, 388, 17, 'McDonald’s UK value.'],
   ['Chicken McNuggets', 'out', '6 pieces', 0, 259, 15, 'Typical published value.'],
-  ['McDonald’s fries, medium', 'out', '1 medium', 0, 337, 3.4, 'Typical published value.'],
+  ['McDonald’s fries, medium', 'out', '1 medium', 0, 337, 3.4, 'McDonald’s UK value.'],
   ['Chicken burrito', 'out', '1 burrito, with rice, beans and cheese', 0, 1000, 55, 'Estimate.'],
   ['Chicken poke bowl', 'out', '1 bowl', 0, 600, 35, 'Estimate.'],
   ['Salmon poke bowl', 'out', '1 bowl', 0, 650, 30, 'Estimate.'],
@@ -3721,6 +3738,7 @@ const FOOD_RAW = [
   ['Whey isolate (ISO 100)', 'supp', '1 scoop', 30, 367, 83],
   ['Casein protein', 'supp', '1 scoop', 33, 364, 73],
 ];
+const foodHidden = () => { const h = P().foodHidden; return Array.isArray(h) ? h : []; };
 const FOODS = FOOD_RAW.map(([n, c, s, g, k, p, note], i) => ({ i, n, c, s, g, k, p, note: note || '', est: !!note, q: `${n} ${s} ${(FOOD_CATS.find(x => x[0] === c) || [])[1] || ''}`.toLowerCase() }));
 const foodAt = (f, amt) => f.g ? { k: f.k * amt / 100, p: f.p * amt / 100 } : { k: f.k * amt, p: f.p * amt };
 const foodAmt = f => { const a = state.food.amt[f.i]; return a != null ? a : (f.g || 1); };
@@ -3738,6 +3756,7 @@ function foodRowHTML(f){
       : `<div class="fd-amt"><button class="fd-step" data-act="fd-step" data-i="${f.i}" data-d="-1" aria-label="Less">−</button><span class="fd-in"><b>${fmtP(amt)}</b><span>×</span></span><button class="fd-step" data-act="fd-step" data-i="${f.i}" data-d="1" aria-label="More">+</button></div>`}
       <p class="fd-tot" id="fdTot${f.i}"><b>${Math.round(r.k)}</b> kcal · <b>${fmtP(r.p)}</b> g protein</p>
       <p class="fd-note">${lean ? `${fmtP(lean)} g protein per 100 kcal. ` : ''}${f.note ? esc(f.note) : ''}</p>
+      <button class="fd-del" data-act="fd-del" data-i="${f.i}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6"/></svg>Delete from list</button>
     </div>`;
   }
   return `<li class="fd-row${open ? ' open' : ''}"><button class="fd-hit" data-act="fd-open" data-i="${f.i}" aria-expanded="${open}"><span class="fd-n">${esc(f.n)}${f.est ? ' <span class="tag">est.</span>' : ''}<small>${esc(f.s)}${f.g ? ` · ${f.g} g` : ''}</small></span><span class="fd-v"><b>${fmtP(one.p)}<i>g</i></b><small>protein</small></span><span class="fd-v k"><b>${Math.round(one.k)}</b><small>kcal</small></span></button>${detail}</li>`;
@@ -3745,7 +3764,8 @@ function foodRowHTML(f){
 function foodListHTML(){
   const F = state.food; const q = F.q.trim().toLowerCase();
   const words = q.split(/\s+/).filter(Boolean);
-  let list = FOODS.filter(f => (F.cat === 'all' || f.c === F.cat) && words.every(w => f.q.includes(w)));
+  const hid = new Set(foodHidden());
+  let list = FOODS.filter(f => !hid.has(f.n) && (F.cat === 'all' || f.c === F.cat) && words.every(w => f.q.includes(w)));
   const lean = f => { const o = foodAt(f, f.g || 1); return o.k > 0 ? o.p / o.k : 0; };
   if (F.sort === 'protein') list.sort((a, b) => foodAt(b, b.g || 1).p - foodAt(a, a.g || 1).p);
   else if (F.sort === 'lean') list.sort((a, b) => lean(b) - lean(a));
@@ -3758,13 +3778,14 @@ function foodListHTML(){
 function renderFood(){
   const el = $('#v-food'); const F = state.food;
   el.innerHTML = `
-    <header><h1 class="h1">Food</h1><p class="lede">Protein and calories in ${FOODS.length} foods. Tap one to change the amount.</p></header>
+    <header><h1 class="h1">Food</h1><p class="lede">Protein and calories in ${FOODS.length - foodHidden().filter(n => FOODS.some(f => f.n === n)).length} foods. Tap one to change the amount.</p></header>
     <div class="fd-bar">
       <label class="fd-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg><input type="search" class="fd-q" placeholder="Search chicken, eggs, rice…" value="${esc(F.q)}" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" aria-label="Search foods"></label>
       <div class="fd-cats" role="tablist" aria-label="Food groups">${[['all', 'All'], ...FOOD_CATS].map(([c, l]) => `<button role="tab" class="chip${F.cat === c ? ' focus' : ''}" data-act="fd-cat" data-c="${c}" aria-selected="${F.cat === c}">${esc(l)}</button>`).join('')}</div>
       <div class="subseg fd-sort" role="tablist" aria-label="Sort">${[['list', 'By group'], ['protein', 'Most protein'], ['lean', 'Protein/kcal']].map(([s, l]) => `<button role="tab" data-act="fd-sort" data-s="${s}" aria-selected="${F.sort === s}">${l}</button>`).join('')}</div>
     </div>
     <div id="fdList">${foodListHTML()}</div>
+    ${foodHidden().length ? `<button class="btn btn-sm fd-restore" data-act="fd-deleted">Deleted foods (${foodHidden().length})</button>` : ''}
     <p class="muted fd-foot">Numbers are typical values per serving shown. Meat, fish, rice and pasta are cooked weight unless it says raw or dry. Anything marked est. is an estimate from the dish, not a published number.</p>`;
 }
 function refreshFoodList(){ const l = $('#fdList'); if (l) l.innerHTML = foodListHTML(); }
@@ -5457,6 +5478,12 @@ const actions = {
   pswap: a => { state.planSwap = state.planSwap === a.dataset.slot ? null : a.dataset.slot; const y = window.scrollY; renderPlan(); window.scrollTo(0, y); if (state.planSwap){ const sel = $('#psw-' + state.planSwap); if (sel) sel.focus(); } },
   addset: a => { const t = todayStr(); const s = ensureSession(t, state.trainM); const sl = slotById(a.dataset.slot, s); if (!sl) return; const rec = slotRec(s, a.dataset.slot); const p = plannedSets(sl, PHASES[s.ph] ? s.ph : phaseOf(weekNum(t))); while (rec.s.length < p) rec.s.push({}); rec.s.push({}); touch(monthId(t)); const y = window.scrollY; renderTrain(); window.scrollTo(0, y); },
   finish: () => { const t = todayStr(); const s = getSession(t, state.trainM); const i = s && G.info[s.id]; if (!i || i.empty){ toast('Log at least one set first.'); return; } if (!s.fin){ s.fin = Date.now(); touch(monthId(t)); } stopRest(); showSummary(s.id, false, true); },
+  'fd-del': a => { const f = FOODS[+a.dataset.i]; if (!f) return;
+    confirmSheet({ title: `Delete ${f.n}?`, body: 'Are you sure you want to delete it from your food list? You can bring it back later from Deleted foods, at the bottom of the Food tab.', ok: 'Yes, delete', no: 'No', danger: true,
+      onOk: () => { const p = P(); p.foodHidden = [...new Set([...foodHidden(), f.n])]; touch('profile'); state.food.open = null; renderFood(); toast(`Deleted ${f.n}`); } }); },
+  'fd-deleted': () => { const xs = foodHidden().filter(n => FOODS.some(f => f.n === n));
+    openSheet(`<h2 class="h2">Deleted foods</h2><p class="lede">Tap one to put it back in your list.</p><ul class="ledger fd-dl">${xs.map(n => `<li><span class="l-t">${esc(n)}</span><button class="btn btn-sm" data-act="fd-undel" data-n="${esc(n)}">Bring back</button></li>`).join('')}</ul><button class="btn btn-block mt10" data-act="close" data-autofocus>Close</button>`); },
+  'fd-undel': a => { const n = a.dataset.n; const p = P(); p.foodHidden = foodHidden().filter(x => x !== n); touch('profile'); const li = a.closest('li'); if (li) li.remove(); if (!p.foodHidden.length) closeSheet(); if (state.view === 'food') renderFood(); toast(`${n} is back`); },
   'fd-open': a => { const i = +a.dataset.i; state.food.open = state.food.open === i ? null : i; haptic.tap(); refreshFoodList(); },
   'fd-cat': a => { if (state.food.cat === a.dataset.c) return; state.food.cat = a.dataset.c; state.food.open = null; haptic.tap(); renderFood(); const c = $('#v-food .fd-cats .chip.focus'); if (c) c.scrollIntoView({ inline: 'center', block: 'nearest' }); },
   'fd-sort': a => { if (state.food.sort === a.dataset.s) return; state.food.sort = a.dataset.s; haptic.tap(); renderFood(); },
