@@ -359,7 +359,13 @@ details > summary::-webkit-details-marker{display:none}
 .swaprow label{font-size:13.5px;color:var(--muted)}
 .sel{height:48px;border-radius:12px;border:0;background:var(--card-2);padding:0 14px;font-size:16px;width:100%;min-width:0;max-width:100%;color:var(--fg)}
 .sets{display:flex;flex-direction:column;gap:8px}
-.set-h,.set{display:grid;grid-template-columns:28px minmax(0,1fr) minmax(0,1fr) 52px;gap:9px;align-items:center}
+.set-h,.set{display:grid;grid-template-columns:28px minmax(0,1.4fr) minmax(0,1fr) 52px;gap:9px;align-items:center}
+.wbox{position:relative;min-width:0}
+.set:not(.is-done) .wbox input{padding:0 30px;text-align:center}
+.wst{position:absolute;top:0;bottom:0;width:32px;border:0;background:none;padding:0;font:inherit;font-size:22px;font-weight:700;color:var(--muted);display:grid;place-items:center;z-index:1;cursor:pointer;-webkit-user-select:none;user-select:none}
+.wst:first-child{left:0;border-radius:13px 0 0 13px}
+.wst:last-child{right:0;border-radius:0 13px 13px 0}
+.wst:active{color:var(--accent);background:rgba(0,0,0,.05)}
 .set-h{font-size:12.5px;font-weight:650;color:var(--muted);padding:0 2px}
 .set-h span:nth-child(2),.set-h span:nth-child(3){padding-left:14px}
 .set-n{font-family:var(--f-display);font-weight:900;font-size:21px;color:var(--faint);text-align:center}
@@ -585,6 +591,25 @@ details > summary::-webkit-details-marker{display:none}
 .wr-prs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
 .wr-prs li{display:flex;justify-content:space-between;gap:10px;font-size:15px}
 .wr-prs b{font-family:var(--f-display);font-weight:800;font-size:19px;color:#F5C400;white-space:nowrap;font-variant-numeric:tabular-nums}
+.wr-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.wr-nav{display:flex;gap:6px;flex-shrink:0}
+.wr-nav button{width:40px;height:40px;border-radius:12px;border:0;background:rgba(255,255,255,.1);color:#fff;display:grid;place-items:center;cursor:pointer}
+.wr-nav button svg{width:18px;height:18px}
+.wr-nav button:first-child svg{transform:rotate(-90deg)}
+.wr-nav button:last-child svg{transform:rotate(-90deg)}
+.wr-nav button:disabled{opacity:.3}
+.wr-mus{display:flex;flex-wrap:wrap;gap:6px}
+.wr-mus span{font-size:13.5px;font-weight:600;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.08);color:#D9D9D4}
+.wr-mus span.f{background:rgba(245,196,0,.16);color:#F5C400}
+.wr-mus b{color:#fff;font-weight:800;margin-left:2px}
+.wr-mus span.f b{color:#F5C400}
+.wr-stuck{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:14.5px;color:#D9D9D4;line-height:1.4}
+.wr-stuck b{color:#FF8A80}
+.ex-stuck{font-size:14.5px;line-height:1.45;color:var(--fg-2);background:var(--accent-wash);border-radius:12px;padding:10px 12px}
+.ex-stuck b{color:var(--accent-ink)}
+.stuck-list{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+.stuck-list li{display:flex;flex-direction:column;gap:2px;font-size:14.5px;color:var(--fg-2);line-height:1.45}
+.stuck-list b{color:var(--fg);font-size:16px}
 .wr-grew{font-size:15px;color:#D9D9D4;line-height:1.45}
 .wr-grew b{color:#fff}
 
@@ -849,6 +874,60 @@ details > summary::-webkit-details-marker{display:none}
 .mv-ctl button{width:48px;height:48px;border-radius:12px;border:0;background:var(--ink);color:#fff;display:grid;place-items:center;cursor:pointer}
 .mv-ctl button svg{width:22px;height:22px}
 .mv-ctl button:disabled{background:var(--card-3);color:var(--faint)}
+.fd-sr{display:flex;gap:8px}
+.fd-sr .fd-search{flex:1;min-width:0}
+.fd-scan{flex-shrink:0;display:flex;align-items:center;gap:7px;height:52px;padding:0 16px 0 13px;border-radius:14px;border:0;background:var(--ink);color:#fff;font:inherit;font-size:15.5px;font-weight:700;cursor:pointer}
+.fd-scan svg{width:22px;height:22px}
+.fd-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.fd-acts .fd-del{margin-top:0}
+.fd-addm{display:inline-flex;align-items:center;padding:8px 13px;border:0;border-radius:11px;background:var(--ink);color:#fff;font:inherit;font-size:14.5px;font-weight:700;cursor:pointer}
+.meal-bar{position:fixed;left:0;right:0;bottom:calc(76px + var(--bot));z-index:24;padding:0 var(--pad-r) 8px var(--pad);pointer-events:none}
+.meal-in{pointer-events:auto;max-width:560px;margin:0 auto;width:100%;display:flex;align-items:center;gap:14px;padding:10px 14px 10px 16px;border:0;border-radius:18px;background:var(--ink);color:#fff;font:inherit;text-align:left;box-shadow:0 14px 30px -14px rgba(0,0,0,.55);cursor:pointer}
+.mb-l{display:flex;flex-direction:column;margin-right:auto;line-height:1.15}
+.mb-l b{font-family:var(--f-display);font-weight:900;font-size:22px}
+.mb-l small{font-size:12.5px;color:var(--on-ink-2);font-weight:600}
+.mb-v{display:flex;flex-direction:column;align-items:flex-end;line-height:1}
+.mb-v b{font-family:var(--f-display);font-weight:900;font-size:24px;font-variant-numeric:tabular-nums}
+.mb-v.p b{color:#FF6B63}
+.mb-v b i{font-style:normal;font-size:14px}
+.mb-v small{font-size:11px;color:var(--on-ink-2);font-weight:600;margin-top:3px}
+.mb-go{font-size:14px;font-weight:700;background:rgba(255,255,255,.12);padding:8px 11px;border-radius:10px}
+html[data-view="food"] #v-food:has(.meal-bar:not([hidden])) .fd-foot{margin-bottom:84px}
+.ml-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.ml-list li{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.ml-list li:first-child{border-top:0}
+.ml-t{flex:1;min-width:0;display:flex;flex-direction:column;font-size:15.5px;line-height:1.25}
+.ml-t small{color:var(--muted);font-size:13px;margin-top:2px}
+.ml-amt{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.ml-amt button{width:38px;height:38px;border-radius:11px;border:0;background:var(--card-2);font:inherit;font-size:20px;font-weight:700;color:var(--fg);cursor:pointer}
+.ml-amt span{min-width:58px;text-align:center;font-weight:700;font-variant-numeric:tabular-nums;font-size:15px}
+.ml-x{width:34px;height:38px;border:0;background:none;font-size:24px;color:var(--muted);cursor:pointer;flex-shrink:0}
+.ml-tot{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ml-tot div{background:var(--card-2);border-radius:14px;padding:12px 14px}
+.ml-tot b{display:block;font-family:var(--f-display);font-weight:900;font-size:34px;line-height:1;font-variant-numeric:tabular-nums}
+.ml-tot div:last-child b{color:var(--accent)}
+.ml-tot span{font-size:13px;color:var(--muted);font-weight:600}
+.scan{position:fixed;inset:0;z-index:60;background:#000;color:#fff;animation:scanIn .22s ease both}
+.scan.closing{opacity:0;transition:opacity .2s}
+@keyframes scanIn{from{opacity:0}to{opacity:1}}
+.scan video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.scan-shade{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.scan-frame{width:min(78vw,340px);height:min(30vw,140px);border-radius:18px;box-shadow:0 0 0 100vmax rgba(0,0,0,.55),inset 0 0 0 3px #fff;position:relative;overflow:hidden;transform:translateY(-6vh)}
+.scan-frame i{position:absolute;left:8%;right:8%;top:50%;height:2px;background:var(--accent);box-shadow:0 0 12px 2px rgba(226,35,26,.8);animation:scanLine 1.6s ease-in-out infinite alternate}
+@keyframes scanLine{from{transform:translateY(-38px)}to{transform:translateY(38px)}}
+.scan-top{position:absolute;top:calc(env(safe-area-inset-top,0px) + 12px);right:16px}
+.scan-x{width:46px;height:46px;border-radius:50%;border:0;background:rgba(255,255,255,.18);color:#fff;font-size:28px;line-height:1;cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.scan-msg{position:absolute;left:24px;right:24px;top:calc(50% - 6vh + min(15vw,70px) + 22px);margin:0;text-align:center;font-size:16px;font-weight:650;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+.scan-msg.warn{color:#FFD5D2}
+.scan-bot{position:absolute;left:0;right:0;bottom:0;padding:16px 16px calc(18px + var(--bot))}
+.scan-type{display:flex;gap:8px;max-width:560px;margin:0 auto}
+.scan-type input{flex:1;min-width:0;height:52px;border-radius:14px;border:0;background:rgba(255,255,255,.94);padding:0 14px;font:inherit;font-size:17px;font-weight:650;color:#111;letter-spacing:.04em}
+.scan-type button{height:52px;padding:0 16px;border-radius:14px;border:0;background:var(--accent);color:#fff;font:inherit;font-size:15.5px;font-weight:700;cursor:pointer}
+.scan-wait{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding:10px 0}
+.spin{width:34px;height:34px;border-radius:50%;border:3px solid var(--card-3);border-top-color:var(--accent);animation:spin .8s linear infinite;margin-bottom:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.scan-form{display:flex;flex-direction:column;gap:12px}
+.scan-form2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .fd-bar{display:flex;flex-direction:column;gap:10px;margin:16px 0 4px}
 .fd-search{display:flex;align-items:center;gap:10px;height:52px;padding:0 14px;border-radius:14px;background:var(--card-2);transition:background-color .2s,box-shadow .2s}
 .fd-search svg{width:20px;height:20px;color:var(--muted);flex-shrink:0}
@@ -3453,7 +3532,7 @@ function unlocked(key){ const sk = SKILLS.find(s => s.key === key); return sk &&
 
 /* ---------- views ---------- */
 /* ---------- FOOD: protein and calories lookup. Reference only; Chisel sets no food targets. ---------- */
-const FOOD_CATS = [['mine', 'Your orders'], ['yeia', 'Yeiaçaí'], ['meat', 'Meat'], ['fish', 'Fish'], ['dairy', 'Eggs & dairy'], ['plant', 'Beans & tofu'], ['carbs', 'Rice, bread & pasta'], ['fruit', 'Fruit'], ['veg', 'Veg'], ['nuts', 'Nuts & seeds'], ['greek', 'Greek food'], ['out', 'Eating out'], ['sauce', 'Oils & sauces'], ['snack', 'Snacks & sweets'], ['drink', 'Drinks'], ['supp', 'Supplements']];
+const FOOD_CATS = [['mine', 'Your orders'], ['meal', 'Your meals'], ['scan', 'Scanned'], ['yeia', 'Yeiaçaí'], ['meat', 'Meat'], ['fish', 'Fish'], ['dairy', 'Eggs & dairy'], ['plant', 'Beans & tofu'], ['carbs', 'Rice, bread & pasta'], ['fruit', 'Fruit'], ['veg', 'Veg'], ['nuts', 'Nuts & seeds'], ['greek', 'Greek food'], ['out', 'Eating out'], ['sauce', 'Oils & sauces'], ['snack', 'Snacks & sweets'], ['drink', 'Drinks'], ['supp', 'Supplements']];
 // [name, category, serving, grams per serving, kcal, protein, note]
 // With grams: kcal and protein are per 100 g (cooked unless it says raw or dry). With 0 grams: they are per serving.
 const FOOD_RAW = [
@@ -3757,59 +3836,305 @@ const FOOD_RAW = [
   ['Casein protein', 'supp', '1 scoop', 33, 364, 73],
 ];
 const foodHidden = () => { const h = P().foodHidden; return Array.isArray(h) ? h : []; };
-const FOODS = FOOD_RAW.map(([n, c, s, g, k, p, note], i) => ({ i, n, c, s, g, k, p, note: note || '', est: !!note, q: `${n} ${s} ${(FOOD_CATS.find(x => x[0] === c) || [])[1] || ''}`.toLowerCase() }));
+function mkFood(id, n, c, s, g, k, p, note, est){ return { id, n, c, s, g, k, p, note: note || '', est: !!est, q: `${n} ${s} ${(FOOD_CATS.find(x => x[0] === c) || [])[1] || ''}`.toLowerCase() }; }
+const FOODS = FOOD_RAW.map(([n, c, s, g, k, p, note], i) => mkFood('b' + i, n, c, s, g, k, p, note, !!note));
+// your scans (by barcode) and saved meals live in the profile, so they sync like everything else
+const foodScans = () => { const x = P().foodScans; return x && typeof x === 'object' && !Array.isArray(x) ? x : {}; };
+const foodMeals = () => { const x = P().foodMeals; return Array.isArray(x) ? x : []; };
+const mealNote = m => (m.items || []).map(it => `${it.g ? `${Math.round(it.amt)} g` : `${fmtP(it.amt)}×`} ${it.n}`).join(' · ');
+function allFoods(){
+  const scans = Object.entries(foodScans()).filter(([, v]) => v && v.n).sort((a, b) => (b[1].t || 0) - (a[1].t || 0))
+    .map(([code, v]) => mkFood('s' + code, v.n, 'scan', v.s || (+v.g === 100 ? '100 g' : '1 serving'), +v.g || 100, +v.k || 0, +v.p || 0,
+      `${v.src === 'off' ? `From Open Food Facts${v.brand ? `, ${v.brand}` : ''}` : 'From the label'}. Barcode ${code}.`, false));
+  const meals = foodMeals().filter(m => m && m.n).map(m => mkFood('m' + m.id, m.n, 'meal', '1 meal', 0, +m.k || 0, +m.p || 0, mealNote(m), false));
+  return [...meals, ...scans, ...FOODS];
+}
+const foodById = id => allFoods().find(f => f.id === id);
 const foodAt = (f, amt) => f.g ? { k: f.k * amt / 100, p: f.p * amt / 100 } : { k: f.k * amt, p: f.p * amt };
-const foodAmt = f => { const a = state.food.amt[f.i]; return a != null ? a : (f.g || 1); };
+const foodAmt = f => { const a = state.food.amt[f.id]; return a != null ? a : (f.g || 1); };
+const foodStep = f => f.g ? (f.g >= 150 ? 25 : f.g >= 50 ? 10 : 5) : 0.5;
 const fmtP = v => v >= 10 ? String(Math.round(v)) : String(Math.round(v * 10) / 10);
+const I_BIN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6"/></svg>';
+const I_SCAN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 8V5.5a2 2 0 0 1 2-2H8M16 3.5h2.5a2 2 0 0 1 2 2V8M20.5 16v2.5a2 2 0 0 1-2 2H16M8 20.5H5.5a2 2 0 0 1-2-2V16M7.5 8v8M10.5 8v8M13 8v8M16.5 8v8"/></svg>';
 function foodRowHTML(f){
-  const open = state.food.open === f.i; const one = foodAt(f, f.g || 1);
+  const open = state.food.open === f.id; const one = foodAt(f, f.g || 1);
   let detail = '';
   if (open){
-    const amt = foodAmt(f); const r = foodAt(f, amt); const per100k = f.g ? f.k : null;
+    const amt = foodAmt(f); const r = foodAt(f, amt);
     const lean = one.k > 0 ? one.p / one.k * 100 : 0;
     detail = `<div class="fd-more">
       ${f.g ? `<p class="fd-per">Per 100 g: <b>${Math.round(f.k)} kcal</b> · <b>${fmtP(f.p)} g protein</b></p>
-      <div class="fd-amt"><button class="fd-step" data-act="fd-step" data-i="${f.i}" data-d="-1" aria-label="Less">−</button><label class="fd-in"><input class="fd-g" data-i="${f.i}" inputmode="decimal" value="${Math.round(amt)}" aria-label="Amount in grams"><span>g</span></label><button class="fd-step" data-act="fd-step" data-i="${f.i}" data-d="1" aria-label="More">+</button></div>
-      <div class="fd-quick">${[[f.g, `1 serving`], [100, '100 g'], [f.g * 2, '2 servings']].filter((x, k, a) => a.findIndex(y => y[0] === x[0]) === k).map(([v, l]) => `<button class="chip${Math.round(amt) === v ? ' focus' : ''}" data-act="fd-set" data-i="${f.i}" data-v="${v}">${l}</button>`).join('')}</div>`
-      : `<div class="fd-amt"><button class="fd-step" data-act="fd-step" data-i="${f.i}" data-d="-1" aria-label="Less">−</button><span class="fd-in"><b>${fmtP(amt)}</b><span>×</span></span><button class="fd-step" data-act="fd-step" data-i="${f.i}" data-d="1" aria-label="More">+</button></div>`}
-      <p class="fd-tot" id="fdTot${f.i}"><b>${Math.round(r.k)}</b> kcal · <b>${fmtP(r.p)}</b> g protein</p>
+      <div class="fd-amt"><button class="fd-step" data-act="fd-step" data-id="${f.id}" data-d="-1" aria-label="Less">−</button><label class="fd-in"><input class="fd-g" data-id="${f.id}" inputmode="decimal" value="${Math.round(amt)}" aria-label="Amount in grams"><span>g</span></label><button class="fd-step" data-act="fd-step" data-id="${f.id}" data-d="1" aria-label="More">+</button></div>
+      <div class="fd-quick">${[[f.g, `1 serving`], [100, '100 g'], [f.g * 2, '2 servings']].filter((x, k, a) => a.findIndex(y => y[0] === x[0]) === k).map(([v, l]) => `<button class="chip${Math.round(amt) === v ? ' focus' : ''}" data-act="fd-set" data-id="${f.id}" data-v="${v}">${l}</button>`).join('')}</div>`
+      : `<div class="fd-amt"><button class="fd-step" data-act="fd-step" data-id="${f.id}" data-d="-1" aria-label="Less">−</button><span class="fd-in"><b>${fmtP(amt)}</b><span>×</span></span><button class="fd-step" data-act="fd-step" data-id="${f.id}" data-d="1" aria-label="More">+</button></div>`}
+      <p class="fd-tot" id="fdTot-${f.id}"><b>${Math.round(r.k)}</b> kcal · <b>${fmtP(r.p)}</b> g protein</p>
       <p class="fd-note">${lean ? `${fmtP(lean)} g protein per 100 kcal. ` : ''}${f.note ? esc(f.note) : ''}</p>
-      <button class="fd-del" data-act="fd-del" data-i="${f.i}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6"/></svg>Delete from list</button>
+      <div class="fd-acts"><button class="fd-addm" data-act="fd-add" data-id="${f.id}">+ Add to meal</button><button class="fd-del" data-act="fd-del" data-id="${f.id}">${I_BIN}Delete</button></div>
     </div>`;
   }
-  return `<li class="fd-row${open ? ' open' : ''}"><button class="fd-hit" data-act="fd-open" data-i="${f.i}" aria-expanded="${open}"><span class="fd-n">${esc(f.n)}${f.est ? ' <span class="tag">est.</span>' : ''}<small>${esc(f.s)}${f.g ? ` · ${f.g} g` : ''}</small></span><span class="fd-v"><b>${fmtP(one.p)}<i>g</i></b><small>protein</small></span><span class="fd-v k"><b>${Math.round(one.k)}</b><small>kcal</small></span></button>${detail}</li>`;
+  return `<li class="fd-row${open ? ' open' : ''}"><button class="fd-hit" data-act="fd-open" data-id="${f.id}" aria-expanded="${open}"><span class="fd-n">${esc(f.n)}${f.est ? ' <span class="tag">est.</span>' : ''}<small>${esc(f.s)}${f.g ? ` · ${f.g} g` : ''}</small></span><span class="fd-v"><b>${fmtP(one.p)}<i>g</i></b><small>protein</small></span><span class="fd-v k"><b>${Math.round(one.k)}</b><small>kcal</small></span></button>${detail}</li>`;
 }
+function visibleFoods(){ const hid = new Set(foodHidden()); return allFoods().filter(f => !(f.c !== 'scan' && f.c !== 'meal' && hid.has(f.n))); }
 function foodListHTML(){
   const F = state.food; const q = F.q.trim().toLowerCase();
   const words = q.split(/\s+/).filter(Boolean);
-  const hid = new Set(foodHidden());
-  let list = FOODS.filter(f => !hid.has(f.n) && (F.cat === 'all' || f.c === F.cat) && words.every(w => f.q.includes(w)));
+  let list = visibleFoods().filter(f => (F.cat === 'all' || f.c === F.cat) && words.every(w => f.q.includes(w)));
   const lean = f => { const o = foodAt(f, f.g || 1); return o.k > 0 ? o.p / o.k : 0; };
   if (F.sort === 'protein') list.sort((a, b) => foodAt(b, b.g || 1).p - foodAt(a, a.g || 1).p);
   else if (F.sort === 'lean') list.sort((a, b) => lean(b) - lean(a));
-  if (!list.length) return `<p class="lede fd-empty">Nothing matches “${esc(F.q.trim())}”. Try another word, or ask Claude to add it.</p>`;
+  if (!list.length) return F.cat === 'scan' && !words.length ? `<p class="lede fd-empty">Nothing scanned yet. Tap Scan and point your camera at a barcode.</p>`
+    : F.cat === 'meal' && !words.length ? `<p class="lede fd-empty">No saved meals yet. Tap foods, choose Add to meal, then save the meal.</p>`
+    : `<p class="lede fd-empty">Nothing matches “${esc(F.q.trim())}”. Try another word, or scan the barcode.</p>`;
   if (F.sort === 'list' && F.cat === 'all' && !words.length){
     return FOOD_CATS.map(([c, l]) => { const xs = list.filter(f => f.c === c); return xs.length ? `<h2 class="fd-h">${esc(l)}</h2><ul class="fd-list">${xs.map(foodRowHTML).join('')}</ul>` : ''; }).join('');
   }
   return `<ul class="fd-list">${list.map(foodRowHTML).join('')}</ul>`;
 }
 function renderFood(){
-  const el = $('#v-food'); const F = state.food;
+  const el = $('#v-food'); const F = state.food; const hidN = foodHidden().filter(n => FOODS.some(f => f.n === n)).length;
   el.innerHTML = `
-    <header><h1 class="h1">Food</h1><p class="lede">Protein and calories in ${FOODS.length - foodHidden().filter(n => FOODS.some(f => f.n === n)).length} foods. Tap one to change the amount.</p></header>
+    <header><h1 class="h1">Food</h1><p class="lede">Protein and calories in ${visibleFoods().length} foods. Tap one to change the amount, or scan a barcode.</p></header>
     <div class="fd-bar">
-      <label class="fd-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg><input type="search" class="fd-q" placeholder="Search chicken, eggs, rice…" value="${esc(F.q)}" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" aria-label="Search foods"></label>
+      <div class="fd-sr"><label class="fd-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg><input type="search" class="fd-q" placeholder="Search chicken, eggs, rice…" value="${esc(F.q)}" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" aria-label="Search foods"></label><button class="fd-scan" data-act="fd-scan" aria-label="Scan a barcode">${I_SCAN}<span>Scan</span></button></div>
       <div class="fd-cats" role="tablist" aria-label="Food groups">${[['all', 'All'], ...FOOD_CATS].map(([c, l]) => `<button role="tab" class="chip${F.cat === c ? ' focus' : ''}" data-act="fd-cat" data-c="${c}" aria-selected="${F.cat === c}">${esc(l)}</button>`).join('')}</div>
       <div class="subseg fd-sort" role="tablist" aria-label="Sort">${[['list', 'By group'], ['protein', 'Most protein'], ['lean', 'Protein/kcal']].map(([s, l]) => `<button role="tab" data-act="fd-sort" data-s="${s}" aria-selected="${F.sort === s}">${l}</button>`).join('')}</div>
     </div>
     <div id="fdList">${foodListHTML()}</div>
-    ${foodHidden().length ? `<button class="btn btn-sm fd-restore" data-act="fd-deleted">Deleted foods (${foodHidden().length})</button>` : ''}
-    <p class="muted fd-foot">Numbers are typical values per serving shown. Meat, fish, rice and pasta are cooked weight unless it says raw or dry. Anything marked est. is an estimate from the dish, not a published number.</p>`;
+    ${hidN ? `<button class="btn btn-sm fd-restore" data-act="fd-deleted">Deleted foods (${hidN})</button>` : ''}
+    <p class="muted fd-foot">Numbers are typical values per serving shown. Meat, fish, rice and pasta are cooked weight unless it says raw or dry. Anything marked est. is an estimate from the dish, not a published number. Scanned foods come from Open Food Facts, a free database anyone can add to.</p>
+    <div class="meal-bar" id="mealBar" hidden></div>`;
+  paintMealBar();
 }
 function refreshFoodList(){ const l = $('#fdList'); if (l) l.innerHTML = foodListHTML(); }
-function updateFoodTotal(i){
-  const f = FOODS[i]; const t = $('#fdTot' + i); if (!f || !t) return;
+function updateFoodTotal(id){
+  const f = foodById(id); const t = document.getElementById('fdTot-' + id); if (!f || !t) return;
   const r = foodAt(f, foodAmt(f)); t.innerHTML = `<b>${Math.round(r.k)}</b> kcal · <b>${fmtP(r.p)}</b> g protein`;
+}
+function foodDelete(id){
+  const f = foodById(id); if (!f) return;
+  confirmSheet({ title: `Delete ${f.n}?`, body: f.c === 'scan' || f.c === 'meal' ? 'Are you sure you want to delete it? This can’t be undone, but you can scan or build it again.' : 'Are you sure you want to delete it from your food list? You can bring it back later from Deleted foods, at the bottom of the Food tab.', ok: 'Yes, delete', no: 'No', danger: true,
+    onOk: () => { const p = P();
+      if (f.c === 'scan'){ const sc = { ...foodScans() }; delete sc[f.id.slice(1)]; p.foodScans = sc; }
+      else if (f.c === 'meal'){ p.foodMeals = foodMeals().filter(m => 'm' + m.id !== f.id); }
+      else p.foodHidden = [...new Set([...foodHidden(), f.n])];
+      touch('profile'); state.food.open = null; renderFood(); toast(`Deleted ${esc(f.n)}`); } });
+}
+
+/* ---------- meal builder: add foods with their amounts, see one total, save it as a food ---------- */
+function mealTray(){
+  if (!Array.isArray(state.food.meal)){ let x = []; try { x = JSON.parse(localStorage.getItem('chisel.meal') || '[]'); } catch (e) {} state.food.meal = Array.isArray(x) ? x.filter(it => it && it.id) : []; }
+  return state.food.meal;
+}
+function saveTray(){ try { localStorage.setItem('chisel.meal', JSON.stringify(mealTray())); } catch (e) {} paintMealBar(); }
+// a food that's since been deleted keeps the numbers it had when you added it
+function trayItem(it){ const f = foodById(it.id); const v = f ? foodAt(f, it.amt) : { k: (+it.k || 0), p: (+it.p || 0) }; return { ...it, k: v.k, p: v.p, step: f ? foodStep(f) : (it.g ? 10 : 0.5) }; }
+function trayTotals(){ return mealTray().map(trayItem).reduce((a, x) => ({ k: a.k + x.k, p: a.p + x.p }), { k: 0, p: 0 }); }
+function paintMealBar(){
+  const b = $('#mealBar'); if (!b) return; const xs = mealTray();
+  if (!xs.length){ b.hidden = true; b.innerHTML = ''; return; }
+  const t = trayTotals();
+  b.innerHTML = `<button class="meal-in" data-act="meal-open" aria-label="Open your meal: ${xs.length} foods, ${Math.round(t.k)} kcal, ${fmtP(t.p)} g protein"><span class="mb-l"><b>Meal</b><small>${xs.length} food${xs.length > 1 ? 's' : ''}</small></span><span class="mb-v"><b>${Math.round(t.k)}</b><small>kcal</small></span><span class="mb-v p"><b>${fmtP(t.p)}<i>g</i></b><small>protein</small></span><span class="mb-go">Open</span></button>`;
+  b.hidden = false;
+}
+function foodAddToMeal(id){
+  const f = foodById(id); if (!f) return; const amt = foodAmt(f); const xs = mealTray();
+  const have = xs.find(it => it.id === id);
+  if (have){ have.amt = Math.round((have.amt + amt) * 100) / 100; const v = foodAt(f, have.amt); have.k = v.k; have.p = v.p; }
+  else { const v = foodAt(f, amt); xs.push({ id, n: f.n, amt, g: !!f.g, k: v.k, p: v.p }); }
+  saveTray(); haptic.tap(); toast(`Added ${esc(f.n)} to your meal`);
+}
+function mealSheetHTML(name){
+  const xs = mealTray().map(trayItem); const t = trayTotals();
+  if (!xs.length) return `<i class="ml-mark" hidden></i><h2 class="h2">Your meal</h2><p class="lede">It’s empty. Tap a food, then Add to meal.</p><button class="btn btn-block" data-act="close" data-autofocus>Close</button>`;
+  return `<i class="ml-mark" hidden></i><h2 class="h2">Your meal</h2>
+    <ul class="ml-list">${xs.map((x, k) => `<li><div class="ml-t"><b>${esc(x.n)}</b><small>${Math.round(x.k)} kcal · ${fmtP(x.p)} g protein</small></div>
+      <div class="ml-amt"><button data-act="ml-step" data-k="${k}" data-d="-1" aria-label="Less ${esc(x.n)}">−</button><span>${x.g ? `${Math.round(x.amt)} g` : `${fmtP(x.amt)}×`}</span><button data-act="ml-step" data-k="${k}" data-d="1" aria-label="More ${esc(x.n)}">+</button></div>
+      <button class="ml-x" data-act="ml-rm" data-k="${k}" aria-label="Remove ${esc(x.n)}">×</button></li>`).join('')}</ul>
+    <div class="ml-tot"><div><b>${Math.round(t.k)}</b><span>kcal</span></div><div><b>${fmtP(t.p)}</b><span>g protein</span></div></div>
+    <label class="field"><span>Save it as a food, so it shows up under Your meals</span><input class="ml-name" maxlength="40" placeholder="Name it, e.g. Meal prep box" value="${esc(name || '')}" enterkeyhint="done"></label>
+    <div class="btn-row"><button class="btn btn-gold" data-act="ml-save">Save meal</button><button class="btn" data-act="ml-clear">Clear</button></div>
+    <button class="btn btn-block" data-act="close">Close</button>`;
+}
+function paintMealSheet(){ const sh = $('#sheet'); if (!sh || !sh.querySelector('.ml-mark')) return; const nm = sh.querySelector('.ml-name'); sh.innerHTML = mealSheetHTML(nm ? nm.value : ''); }
+function openMealSheet(){ openSheet(mealSheetHTML(''), ''); }
+function mealSave(){
+  const sh = $('#sheet'); const inp = sh && sh.querySelector('.ml-name'); const n = inp ? inp.value.trim().slice(0, 40) : '';
+  if (!n){ if (inp){ inp.classList.remove('shake'); void inp.offsetWidth; inp.classList.add('shake'); inp.focus(); } toast('Give your meal a name first.'); return; }
+  const xs = mealTray().map(trayItem); const t = trayTotals();
+  const m = { id: Date.now().toString(36), n, k: Math.round(t.k), p: Math.round(t.p * 10) / 10, items: xs.map(x => ({ id: x.id, n: x.n, amt: x.amt, g: x.g, k: Math.round(x.k), p: Math.round(x.p * 10) / 10 })), t: Date.now() };
+  const p = P(); p.foodMeals = [...foodMeals(), m]; touch('profile');
+  state.food.meal = []; saveTray(); closeSheet();
+  state.food.cat = 'meal'; state.food.q = ''; state.food.open = 'm' + m.id; if (state.view === 'food') renderFood();
+  haptic.tap(); toast(`Saved ${esc(n)} to Your meals`);
+}
+
+/* ---------- barcode scanner: camera → EAN/UPC code → Open Food Facts ---------- */
+// Uses the phone's own barcode reader when the browser has one (not Safari, so far), otherwise ZXing compiled to WebAssembly,
+// loaded the first time you scan and kept offline after that. A code has to read the same twice in a row to count.
+const ZX_DIR = 'vendor/zxing-3.1.6/';
+let zxReady = null;
+function loadZXing(){
+  if (zxReady) return zxReady;
+  zxReady = new Promise((ok, no) => {
+    if (window.ZXingWASM) return ok(window.ZXingWASM);
+    const sc = document.createElement('script'); sc.src = ZX_DIR + 'reader.js'; sc.async = true;
+    sc.onload = () => { try { const Z = window.ZXingWASM; Z.prepareZXingModule({ overrides: { locateFile: (p, pre) => p.endsWith('.wasm') ? new URL(ZX_DIR + 'zxing_reader.wasm', location.href).href : pre + p } }); ok(Z); } catch (e) { no(e); } };
+    sc.onerror = () => no(new Error('load'));
+    document.head.appendChild(sc);
+  });
+  zxReady.catch(() => { zxReady = null; });
+  return zxReady;
+}
+function eanOk(c){
+  if (!/^\d+$/.test(c) || ![8, 12, 13].includes(c.length)) return false;
+  const d = c.split('').map(Number); const chk = d.pop(); let sum = 0;
+  d.reverse().forEach((v, i) => { sum += v * (i % 2 === 0 ? 3 : 1); });
+  return (10 - sum % 10) % 10 === chk;
+}
+let scan = null;
+async function makeDetector(){
+  if ('BarcodeDetector' in window){
+    try { const fm = await window.BarcodeDetector.getSupportedFormats(); const want = ['ean_13', 'ean_8', 'upc_a'].filter(x => fm.includes(x));
+      if (want.includes('ean_13')){ const bd = new window.BarcodeDetector({ formats: want }); return async cv => (await bd.detect(cv)).map(r => r.rawValue); } } catch (e) {}
+  }
+  const Z = await loadZXing();
+  // a different way of telling black from white on each frame: one of them copes with glare, another with blur or dim light
+  const BIN = ['LocalAverage', 'GlobalHistogram', 'FixedThreshold']; let n = 0;
+  return async cv => { const ctx = cv.getContext('2d', { willReadFrequently: true }); const img = ctx.getImageData(0, 0, cv.width, cv.height);
+    const rs = await Z.readBarcodes(img, { formats: ['EAN13', 'EAN8', 'UPCA'], tryHarder: true, tryRotate: true, tryInvert: false, maxNumberOfSymbols: 1, binarizer: BIN[n++ % BIN.length] });
+    return rs.filter(r => r.isValid !== false && r.text).map(r => r.text); };
+}
+function scanMsg(t, warn){ const m = $('#scanMsg'); if (m){ m.textContent = t; m.classList.toggle('warn', !!warn); } }
+async function openScanner(){
+  if (scan) return;
+  const el = document.createElement('div'); el.className = 'scan'; el.id = 'scanner'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); el.setAttribute('aria-label', 'Scan a barcode');
+  el.innerHTML = `<video playsinline muted autoplay aria-hidden="true"></video>
+    <div class="scan-shade" aria-hidden="true"><div class="scan-frame"><i></i></div></div>
+    <div class="scan-top"><button class="scan-x" data-act="scan-close" aria-label="Close the scanner">×</button></div>
+    <p class="scan-msg" id="scanMsg" role="status">Starting the camera…</p>
+    <div class="scan-bot"><div class="scan-type"><input class="scan-code" inputmode="numeric" pattern="[0-9]*" maxlength="13" autocomplete="off" placeholder="Or type the barcode number" aria-label="Barcode number" enterkeyhint="search"><button data-act="scan-type">Look up</button></div></div>`;
+  document.body.appendChild(el); document.documentElement.classList.add('sheet-open');
+  scan = { el, video: el.querySelector('video'), stream: null, timer: 0, last: '', lastT: 0, busy: false, alive: true, cv: document.createElement('canvas') };
+  const S = scan;
+  haptic.tap();
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ scanMsg('The camera isn’t available here. Type the barcode number below instead.', true); return; }
+  let det = null; const detP = makeDetector().then(d => { det = d; }).catch(() => {});
+  try {
+    S.stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 } } });
+  } catch (e) {
+    if (!S.alive) return;
+    scanMsg(e && e.name === 'NotAllowedError' ? 'Camera access is off for Chisel. Allow it when your phone asks, or in Settings, then try again. You can also type the number below.' : 'Couldn’t start the camera. Type the barcode number below instead.', true);
+    return;
+  }
+  if (!S.alive){ S.stream.getTracks().forEach(t => t.stop()); return; }
+  S.video.muted = true; S.video.setAttribute('playsinline', ''); S.video.srcObject = S.stream; try { await S.video.play(); } catch (e) {}
+  try { const tr = S.stream.getVideoTracks()[0]; const caps = tr.getCapabilities ? tr.getCapabilities() : {}; if (caps.focusMode && caps.focusMode.includes('continuous')) tr.applyConstraints({ advanced: [{ focusMode: 'continuous' }] }).catch(() => {}); } catch (e) {}
+  scanMsg(det ? 'Point the camera at the barcode' : 'Loading the scanner…');
+  await detP; if (!S.alive) return;
+  if (!det){ scanMsg('The scanner couldn’t load. Check your connection, or type the number below.', true); return; }
+  scanMsg('Point the camera at the barcode');
+  const tick = async () => {
+    if (!S.alive) return;
+    const v = S.video;
+    if (v.readyState >= 2 && v.videoWidth && !S.busy){
+      S.busy = true;
+      try {
+        // read only what's inside the frame on screen (plus a margin), mapped onto the camera image
+        const vw = v.videoWidth, vh = v.videoHeight, r = v.getBoundingClientRect(); const fr = S.el.querySelector('.scan-frame').getBoundingClientRect();
+        const sc = Math.max(r.width / vw, r.height / vh); const ox = (r.width - vw * sc) / 2, oy = (r.height - vh * sc) / 2;
+        const mx = fr.width * .12, my = fr.height * .35;
+        let sx = (fr.left - r.left - mx - ox) / sc, sy = (fr.top - r.top - my - oy) / sc, sw = (fr.width + 2 * mx) / sc, shh = (fr.height + 2 * my) / sc;
+        sx = clamp(sx, 0, vw - 1); sy = clamp(sy, 0, vh - 1); sw = clamp(sw, 1, vw - sx); shh = clamp(shh, 1, vh - sy);
+        const k = Math.min(1, 1100 / sw); S.cv.width = Math.round(sw * k); S.cv.height = Math.round(shh * k);
+        S.cv.getContext('2d', { willReadFrequently: true }).drawImage(v, sx, sy, sw, shh, 0, 0, S.cv.width, S.cv.height);
+        const codes = (await det(S.cv)).map(c => String(c).replace(/\D/g, '')).filter(eanOk);
+        const c = codes[0];
+        if (c && S.alive){
+          const now = Date.now();
+          if (c === S.last && now - S.lastT < 2000){ S.alive = false; haptic.tap(); sfx.tap(); closeScanner(); lookupBarcode(c); return; }
+          S.last = c; S.lastT = now;
+        }
+      } catch (e) {}
+      S.busy = false;
+    }
+    S.timer = setTimeout(tick, 90);
+  };
+  tick();
+}
+function closeScanner(){
+  const S = scan; if (!S) return; scan = null; S.alive = false; clearTimeout(S.timer);
+  if (S.stream) S.stream.getTracks().forEach(t => t.stop());
+  try { S.video.srcObject = null; } catch (e) {}
+  S.el.classList.add('closing'); setTimeout(() => S.el.remove(), reduceMotion() ? 0 : 200);
+  if ($('#overlay').hidden) document.documentElement.classList.remove('sheet-open');
+}
+function scanTyped(){
+  const inp = scan && scan.el.querySelector('.scan-code'); if (!inp) return; const c = inp.value.replace(/\D/g, '');
+  if (!eanOk(c)){ inp.classList.remove('shake'); void inp.offsetWidth; inp.classList.add('shake'); scanMsg(c.length < 8 ? 'Type all the digits under the barcode (8, 12 or 13).' : 'That number doesn’t check out. Look at the digits again.', true); return; }
+  closeScanner(); lookupBarcode(c);
+}
+// Open Food Facts gives kcal per 100 g (or 100 ml for drinks); older entries only have kJ
+function offParse(j, code){
+  const pr = j && j.product; if (!pr || (j.status !== 1 && j.status !== 'success' && !pr.product_name && !pr.nutriments)) return null;
+  const nm = String(pr.product_name_en || pr.product_name || pr.product_name_el || pr.generic_name_en || pr.generic_name || '').trim();
+  const nu = pr.nutriments || {};
+  const num = v => { const x = typeof v === 'string' ? parseFloat(v.replace(',', '.')) : +v; return Number.isFinite(x) ? x : null; };
+  let k = num(nu['energy-kcal_100g']);
+  if (k == null){ const kj = num(nu['energy-kj_100g']) ?? (String(nu.energy_unit || 'kJ').toLowerCase() === 'kcal' ? null : num(nu.energy_100g)); if (kj != null) k = kj / 4.184; }
+  if (k == null && String(nu.energy_unit || '').toLowerCase() === 'kcal') k = num(nu.energy_100g);
+  const p = num(nu.proteins_100g);
+  const sq = num(pr.serving_quantity); const g = sq && sq > 0 && sq <= 2000 ? Math.round(sq) : 100;
+  const brand = String(pr.brands || '').split(',')[0].trim();
+  // "Total 2%" alone is vague, so the brand goes in front unless the name already has it
+  const full = nm && brand && !nm.toLowerCase().includes(brand.toLowerCase()) ? `${brand} ${nm}` : (nm || brand);
+  // "1 pot (170 g)" → "1 pot"; the grams are shown next to it anyway
+  const ss = String(pr.serving_size || '').replace(/\(?\s*\d+(?:[.,]\d+)?\s*(?:g|gr|ml)\b\s*\)?/i, '').trim();
+  return { code, n: (full || 'Unnamed product').slice(0, 60), brand: brand.slice(0, 40), k: k == null ? null : Math.round(k), p: p == null ? null : Math.round(p * 10) / 10, g, s: g === 100 ? '100 g' : (ss && /[a-z]/i.test(ss) ? ss.slice(0, 30) : '1 serving') };
+}
+async function fetchOFF(code){
+  const ctl = new AbortController(); const to = setTimeout(() => ctl.abort(), 12000);
+  try {
+    const res = await fetch(`https://world.openfoodfacts.org/api/v2/product/${code}.json?fields=code,product_name,product_name_en,product_name_el,generic_name,generic_name_en,brands,serving_size,serving_quantity,nutriments`, { signal: ctl.signal, headers: { Accept: 'application/json' } });
+    let j = null; try { j = await res.json(); } catch (e) {}
+    if (!res.ok && res.status !== 404) throw new Error('http ' + res.status);
+    return offParse(j, code);
+  } finally { clearTimeout(to); }
+}
+function showScanned(code){
+  state.food.cat = 'scan'; state.food.q = ''; state.food.sort = 'list'; state.food.open = 's' + code;
+  if (state.view !== 'food') showView('food'); else renderFood();
+  setTimeout(() => { const b = document.querySelector(`#v-food [data-act="fd-open"][data-id="s${code}"]`); if (b) b.scrollIntoView({ block: 'center', behavior: reduceMotion() ? 'auto' : 'smooth' }); }, 60);
+}
+function saveScan(code, v){ const p = P(); p.foodScans = { ...foodScans(), [code]: { ...v, t: Date.now() } }; touch('profile'); }
+async function lookupBarcode(code){
+  const have = foodScans()[code];
+  if (have && have.n){ saveScan(code, have); showScanned(code); toast(`${esc(have.n)}`); return; }
+  openSheet(`<div class="scan-wait" data-code="${code}"><span class="spin" aria-hidden="true"></span><h2 class="h2">Looking it up…</h2><p class="lede">Barcode ${code}</p></div><button class="btn btn-block" data-act="close">Cancel</button>`, '');
+  let r = null, err = false;
+  try { r = await fetchOFF(code); if (!r && code.length === 12) r = await fetchOFF('0' + code); } catch (e) { err = true; }
+  const sh = $('#sheet'); if (!sh || $('#overlay').hidden || !sh.querySelector(`.scan-wait[data-code="${code}"]`)) return; // cancelled
+  if (err){ sh.innerHTML = manualHTML(code, null, 'Couldn’t reach Open Food Facts. Check your connection and try again, or type the numbers from the label.', true); return; }
+  if (r && r.k != null && r.p != null){ const v = { n: r.n, brand: r.brand, k: r.k, p: r.p, g: r.g, s: r.s, src: 'off' }; saveScan(code, v); closeSheet(); setTimeout(() => showScanned(code), 280); toast(`Found ${esc(r.n)}`); return; }
+  sh.innerHTML = manualHTML(code, r, r ? `Found ${r.n}, but it has no nutrition info yet. Type it from the label and Chisel will remember it.` : `Barcode ${code} isn’t in Open Food Facts yet. Type the numbers from the label and Chisel will remember it.`);
+}
+function manualHTML(code, r, msg, retry){
+  return `<h2 class="h2">${r ? 'Almost there' : retry ? 'No connection' : 'Not found'}</h2><p class="lede">${esc(msg)}</p>
+    <div class="scan-form" data-code="${code}">
+      <label class="field"><span>Name</span><input class="sm-n" maxlength="60" value="${esc(r ? r.n : '')}" placeholder="e.g. Greek yogurt 2%"></label>
+      <div class="scan-form2"><label class="field"><span>kcal per 100 g</span><input class="sm-k" inputmode="decimal" value="${r && r.k != null ? r.k : ''}" placeholder="e.g. 73"></label>
+      <label class="field"><span>Protein per 100 g</span><input class="sm-p" inputmode="decimal" value="${r && r.p != null ? r.p : ''}" placeholder="e.g. 9.9"></label></div>
+      <label class="field"><span>Serving size in g (optional)</span><input class="sm-g" inputmode="decimal" value="${r && r.g && r.g !== 100 ? r.g : ''}" placeholder="100"></label>
+    </div>
+    <div class="btn-row"><button class="btn btn-gold" data-act="scan-save" data-code="${code}">Save food</button>${retry ? `<button class="btn" data-act="scan-retry" data-code="${code}">Try again</button>` : `<button class="btn" data-act="close">Cancel</button>`}</div>${retry ? `<button class="btn btn-block" data-act="close">Cancel</button>` : ''}`;
+}
+function scanSaveManual(code){
+  const sh = $('#sheet'); const q = c => sh.querySelector(c);
+  const n = q('.sm-n').value.trim(), k = parseNum(q('.sm-k').value), p = parseNum(q('.sm-p').value), g0 = parseNum(q('.sm-g').value);
+  const bad = !n ? q('.sm-n') : !(k >= 0 && k <= 950) ? q('.sm-k') : !(p >= 0 && p <= 100) ? q('.sm-p') : null;
+  if (bad){ bad.classList.remove('shake'); void bad.offsetWidth; bad.classList.add('shake'); bad.focus(); toast(bad === q('.sm-n') ? 'Give it a name.' : 'Check the numbers: kcal 0–950, protein 0–100 per 100 g.'); return; }
+  const g = g0 > 0 && g0 <= 2000 ? Math.round(g0) : 100;
+  saveScan(code, { n: n.slice(0, 60), brand: '', k: Math.round(k), p: Math.round(p * 10) / 10, g, s: g === 100 ? '100 g' : '1 serving', src: 'label' });
+  closeSheet(); setTimeout(() => showScanned(code), 280); toast(`Saved ${esc(n)}`);
 }
 
 const VIEWS = ['today', 'train', 'plan', 'progress', 'food', 'vault'];
@@ -3877,7 +4202,7 @@ function renderToday(){
     </section>
     ${nextCardHTML()}
     ${yearCardHTML(true)}
-    ${todayRecapHTML()}
+    ${todayRecapHTML() || stuckCardHTML()}
     ${weekStripHTML()}
     ${muscleMapHTML()}
     ${needTape ? `<section class="card"><div class="sec-h" style="margin-bottom:8px"><h2 class="h3">Finish your check-in</h2><span class="tag gold">Baseline</span></div><p class="lede">Your weight is in: ${fmtKg(wkW.weight)} kg. Add your waist and shoulders to start your golden ratio and waist trend.</p><a class="btn btn-block mt14" href="#progress" data-act="go-checkin">Add measurements</a></section>` : ''}
@@ -4341,7 +4666,7 @@ function exCardHTML(sl, s, ph, isCur, canLater){
     }
     setRows.push(`<div class="set${isDone ? ' is-done' : ''}${extra ? ' is-extra' : ''}${isNext ? ' is-next' : ''}" data-i="${i}"${!isDone && best ? ` data-be="${best.e}" data-hi="${sl.hi}" data-bw="${bw ? 1 : 0}"` : ''}>
       <span class="set-n" title="${extra ? 'Extra set, no XP' : ''}">${i + 1}</span>
-      <input class="in-w" inputmode="decimal" autocomplete="off" enterkeyhint="next" value="${esc(wVal)}" placeholder="${bw ? '+0' : 'kg'}" aria-label="Set ${i + 1} ${bw ? 'added weight' : 'weight'} in kg">
+      <div class="wbox">${isDone ? '' : `<button class="wst" data-act="wstep" data-d="-1" tabindex="-1" aria-label="Set ${i + 1}: ${fmtKg(ex.inc || 2.5)} kg less">−</button>`}<input class="in-w" inputmode="decimal" autocomplete="off" enterkeyhint="next" value="${esc(wVal)}" placeholder="${bw ? '+0' : 'kg'}" aria-label="Set ${i + 1} ${bw ? 'added weight' : 'weight'} in kg">${isDone ? '' : `<button class="wst" data-act="wstep" data-d="1" tabindex="-1" aria-label="Set ${i + 1}: ${fmtKg(ex.inc || 2.5)} kg more">+</button>`}</div>
       <input class="in-r" inputmode="numeric" autocomplete="off" enterkeyhint="done" value="${esc(rVal)}" placeholder="${lastR ? lastR : sl.lo + '–' + sl.hi}" aria-label="Set ${i + 1} reps">
       <button class="chk" data-act="check" aria-pressed="${isDone ? 'true' : 'false'}" aria-label="${isDone ? 'Undo' : 'Log'} set ${i + 1}">${I.check}</button>
       ${ghost}
@@ -4362,6 +4687,7 @@ function exCardHTML(sl, s, ph, isCur, canLater){
     <div class="ex-meta"><span><b>${p} × ${sl.lo}–${sl.hi}</b> reps</span><span class="ex-meta-r"><button class="linkish" data-act="move" data-slot="${sl.id}" aria-label="Change where ${esc(ex.n)} is in the workout">Move</button>${canLater ? `<button class="linkish" data-act="later" data-slot="${sl.id}" aria-label="Do ${esc(ex.n)} later">Later</button>` : ''}${G.bests[exId] ? `<button class="linkish" data-act="lift-hist" data-ex="${exId}">History</button>` : ''}${PLATE_EX[exId] !== undefined ? `<button class="linkish" data-act="plates" data-slot="${sl.id}">Plates</button>` : ''}<button class="linkish" data-act="swap" data-slot="${sl.id}" aria-expanded="${state.swapOpen === sl.id ? 'true' : 'false'}">Swap</button></span></div>
     ${state.swapOpen === sl.id ? `<div class="swaprow"><label for="sw-${sl.id}">${anyDone ? 'Sets are already logged today, so the swap applies from next session.' : 'Machine taken? Pick another option. Same XP.'}</label><select class="sel" id="sw-${sl.id}" data-swap="${sl.id}">${altList.map(a => `<option value="${a}"${a === exId ? ' selected' : ''}>${esc(EX[a].n)}</option>`).join('')}</select></div>` : ''}
     <div class="ex-last${sug.up ? ' up' : ''}">${sug.last && !L ? esc(sug.last) + '. ' : ''}<b>${esc(sug.text)}</b></div>
+    ${(() => { const st = !complete && stuckInfo(exId); return st ? `<div class="ex-stuck"><b>Stuck for 3 sessions.</b> ${esc(st.text)}</div>` : ''; })()}
     ${projLineHTML(exId, sl)}
     ${tech}
     <div class="sets">
@@ -4379,6 +4705,15 @@ function ensureSession(date, m){
 function slotRec(s, slotId){
   if (!s.sets[slotId]) s.sets[slotId] = { ex: currentEx(slotId, isLegacy(s) ? s : null), s: [] };
   return s.sets[slotId];
+}
+function onWeightStep(btn){
+  const row = btn.closest('.set'); const card = btn.closest('.ex'); if (!row || !card) return;
+  const inp = row.querySelector('.in-w'); const s = getSession(todayStr(), state.trainM);
+  const ex = EX[currentEx(card.dataset.slot, s)] || {}; const st = ex.inc || 2.5;
+  let v = parseNum(inp.value); if (Number.isNaN(v)) v = parseNum(inp.placeholder); if (Number.isNaN(v)) v = 0;
+  v = Math.max(0, Math.round((v + st * +btn.dataset.d) / st) * st);
+  inp.value = fmtKg(Math.round(v * 100) / 100); onSetInput(inp); haptic.tap();
+  const prev = G; G = compute(); afterChange(prev);
 }
 function onSetInput(input){
   const card = input.closest('.ex'); const row = input.closest('.set'); if (!card || !row) return;
@@ -4963,15 +5298,71 @@ function weekRecap(mon){
   const grew = Object.entries(a.mus).sort((x, y) => y[1] - x[1]);
   return { mon, n: sess.length, missions: new Set(sess.filter(s => G.info[s.id].earning && G.info[s.id].complete).map(s => s.m)).size, sets: a.sets, prevSets: b.sets, vol: a.vol, prevVol: b.vol, hadPrev: prev.length > 0, prs, xp, grew };
 }
-function recapHTML(mon, label){
-  const r = weekRecap(mon); if (!r.n) return '';
+/* ---------- stuck lifts: no progress over the last 3 sessions of a lift ---------- */
+// One entry per session with done sets of this lift, oldest first. Recovery weeks are skipped: they're light on purpose.
+function liftSessions(exId){
+  const ex = EX[exId]; const out = []; if (!ex) return out;
+  for (const s of allSessions()){
+    const ph = PHASES[s.ph] ? s.ph : phaseOf(weekNum(s.date)); if (ph === 'rec') continue;
+    for (const sl of slotsOf(s)){
+      const rec = s.sets && s.sets[sl.id]; if (!rec || (EX[rec.ex] ? rec.ex : sl.ex) !== exId) continue;
+      const ds = doneSets(rec); if (!ds.length) continue;
+      let best = 0, topW = 0; for (const x of ds){ best = Math.max(best, metric(ex, x)); topW = Math.max(topW, +x.w || 0); }
+      out.push({ date: s.date, best, topW, hi: sl.hi });
+    }
+  }
+  return out.sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
+}
+// Stuck: the 3 most recent sessions never beat the one before them (a rep or more, or any added weight), same rep range, within the last 4 weeks
+function stuckInfo(exId){
+  const h = liftSessions(exId); if (h.length < 4) return null;
+  const last = h.slice(-4); const base = last[0], recent = last.slice(1);
+  if (last.some(x => x.hi !== last[3].hi)) return null;
+  if (daysBetween(last[3].date, todayStr()) > 28) return null;
+  if (recent.some(x => x.best > base.best * 1.01 || x.topW > base.topW)) return null;
+  const ex = EX[exId]; const st = ex.inc || 2.5; const w = last[3].topW;
+  const slot = MISSIONS.flatMap(m => m.slots).find(sl => sl.ex === exId || sl.alts.includes(exId));
+  const alt = slot ? [slot.ex, ...slot.alts].find(a => a !== exId && EX[a]) : null;
+  const drop = ex.k === 'bw' || !(w > 0) ? null : Math.max(st, Math.round(w * 0.9 / st) * st);
+  const fix = drop ? `Next time, drop to ${fmtKg(drop)} kg (about 10% lighter), do every rep clean, then build back up over 2–3 sessions.`
+    : `Slow every rep to 3 seconds down and aim for one more rep each session.`;
+  return { exId, ex, drop, alt, since: base.date, text: `${fix}${alt ? ` Still stuck after that? Swap to ${EX[alt].n}.` : ''} Sleep and protein matter here too.` };
+}
+// the lifts in your current program that are stuck, focus muscles first
+function stuckLifts(){
+  const ids = [...new Set(MISSIONS.flatMap(m => m.slots.map(sl => currentEx(sl.id, null))))];
+  return ids.map(stuckInfo).filter(Boolean).sort((a, b) => (MUSCLES[b.ex.m].f ? 1 : 0) - (MUSCLES[a.ex.m].f ? 1 : 0));
+}
+// lifts whose last session hit the top of the range: these go up next time
+function pushNextWeek(mon){
+  const ph = phaseOf(weekNum(addDays(mon, 7))); const out = []; const seen = new Set();
+  if (ph === 'rec') return out;
+  for (const m of MISSIONS) for (const sl of m.slots){
+    const exId = currentEx(sl.id, null); if (seen.has(exId)) continue; seen.add(exId);
+    const ex = EX[exId]; if (!ex || ex.k === 'bw') continue;
+    const sg = suggestion(sl, exId, ph); if (sg.up && sg.w) out.push({ exId, ex, w: sg.w });
+  }
+  return out.sort((a, b) => (MUSCLES[b.ex.m].f ? 1 : 0) - (MUSCLES[a.ex.m].f ? 1 : 0)).slice(0, 3);
+}
+function stuckCardHTML(){
+  const xs = stuckLifts(); if (!xs.length) return '';
+  return `<section class="card stuck-card"><div class="sec-h" style="margin-bottom:6px"><h2 class="h3">Stuck lift${xs.length > 1 ? 's' : ''}</h2><span class="tag">${xs.length}</span></div>
+    <p class="lede" style="font-size:15px">No progress in the last 3 sessions. Here’s how to get ${xs.length > 1 ? 'them' : 'it'} moving.</p>
+    <ul class="stuck-list">${xs.slice(0, 4).map(x => `<li><b>${esc(x.ex.n)}</b><span>${esc(x.text)}</span></li>`).join('')}</ul></section>`;
+}
+function recapHTML(mon, label, nav){
+  const r = weekRecap(mon); if (!r.n) return nav ? `<section class="card recap" id="wrCard"><div class="wr-top"><div><p class="eyebrow">${esc(label)} · Week ${weekNum(mon)}, ${shortDate(mon)}–${shortDate(addDays(mon, 6))}</p><h2 class="h2" style="margin-top:6px">No training logged.</h2></div><div class="wr-nav"><button data-act="wr-week" data-d="-1" aria-label="Week before">${I.up}</button><button data-act="wr-week" data-d="1" aria-label="Week after"${mon >= mondayOf(todayStr()) ? ' disabled' : ''}>${I.down}</button></div></div></section>` : '';
   const partial = addDays(mon, 6) > todayStr() && isoDow(todayStr()) !== 7;
   const head = r.missions >= 3 ? 'Full week. Every mission done.' : r.missions === 2 ? 'Two of three missions.' : r.missions === 1 ? 'One mission in.' : `${r.n} session${r.n > 1 ? 's' : ''}, none finished yet.`;
   const delta = (now, was, unit) => { if (!r.hadPrev) return '<small>first tracked week</small>'; if (partial) return `<small>last week ${unit(was)}</small>`; const d = now - was; return d === 0 ? '<small>same as last week</small>' : `<small class="${d > 0 ? 'up' : 'down'}">${d > 0 ? '▲ +' : '▼ '}${unit(Math.abs(d))} vs last week</small>`; };
   const tons = v => v >= 1000 ? `${(v / 1000).toFixed(1)} t` : `${fmt(Math.round(v))} kg`;
   const prs = r.prs.slice(-3).reverse().map(p => { const e = EX[p.exId]; return `<li><span>${esc(e.n)}</span><b>${e.k === 'bw' ? `${p.r} reps` : `${fmtKg(p.w)} × ${p.r}`}</b></li>`; }).join('');
   const g = r.grew[0], g2 = r.grew[1];
-  return `<section class="card recap"><div><p class="eyebrow">${esc(label)} · Week ${weekNum(mon)}, ${shortDate(mon)}–${shortDate(addDays(mon, 6))}</p><h2 class="h2" style="margin-top:6px">${head}</h2></div>
+  // looking forward only makes sense for the week that's ending or just ended
+  const fresh = mon >= addDays(mondayOf(todayStr()), -7);
+  const push = fresh ? pushNextWeek(mon) : [], stuck = fresh ? stuckLifts() : [];
+  const navHTML = nav ? `<div class="wr-nav"><button data-act="wr-week" data-d="-1" aria-label="Week before">${I.up}</button><button data-act="wr-week" data-d="1" aria-label="Week after"${mon >= mondayOf(todayStr()) ? ' disabled' : ''}>${I.down}</button></div>` : '';
+  return `<section class="card recap" id="${nav ? 'wrCard' : ''}"><div class="wr-top"><div><p class="eyebrow">${esc(label)} · Week ${weekNum(mon)}, ${shortDate(mon)}–${shortDate(addDays(mon, 6))}</p><h2 class="h2" style="margin-top:6px">${head}</h2></div>${navHTML}</div>
     <div class="wr-stats">
       <div><span>Missions</span><b>${r.missions}/3</b></div>
       <div><span>Sets</span><b>${r.sets}</b>${delta(r.sets, r.prevSets, v => v)}</div>
@@ -4980,6 +5371,9 @@ function recapHTML(mon, label){
     </div>
     ${prs ? `<div><div class="wr-h">${r.prs.length} new record${r.prs.length > 1 ? 's' : ''}</div><ul class="wr-prs">${prs}</ul></div>` : ''}
     ${g ? `<p class="wr-grew">Grew most: <b>${esc(MUSCLES[g[0]].n)}</b>, ${g[1]} sets${g2 ? `. Then ${esc(MUSCLES[g2[0]].n)}, ${g2[1]}.` : '.'}</p>` : ''}
+    ${r.grew.length ? `<div><div class="wr-h">Sets per muscle</div><div class="wr-mus">${r.grew.map(([k, n]) => `<span class="${MUSCLES[k] && MUSCLES[k].f ? 'f' : ''}">${esc(MUSCLES[k] ? MUSCLES[k].n : k)} <b>${n}</b></span>`).join('')}</div></div>` : ''}
+    ${push.length ? `<div><div class="wr-h">Push next week</div><ul class="wr-prs">${push.map(x => `<li><span>${esc(x.ex.n)}</span><b>${fmtKg(x.w)} kg</b></li>`).join('')}</ul></div>` : ''}
+    ${stuck.length ? `<div><div class="wr-h">Stuck: no progress in 3 sessions</div><ul class="wr-stuck">${stuck.slice(0, 3).map(x => `<li><b>${esc(x.ex.n)}</b> ${esc(x.drop ? `Drop to ${fmtKg(x.drop)} kg and build back up.` : 'Slow the reps down, one more rep each time.')}</li>`).join('')}</ul></div>` : ''}
   </section>`;
 }
 // Sunday shows this week; Monday looks back at last week
@@ -5252,7 +5646,8 @@ function renderProgress(){
     </section>`;
   } else if (tab === 'stats'){
     const t0 = todayStr(); const wkNow = mondayOf(t0);
-    const recap = recapHTML(wkNow, isoDow(t0) === 7 ? 'Your week' : 'This week so far') || recapHTML(addDays(wkNow, -7), 'Last week');
+    if (state.wrMon == null) state.wrMon = weekRecap(wkNow).n || isoDow(t0) === 7 ? wkNow : addDays(wkNow, -7);
+    const wm = state.wrMon; const recap = recapHTML(wm, wm === wkNow ? (isoDow(t0) === 7 ? 'Your week' : 'This week so far') : wm === addDays(wkNow, -7) ? 'Last week' : 'Week report', true);
     const parts = [recap, consistencyHTML(), lifetimeHTML(), volumeCardHTML(), muscleTrendHTML(), timeCardHTML(), yearCardHTML(false)].filter(Boolean);
     body = parts.length ? parts.join('') : '<section class="card"><p class="lede">Log your first mission and your stats start here: weekly recaps, consistency, kilos lifted, muscle trends and session times.</p></section>';
   } else {
@@ -5557,6 +5952,7 @@ ${missions}
 const actions = {
   'go-train': a => { state.trainM = a.dataset.m; state.trainFor = todayStr(); state.expand = {}; haptic.tap(); },
   'go-checkin': () => { state.progTab = 'body'; if (state.view === 'progress') renderProgress(); setTimeout(() => { const c = $('#checkin'); if (c) c.scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth', block: 'start' }); }, 180); },
+  'wr-week': a => { const d = +a.dataset.d; const now = mondayOf(todayStr()); const base = state.wrMon || now; const nx = addDays(base, d * 7); if (nx > now) return; state.wrMon = nx; haptic.tap(); const c = $('#wrCard'); if (c){ const lbl = nx === now ? (isoDow(todayStr()) === 7 ? 'Your week' : 'This week so far') : nx === addDays(now, -7) ? 'Last week' : 'Week report'; c.outerHTML = recapHTML(nx, lbl, true); } },
   'go-log': () => { state.progTab = 'log'; if (state.view === 'progress') renderProgress(); },
   'fc-all': () => { state.progTab = 'lifts'; if (state.view === 'progress') renderProgress(); },
   'fc-open': a => { haptic.tap(); openForecast(a.dataset.ex); },
@@ -5581,19 +5977,31 @@ const actions = {
   pswap: a => { state.planSwap = state.planSwap === a.dataset.slot ? null : a.dataset.slot; const y = window.scrollY; renderPlan(); window.scrollTo(0, y); if (state.planSwap){ const sel = $('#psw-' + state.planSwap); if (sel) sel.focus(); } },
   addset: a => { const t = todayStr(); const s = ensureSession(t, state.trainM); const sl = slotById(a.dataset.slot, s); if (!sl) return; const rec = slotRec(s, a.dataset.slot); const p = plannedSets(sl, PHASES[s.ph] ? s.ph : phaseOf(weekNum(t))); while (rec.s.length < p) rec.s.push({}); rec.s.push({}); touch(monthId(t)); const y = window.scrollY; renderTrain(); window.scrollTo(0, y); },
   finish: () => { const t = todayStr(); const s = getSession(t, state.trainM); const i = s && G.info[s.id]; if (!i || i.empty){ toast('Log at least one set first.'); return; } if (!s.fin){ s.fin = Date.now(); touch(monthId(t)); } stopRest(); showSummary(s.id, false, true); },
-  'fd-del': a => { const f = FOODS[+a.dataset.i]; if (!f) return;
-    confirmSheet({ title: `Delete ${f.n}?`, body: 'Are you sure you want to delete it from your food list? You can bring it back later from Deleted foods, at the bottom of the Food tab.', ok: 'Yes, delete', no: 'No', danger: true,
-      onOk: () => { const p = P(); p.foodHidden = [...new Set([...foodHidden(), f.n])]; touch('profile'); state.food.open = null; renderFood(); toast(`Deleted ${f.n}`); } }); },
+  'fd-del': a => foodDelete(a.dataset.id),
   'fd-deleted': () => { const xs = foodHidden().filter(n => FOODS.some(f => f.n === n));
     openSheet(`<h2 class="h2">Deleted foods</h2><p class="lede">Tap one to put it back in your list.</p><ul class="ledger fd-dl">${xs.map(n => `<li><span class="l-t">${esc(n)}</span><button class="btn btn-sm" data-act="fd-undel" data-n="${esc(n)}">Bring back</button></li>`).join('')}</ul><button class="btn btn-block mt10" data-act="close" data-autofocus>Close</button>`); },
-  'fd-undel': a => { const n = a.dataset.n; const p = P(); p.foodHidden = foodHidden().filter(x => x !== n); touch('profile'); const li = a.closest('li'); if (li) li.remove(); if (!p.foodHidden.length) closeSheet(); if (state.view === 'food') renderFood(); toast(`${n} is back`); },
-  'fd-open': a => { const i = +a.dataset.i; state.food.open = state.food.open === i ? null : i; haptic.tap(); refreshFoodList(); },
+  'fd-undel': a => { const n = a.dataset.n; const p = P(); p.foodHidden = foodHidden().filter(x => x !== n); touch('profile'); const li = a.closest('li'); if (li) li.remove(); if (!p.foodHidden.length) closeSheet(); if (state.view === 'food') renderFood(); toast(`${esc(n)} is back`); },
+  'fd-open': a => { const id = a.dataset.id; state.food.open = state.food.open === id ? null : id; haptic.tap(); refreshFoodList(); },
   'fd-cat': a => { if (state.food.cat === a.dataset.c) return; state.food.cat = a.dataset.c; state.food.open = null; haptic.tap(); renderFood(); const c = $('#v-food .fd-cats .chip.focus'); if (c) c.scrollIntoView({ inline: 'center', block: 'nearest' }); },
   'fd-sort': a => { if (state.food.sort === a.dataset.s) return; state.food.sort = a.dataset.s; haptic.tap(); renderFood(); },
-  'fd-step': a => { const f = FOODS[+a.dataset.i]; if (!f) return; const d = +a.dataset.d; const cur = foodAmt(f); let v;
-    if (f.g){ const st = f.g >= 150 ? 25 : f.g >= 50 ? 10 : 5; v = Math.max(st, Math.round(cur / st) * st + d * st); } else v = Math.max(0.5, Math.round(cur * 2) / 2 + d * 0.5);
-    state.food.amt[f.i] = v; haptic.tap(); refreshFoodList(); },
-  'fd-set': a => { const f = FOODS[+a.dataset.i]; if (!f) return; state.food.amt[f.i] = +a.dataset.v; haptic.tap(); refreshFoodList(); },
+  'fd-step': a => { const f = foodById(a.dataset.id); if (!f) return; const d = +a.dataset.d; const cur = foodAmt(f); const st = foodStep(f);
+    const v = f.g ? Math.max(st, Math.round(cur / st) * st + d * st) : Math.max(0.5, Math.round(cur * 2) / 2 + d * 0.5);
+    state.food.amt[f.id] = v; haptic.tap(); refreshFoodList(); },
+  'fd-set': a => { const f = foodById(a.dataset.id); if (!f) return; state.food.amt[f.id] = +a.dataset.v; haptic.tap(); refreshFoodList(); },
+  'fd-add': a => foodAddToMeal(a.dataset.id),
+  'meal-open': () => { haptic.tap(); openMealSheet(); },
+  'ml-step': a => { const it = mealTray()[+a.dataset.k]; if (!it) return; const x = trayItem(it); const d = +a.dataset.d;
+    it.amt = it.g ? Math.max(x.step, Math.round(it.amt / x.step) * x.step + d * x.step) : Math.max(0.5, Math.round(it.amt * 2) / 2 + d * 0.5);
+    const f = foodById(it.id); if (f){ const v = foodAt(f, it.amt); it.k = v.k; it.p = v.p; } else { it.k = x.k / x.amt * it.amt; it.p = x.p / x.amt * it.amt; }
+    saveTray(); haptic.tap(); paintMealSheet(); },
+  'ml-rm': a => { mealTray().splice(+a.dataset.k, 1); saveTray(); haptic.tap(); paintMealSheet(); },
+  'ml-clear': () => { state.food.meal = []; saveTray(); haptic.tap(); paintMealSheet(); },
+  'ml-save': () => mealSave(),
+  'fd-scan': () => openScanner(),
+  'scan-close': () => closeScanner(),
+  'scan-type': () => scanTyped(),
+  'scan-save': a => scanSaveManual(a.dataset.code),
+  'scan-retry': a => { const c = a.dataset.code; closeSheet(); setTimeout(() => lookupBarcode(c), 320); },
   summary: a => showSummary(a.dataset.sid, false),
   'save-checkin': () => saveCheckin(),
   'hist-all': () => { state.showAllHist = !state.showAllHist; renderProgress(); },
@@ -5618,6 +6026,7 @@ const actions = {
   'mv-pick': a => { if (!mvCtx) return; const k = +a.dataset.k; mvCtx.sel = mvCtx.sel === k ? null : k; haptic.tap(); mvPaint(); },
   'mv-move': a => mvMove(+a.dataset.d),
   'mv-now': () => mvNow(),
+  wstep: a => onWeightStep(a),
   later: a => doLater(a.dataset.slot),
   tvn: a => { state.tvn = +a.dataset.w; const y = window.scrollY; renderProgress(); window.scrollTo(0, y); },
   year: a => openYear(+a.dataset.y),
@@ -5647,7 +6056,7 @@ document.addEventListener('input', e => {
   const el = e.target;
   if (el.matches('.in-w, .in-r')) onSetInput(el);
   else if (el.matches('.fd-q')){ state.food.q = el.value.slice(0, 60); state.food.open = null; refreshFoodList(); }
-  else if (el.matches('.fd-g')){ const f = FOODS[+el.dataset.i]; const v = parseNum(el.value); if (f && v > 0){ state.food.amt[f.i] = Math.min(v, 5000); updateFoodTotal(f.i); } }
+  else if (el.matches('.fd-g')){ const f = foodById(el.dataset.id); const v = parseNum(el.value); if (f && v > 0){ state.food.amt[f.id] = Math.min(v, 5000); updateFoodTotal(f.id); } }
   else if (el.matches('input[data-p]:not([type="checkbox"]):not([type="date"])')) onProfileInput(el);
 });
 document.addEventListener('change', e => {
@@ -5663,7 +6072,9 @@ document.addEventListener('keydown', e => {
   if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && vctx && !$('#overlay').hidden && !(e.target.matches && e.target.matches('input,textarea,select'))){ e.preventDefault(); stepViewer(e.key === 'ArrowRight' ? 1 : -1); }
   if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('.viz[role="button"]')){ e.preventDefault(); Viz.play(e.target); }
   if (e.key === 'Enter' && e.target.matches && e.target.matches('.in-r')){ const btn = e.target.closest('.set').querySelector('.chk'); if (btn && btn.getAttribute('aria-pressed') !== 'true'){ e.preventDefault(); e.target.blur(); onCheck(btn); } }
-  if (e.key === 'Enter' && e.target.matches && e.target.matches('.fd-q, .fd-g')){ e.preventDefault(); e.target.blur(); }
+  if (e.key === 'Enter' && e.target.matches && e.target.matches('.fd-q, .fd-g, .ml-name')){ e.preventDefault(); e.target.blur(); }
+  if (e.key === 'Enter' && e.target.matches && e.target.matches('.scan-code')){ e.preventDefault(); scanTyped(); }
+  if (e.key === 'Escape' && scan){ closeScanner(); }
   if (e.key === 'Enter' && e.target.matches && e.target.matches('.in-w')){ e.preventDefault(); const r = e.target.closest('.set').querySelector('.in-r'); if (r) r.focus(); }
 });
 document.addEventListener('focusout', () => setTimeout(() => { if (pendingRender && !isEditing()) renderView(state.view); }, 0));
