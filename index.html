@@ -833,6 +833,22 @@ details > summary::-webkit-details-marker{display:none}
 .scan-more[open] summary::after{transform:rotate(225deg) translate(-2px,-2px)}
 
 /* progress */
+.ex-h,.ex-tog,.ex-cue,.ex-meta,.ex-last{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#v-train .ex{touch-action:manipulation}
+.mv-list{list-style:none;margin:14px 0 16px;padding:0;display:flex;flex-direction:column;gap:6px}
+.mv-row{display:flex;align-items:center;gap:8px;flex-shrink:0;border-radius:14px;background:var(--card-2);padding:4px;transition:background-color .2s,box-shadow .2s}
+.mv-row.mv-on{background:var(--card);box-shadow:0 0 0 2.5px var(--accent)}
+.mv-row.done{opacity:.55}
+.mv-pick{flex:1;min-width:0;display:flex;align-items:center;gap:12px;border:0;background:none;padding:9px 8px;text-align:left;font:inherit;color:var(--fg);cursor:pointer}
+.mv-i{font-family:var(--f-display);font-weight:900;font-size:22px;width:24px;text-align:center;color:var(--muted);flex-shrink:0}
+.mv-row.mv-on .mv-i{color:var(--accent)}
+.mv-t{font-weight:650;font-size:16px;line-height:1.25;min-width:0}
+.mv-t i{font-style:normal;color:var(--muted)}
+.mv-t small{display:block;font-weight:550;font-size:13px;color:var(--muted);margin-top:2px}
+.mv-ctl{display:flex;gap:6px;flex-shrink:0}
+.mv-ctl button{width:48px;height:48px;border-radius:12px;border:0;background:var(--ink);color:#fff;display:grid;place-items:center;cursor:pointer}
+.mv-ctl button svg{width:22px;height:22px}
+.mv-ctl button:disabled{background:var(--card-3);color:var(--faint)}
 .fd-bar{display:flex;flex-direction:column;gap:10px;margin:16px 0 4px}
 .fd-search{display:flex;align-items:center;gap:10px;height:52px;padding:0 14px;border-radius:14px;background:var(--card-2);transition:background-color .2s,box-shadow .2s}
 .fd-search svg{width:20px;height:20px;color:var(--muted);flex-shrink:0}
@@ -1835,6 +1851,8 @@ function mulberry32(a){ return function(){ a |= 0; a = (a + 0x6D2B79F5) | 0; let
 const yt = q => 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q);
 
 const I = {
+  up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5.5 11.5L12 5l6.5 6.5"/></svg>',
+  down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5.5 12.5L12 19l6.5-6.5"/></svg>',
   food: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7.6c-1.8-1.4-4.6-1.5-6.2.3-1.9 2.1-1.4 6 .4 8.9 1.4 2.3 3.2 3.6 4.4 3.1.6-.2 1-.4 1.4-.4s.8.2 1.4.4c1.2.5 3-.8 4.4-3.1 1.8-2.9 2.3-6.8.4-8.9-1.6-1.8-4.4-1.7-6.2-.3z"/><path d="M12 7.6c0-2 .8-3.6 2.6-4.4"/></svg>',
   today: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/><circle cx="12" cy="15" r="1.9" fill="currentColor" stroke="none"/></svg>',
   train: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M2.5 12h19M5.5 8v8M8.5 6v12M15.5 6v12M18.5 8v8"/></svg>',
@@ -4105,6 +4123,91 @@ function orderSlots(s, slots){
   const pos = id => { const k = s.ord.indexOf(id); return k < 0 ? 999 + slots.findIndex(x => x.id === id) : k; };
   return slots.slice().sort((a, b) => pos(a.id) - pos(b.id));
 }
+/* reorder today's exercises: long-press or double-tap a card (or tap Move). Pairs move together, like Later. */
+let mvCtx = null;
+function mvBlocks(s){
+  const slots = orderSlots(s, slotsOf(s)); const used = new Set(); const out = [];
+  slots.forEach((sl, k) => { if (used.has(sl.id)) return; used.add(sl.id); const b = [sl];
+    const nx = slots[k + 1]; if (sl.pair && nx && nx.id === sl.pair && !used.has(nx.id)){ b.push(nx); used.add(nx.id); }
+    out.push(b); });
+  return out;
+}
+function mvListHTML(){
+  const { s, ph, blocks, sel } = mvCtx;
+  const isDone = b => b.every(sl => doneSets(s.sets && s.sets[sl.id]).length >= plannedSets(sl, ph));
+  const firstOpen = blocks.findIndex(b => !isDone(b));
+  return blocks.map((b, k) => { const on = k === sel; const dn = isDone(b);
+    return `<li class="mv-row${on ? ' mv-on' : ''}${dn ? ' done' : ''}">
+      <button class="mv-pick" data-act="mv-pick" data-k="${k}" aria-pressed="${on}"><span class="mv-i">${k + 1}</span><span class="mv-t">${b.map(sl => esc(EX[currentEx(sl.id, s)].n)).join('<i> + </i>')}<small>${b.map(sl => sl.id).join(' + ')}${dn ? ' · Done' : k === firstOpen ? ' · Up now' : ''}</small></span></button>
+      ${on ? `<div class="mv-ctl"><button data-act="mv-move" data-d="-1" aria-label="Move up"${k === 0 ? ' disabled' : ''}>${I.up}</button><button data-act="mv-move" data-d="1" aria-label="Move down"${k === blocks.length - 1 ? ' disabled' : ''}>${I.down}</button></div>` : ''}
+    </li>`; }).join('') + (sel !== null && firstOpen >= 0 && sel > firstOpen ? '' : '');
+}
+function mvButtonsHTML(){
+  const { s, ph, blocks, sel } = mvCtx;
+  const isDone = b => b.every(sl => doneSets(s.sets && s.sets[sl.id]).length >= plannedSets(sl, ph));
+  const firstOpen = blocks.findIndex(b => !isDone(b));
+  const canNow = sel !== null && firstOpen >= 0 && sel > firstOpen && !isDone(blocks[sel]);
+  return `${canNow ? `<button class="btn btn-gold" data-act="mv-now">Do it now</button>` : ''}<button class="btn${canNow ? '' : ' btn-gold'}" data-act="close" data-autofocus>Done</button>`;
+}
+function mvPaint(){ const l = $('#mvList'); if (l) l.innerHTML = mvListHTML(); const b = $('#mvBtns'); if (b) b.innerHTML = mvButtonsHTML(); }
+function mvSave(){
+  const { blocks } = mvCtx; const s = ensureSession(mvCtx.s.date, mvCtx.s.m); mvCtx.s = s; s.ord = blocks.flat().map(sl => sl.id); touch(monthId(s.date)); mvCtx.changed = true;
+}
+function openMove(slotId){
+  if (state.view !== 'train') return;
+  const t = todayStr(); const s = getSession(t, state.trainM) || { date: t, m: state.trainM, pv: PLAN_V, ph: phaseOf(weekNum(t)), sets: {} };
+  const ph = PHASES[s.ph] ? s.ph : phaseOf(weekNum(t));
+  const blocks = mvBlocks(s); if (blocks.length < 2) return;
+  const sel = Math.max(0, blocks.findIndex(b => b.some(sl => sl.id === slotId)));
+  mvCtx = { s, ph, blocks, sel, changed: false };
+  haptic.tap();
+  openSheet(`<h2 class="h2">Change the order</h2><p class="lede">Tap an exercise, then move it up or down. Pairs move together.</p><ol class="mv-list" id="mvList">${mvListHTML()}</ol><div class="btn-row" id="mvBtns">${mvButtonsHTML()}</div>`, '', () => {
+    const c = mvCtx; mvCtx = null; if (!c || !c.changed || state.view !== 'train') return;
+    const y = window.scrollY; renderTrain(); window.scrollTo(0, y);
+    scrollToSet(document.querySelector('#v-train .ex.is-current .set:not(.is-done)'), 120);
+  });
+}
+function mvMove(d){
+  if (!mvCtx || mvCtx.sel === null) return; const { blocks } = mvCtx; const k = mvCtx.sel, j = k + d;
+  if (j < 0 || j >= blocks.length) return;
+  [blocks[k], blocks[j]] = [blocks[j], blocks[k]]; mvCtx.sel = j; mvSave(); haptic.tap(); mvPaint();
+  const row = $('#mvList .mv-row.mv-on'); if (row) row.scrollIntoView({ block: 'nearest', behavior: reduceMotion() ? 'auto' : 'smooth' });
+}
+function mvNow(){
+  if (!mvCtx) return; const { s, ph, blocks } = mvCtx; const k = mvCtx.sel;
+  const firstOpen = blocks.findIndex(b => !b.every(sl => doneSets(s.sets && s.sets[sl.id]).length >= plannedSets(sl, ph)));
+  if (firstOpen < 0 || k <= firstOpen) return;
+  const [b] = blocks.splice(k, 1); blocks.splice(firstOpen, 0, b); mvCtx.sel = firstOpen; mvSave(); haptic.tap();
+  const name = b.map(sl => EX[currentEx(sl.id, s)].n).join(' + '); closeSheet(); toast(`<span>${esc(name)} is up now</span>`);
+}
+// long-press (about half a second) or double-tap anywhere on a card, except where you type or tap set buttons.
+// Pointer events, not click: iOS doesn't send clicks for taps on plain text.
+(() => {
+  let timer = 0, sx = 0, sy = 0, st = 0, fired = 0, lastTap = { id: null, t: 0 };
+  const skip = el => !!el.closest('input, select, textarea, .sets, .swaprow, label');
+  const cancel = () => { clearTimeout(timer); timer = 0; };
+  const open = id => { cancel(); fired = Date.now(); lastTap = { id: null, t: 0 }; openMove(id); };
+  document.addEventListener('pointerdown', e => {
+    const card = e.target.closest('#v-train .ex'); if (!card || skip(e.target) || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    sx = e.clientX; sy = e.clientY; st = Date.now(); cancel();
+    timer = setTimeout(() => open(card.dataset.slot), 480);
+  }, { passive: true });
+  document.addEventListener('pointermove', e => { if (timer && Math.hypot(e.clientX - sx, e.clientY - sy) > 10) cancel(); }, { passive: true });
+  document.addEventListener('pointerup', e => {
+    const was = !!timer; cancel(); if (!was) return;
+    const card = e.target.closest('#v-train .ex'); if (!card || skip(e.target)) return;
+    if (Date.now() - st > 350 || Math.hypot(e.clientX - sx, e.clientY - sy) > 10) return;
+    // a tap on a real button (Later, History, the 3D preview) is its own action, not half a double-tap
+    if (e.target.closest('button, a') && !e.target.closest('.ex-tog')){ lastTap = { id: null, t: 0 }; return; }
+    const now = Date.now();
+    if (lastTap.id === card.dataset.slot && now - lastTap.t < 400) open(card.dataset.slot);
+    else lastTap = { id: card.dataset.slot, t: now };
+  }, { passive: true });
+  ['pointercancel', 'scroll'].forEach(ev => document.addEventListener(ev, cancel, { passive: true }));
+  // the tap that finished a long-press or a double-tap shouldn't also press whatever was under the finger
+  document.addEventListener('click', e => { if (fired && Date.now() - fired < 700){ fired = 0; e.preventDefault(); e.stopPropagation(); } }, true);
+  document.addEventListener('contextmenu', e => { if (e.target.closest('#v-train .ex') && !skip(e.target)) e.preventDefault(); });
+})();
 function doLater(slotId){
   const t = todayStr(); const s = ensureSession(t, state.trainM);
   const slots = orderSlots(s, slotsOf(s)); const sl = slots.find(x => x.id === slotId); if (!sl) return;
@@ -4256,7 +4359,7 @@ function exCardHTML(sl, s, ph, isCur, canLater){
       ${complete ? `<button class="ex-count linkish" data-act="ex-tog" data-slot="${sl.id}" aria-expanded="true" aria-label="Fold ${esc(ex.n)} away">${Math.min(ds.length, p)}/${p}</button>` : `<span class="ex-count" aria-label="${Math.min(ds.length, p)} of ${p} sets done">${Math.min(ds.length, p)}/${p}</span>`}
     </div>
     <p class="ex-cue">${esc(ex.cue)}</p>
-    <div class="ex-meta"><span><b>${p} × ${sl.lo}–${sl.hi}</b> reps</span><span class="ex-meta-r">${canLater ? `<button class="linkish" data-act="later" data-slot="${sl.id}" aria-label="Do ${esc(ex.n)} later">Later</button>` : ''}${G.bests[exId] ? `<button class="linkish" data-act="lift-hist" data-ex="${exId}">History</button>` : ''}${PLATE_EX[exId] !== undefined ? `<button class="linkish" data-act="plates" data-slot="${sl.id}">Plates</button>` : ''}<button class="linkish" data-act="swap" data-slot="${sl.id}" aria-expanded="${state.swapOpen === sl.id ? 'true' : 'false'}">Swap</button></span></div>
+    <div class="ex-meta"><span><b>${p} × ${sl.lo}–${sl.hi}</b> reps</span><span class="ex-meta-r"><button class="linkish" data-act="move" data-slot="${sl.id}" aria-label="Change where ${esc(ex.n)} is in the workout">Move</button>${canLater ? `<button class="linkish" data-act="later" data-slot="${sl.id}" aria-label="Do ${esc(ex.n)} later">Later</button>` : ''}${G.bests[exId] ? `<button class="linkish" data-act="lift-hist" data-ex="${exId}">History</button>` : ''}${PLATE_EX[exId] !== undefined ? `<button class="linkish" data-act="plates" data-slot="${sl.id}">Plates</button>` : ''}<button class="linkish" data-act="swap" data-slot="${sl.id}" aria-expanded="${state.swapOpen === sl.id ? 'true' : 'false'}">Swap</button></span></div>
     ${state.swapOpen === sl.id ? `<div class="swaprow"><label for="sw-${sl.id}">${anyDone ? 'Sets are already logged today, so the swap applies from next session.' : 'Machine taken? Pick another option. Same XP.'}</label><select class="sel" id="sw-${sl.id}" data-swap="${sl.id}">${altList.map(a => `<option value="${a}"${a === exId ? ' selected' : ''}>${esc(EX[a].n)}</option>`).join('')}</select></div>` : ''}
     <div class="ex-last${sug.up ? ' up' : ''}">${sug.last && !L ? esc(sug.last) + '. ' : ''}<b>${esc(sug.text)}</b></div>
     ${projLineHTML(exId, sl)}
@@ -5511,6 +5614,10 @@ const actions = {
   'rest-add': a => { if (Date.now() >= rest.end){ if (+a.dataset.s > 0) startRest(+a.dataset.s, $('#restSub').textContent); return; } rest.end += (+a.dataset.s) * 1000; rest.total = Math.max(rest.total, (rest.end - Date.now()) / 1000); clearTimeout(rest.timer); tickRest(); },
   'rest-skip': () => stopRest(),
   plates: a => openPlates(a.dataset.slot),
+  move: a => openMove(a.dataset.slot),
+  'mv-pick': a => { if (!mvCtx) return; const k = +a.dataset.k; mvCtx.sel = mvCtx.sel === k ? null : k; haptic.tap(); mvPaint(); },
+  'mv-move': a => mvMove(+a.dataset.d),
+  'mv-now': () => mvNow(),
   later: a => doLater(a.dataset.slot),
   tvn: a => { state.tvn = +a.dataset.w; const y = window.scrollY; renderProgress(); window.scrollTo(0, y); },
   year: a => openYear(+a.dataset.y),
