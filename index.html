@@ -1093,7 +1093,8 @@ const EX = {
   db_overhead_ext: { n: 'Seated dumbbell overhead extension', m: 'triceps', k: 'db', inc: 2, cue: 'Sit tall with back support, both hands cupping one dumbbell. Elbows point up and stay narrow; lower deep behind your head for a full stretch, then extend.', q: 'seated dumbbell overhead triceps extension form' },
   skullcrusher:    { n: 'EZ-bar skull crusher', m: 'triceps', k: 'bb', inc: 2.5, cue: 'Lower the bar behind your head with elbows pointing up.', q: 'ez bar skull crusher form' },
   hanging_leg_raise: { n: 'Hanging leg raise', m: 'core', k: 'bw', inc: 0, cue: 'Hang still, curl your hips up as your legs rise. No swinging. Bent knees is fine to start.', q: 'hanging leg raise form' },
-  captains_chair:  { n: "Captain's chair knee raise", m: 'core', k: 'bw', inc: 0, cue: 'Back against the pad, knees to chest, lower slowly.', q: 'captains chair knee raise form' }
+  captains_chair:  { n: "Captain's chair knee raise", m: 'core', k: 'bw', inc: 0, cue: 'Back against the pad, knees to chest, lower slowly.', q: 'captains chair knee raise form' },
+  decline_situp:   { n: 'Decline sit-up', m: 'core', k: 'bw', inc: 0, cue: 'Feet hooked, arms crossed on your chest. Lower until your back touches the bench, then curl up. Hold a plate when 8 gets easy.', q: 'decline sit up form' }
 };
 // the plan before 6 Nov 2026 (3-set version). Sessions logged then are still scored and shown with it, so history and XP never change.
 const LEGACY_MISSIONS = [
@@ -1247,7 +1248,7 @@ const V4_MISSIONS = [
 // the plan from 8 Nov 2026: the body video showed the V-taper comes from the delts alone (torso under the
 // arms is no wider than the hips), so Saturday adds a lat pulldown as C3 and lats get three sessions a week.
 // The arm, lateral-raise and ab slots move down one (C3–C6 → C4–C7). Triceps stay on pushdowns by choice.
-const MISSIONS = [
+const V5_MISSIONS = [
   { id: 'A', dow: 1, day: 'Monday', code: 'Upper A', short: 'Chest', name: 'Chest & Shoulders', mins: 45,
     focus: [['Upper chest', 1], ['Side delts', 1], ['Chest', 0], ['Triceps', 0], ['Lats', 0]],
     slots: [
@@ -1283,9 +1284,13 @@ const MISSIONS = [
       { id: 'C7', ex: 'hanging_leg_raise', alts: ['captains_chair'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'C6' }
     ] }
 ];
+// the plan from 14 Nov 2026: the same as plan 5, except Saturday's abs (C7) are decline sit-ups.
+// The captain's chair is gone; the hanging leg raise stays as the swap.
+const MISSIONS = V5_MISSIONS.map(m => ({ ...m, focus: m.focus.map(f => [...f]),
+  slots: m.slots.map(sl => sl.id === 'C7' ? { ...sl, ex: 'decline_situp', alts: ['hanging_leg_raise'] } : { ...sl, alts: [...sl.alts] }) }));
 // every plan Chisel has used. A session carries pv (its plan version); sessions without one are plan 1.
-const PLANS = { 1: LEGACY_MISSIONS, 2: V2_MISSIONS, 3: V3_MISSIONS, 4: V4_MISSIONS, 5: MISSIONS };
-const PLAN_V = 5;
+const PLANS = { 1: LEGACY_MISSIONS, 2: V2_MISSIONS, 3: V3_MISSIONS, 4: V4_MISSIONS, 5: V5_MISSIONS, 6: MISSIONS };
+const PLAN_V = 6;
 const PLAN_M = {}, PLAN_S = {};
 for (const [v, list] of Object.entries(PLANS)){ PLAN_M[v] = {}; PLAN_S[v] = {}; list.forEach(m => { PLAN_M[v][m.id] = m; m.slots.forEach(s => { s.mission = m.id; PLAN_S[v][s.id] = s; }); }); }
 const MISSION_BY_ID = PLAN_M[PLAN_V], SLOT_BY_ID = PLAN_S[PLAN_V];
@@ -1431,6 +1436,7 @@ function P(){
 // Plan 3: Monday's incline press and bench press traded places (A1 ⇄ A2).
 // Plan 4: Saturday's leg press swap became the leg extension, and C4 is now the rope pushdown.
 // Plan 5: Saturday gained a lat pulldown as C3, so C3–C6 moved down to C4–C7.
+// Plan 6: C7 is the decline sit-up; any C7 swap (captain's chair, leg raise) is dropped.
 function migratePlan(){
   const p = P(); const from = p.plan >= 2 ? p.plan : 1; if (from >= PLAN_V) return false;
   // a brand-new profile has nothing to move, and must not be marked as changed or it would overwrite the cloud copy
@@ -1443,6 +1449,16 @@ function migratePlan(){
   if (from < 3){ const a1 = sw.A1, a2 = sw.A2; delete sw.A1; delete sw.A2; if (a2) sw.A1 = a2; if (a1) sw.A2 = a1; }
   if (from < 4){ if (sw.C1 === 'leg_press') sw.C1 = 'leg_ext'; if (sw.C4 === 'overhead_ext' || sw.C4 === 'db_overhead_ext' || sw.C4 === 'skullcrusher') delete sw.C4; }
   if (from < 5){ const old = sw, moved = { C3: 'C4', C4: 'C5', C5: 'C6', C6: 'C7' }; sw = {}; for (const [k, v] of Object.entries(old)) sw[moved[k] || k] = v; }
+  if (from < 6){
+    delete sw.C7;
+    // a session started today on plan 5 picks up the sit-ups, as long as C7 hasn't been logged in it
+    const t = todayStr(); const md = docs[monthId(t)];
+    for (const x of Object.values((md && md.sessions) || {})){
+      if (x.date !== t || planOf(x) !== 5) continue;
+      const r7 = x.sets && x.sets.C7; if (r7 && doneSets(r7).length) continue;
+      if (r7) delete x.sets.C7; x.pv = 6; touch(monthId(t));
+    }
+  }
   p.swaps = sw; p.plan = PLAN_V;
   return true;
 }
@@ -1820,7 +1836,7 @@ const VIZ = {
   cable_crunch: { p: 'crunch' }, machine_crunch: { p: 'crunch', v: 'machine' },
   squat: { p: 'squat' }, hack_squat: { p: 'hack' }, rdl: { p: 'hinge' }, smith_rdl: { p: 'hinge', smith: 1 },
   leg_press: { p: 'legpress' }, lp_calf: { p: 'legpress', v: 'calf' }, leg_curl: { p: 'legcurl' }, seated_leg_curl: { p: 'seatcurl' }, back_ext: { p: 'backext' }, leg_ext: { p: 'legext' },
-  calf_raise: { p: 'calf' }, hanging_leg_raise: { p: 'hang' }, captains_chair: { p: 'captain' },
+  calf_raise: { p: 'calf' }, hanging_leg_raise: { p: 'hang' }, captains_chair: { p: 'captain' }, decline_situp: { p: 'declsit' },
   __statue: { p: 'statue' }
 };
 // muscle regions on the statue, as they are named to the lifter
@@ -1859,7 +1875,7 @@ const WORKS = {
   hammer_curl: W(['biceps', 'forearms']), rope_hammer: W(['biceps', 'forearms']),
   ez_curl: W(['biceps'], ['forearms']), bb_curl: W(['biceps'], ['forearms']), cable_curl: W(['biceps'], ['forearms']), incline_db_curl: W(['biceps'], ['forearms']), preacher_curl: W(['biceps'], ['forearms']),
   cable_crunch: W(['abs'], ['obliques']), machine_crunch: W(['abs'], ['obliques']),
-  hanging_leg_raise: W(['abs'], ['obliques', 'forearms']), captains_chair: W(['abs'], ['obliques']),
+  hanging_leg_raise: W(['abs'], ['obliques', 'forearms']), captains_chair: W(['abs'], ['obliques']), decline_situp: W(['abs'], ['obliques']),
   squat: W(['quads', 'glutes'], ['hamstrings', 'lowerBack']), hack_squat: W(['quads', 'glutes'], ['hamstrings']), leg_press: W(['quads', 'glutes'], ['hamstrings']),
   rdl: W(['hamstrings', 'glutes'], ['lowerBack', 'forearms']), smith_rdl: W(['hamstrings', 'glutes'], ['lowerBack']),
   leg_curl: W(['hamstrings'], ['calves']), seated_leg_curl: W(['hamstrings'], ['calves']), back_ext: W(['glutes', 'hamstrings'], ['lowerBack']), leg_ext: W(['quads']),
@@ -2829,6 +2845,31 @@ const Viz = (() => {
       return { cam: { az: 58, el: 6, d: 4.8, t: [0, 1.1, .1] }, thumbP: .85, tempo: ['Raise', 'Lower'],
         build(c){ c.box([0, 1.32, -.2], [.4, .9, .08], M.pad); for (const x of [.25, -.25]){ c.box([x, 1.27, .06], [.1, .06, .38], M.pad); c.box([x, .64, -.2], [.06, 1.28, .06]); c.rod([x, 1.28, .26], [x, 1.42, .26], .018); } return {}; },
         pose(p){ const fd = mixV(fdA, fdB, p).normalize(); return { P: V(0, 1.18, -.02), U: NV(0, 1, -.06 * p), F: NV(0, .06 * p, 1), hands: sym(.25, 1.36, .26), ePole: sym(.27, 1.15, -.3), feet: [mixV(V(.08, .34, .02), V(.09, .86, .46), p), mixV(V(-.08, .34, .02), V(-.09, .86, .46), p)], kPole: sym(.12, 1.6, 1.2), fDir: [fd, fd] }; } };
+    },
+    // decline sit-up: bench sloping down toward the head, knees over the top pad, feet under the rollers
+    declsit(){
+      const sl = 20 * D, dB = V(0, -Math.sin(sl), -Math.cos(sl)), nB = V(0, Math.cos(sl), -Math.sin(sl));
+      const Hp = V(0, .7, .12), P = Hp.clone().addScaledVector(nB, .1);
+      const knee = P.clone().addScaledVector(dB, -.43), ft = knee.clone().add(V(0, -.34, .2));
+      const fd = NV(0, .25, 1);
+      return { cam: { az: 76, el: 10, d: 4.6, t: [0, .72, -.25] }, thumbP: .55, tempo: ['Sit up', 'Lower'],
+        build(c){
+          c.boxB(Hp.clone().addScaledVector(dB, .5).addScaledVector(nB, -.04), [.36, .08, 1.3], V(1, 0, 0), nB, dB.clone().negate(), M.pad);
+          c.boxB(Hp.clone().addScaledVector(dB, -.22).addScaledVector(nB, -.04), [.34, .08, .34], V(1, 0, 0), nB, dB.clone().negate(), M.pad);
+          c.box([0, knee.y - .1, knee.z + .02], [.32, .08, .16], M.pad);
+          c.rod([.2, ft.y + .09, ft.z + .02], [-.2, ft.y + .09, ft.z + .02], .045, M.pad);
+          c.rod([.2, ft.y - .07, ft.z - .05], [-.2, ft.y - .07, ft.z - .05], .045, M.pad);
+          const low = Hp.clone().addScaledVector(dB, 1.05).addScaledVector(nB, -.09);
+          c.rod([0, 0, low.z], [0, low.y, low.z], .03, M.frame); c.rod([0, 0, knee.z + .02], [0, knee.y - .14, knee.z + .02], .03, M.frame);
+          c.rod([0, .03, low.z], [0, .03, knee.z + .1], .025, M.frame); c.box([0, .02, low.z], [.5, .04, .08]); c.box([0, .02, knee.z + .1], [.5, .04, .08]);
+          c.rod([0, ft.y - .07, ft.z - .05], [0, knee.y - .14, knee.z + .02], .025, M.frame);
+          return {};
+        },
+        pose(p){
+          const a = mix(200, 78, p) * D; const U = V(0, Math.sin(a), Math.cos(a)), F = V(0, -Math.cos(a), Math.sin(a)); const B = fr(P, U, F);
+          return { P, U, F, hands: [B.at(.1, .36, .15), B.at(-.1, .36, .15)], ePole: [B.at(.45, .22, .12), B.at(-.45, .22, .12)],
+            feet: sym(.1, ft.y, ft.z), kPole: sym(.14, knee.y + 1, knee.z + .4), fDir: [fd, fd] };
+        } };
     },
     // the lifter's own figure, standing like the reference picture, for Today and Progress
     statue(){
@@ -4010,7 +4051,7 @@ const SS_STD = {
   squat: [62, 86, 116, 149, 185], hack_squat: [52, 88, 135, 193, 257], rdl: [54, 79, 110, 145, 184], smith_rdl: [54, 79, 110, 145, 184], leg_press: [90, 139, 202, 277, 359],
   leg_curl: [25, 40, 59, 82, 107], seated_leg_curl: [34, 52, 76, 103, 134], leg_ext: [42, 65, 95, 130, 169], calf_raise: [40, 76, 126, 189, 260], lp_calf: [40, 76, 126, 189, 260]
 };
-const SS_REPS = { pullup: [1, 7, 14, 22, 31], back_ext: [3, 15, 30, 47, 66], hanging_leg_raise: [1, 8, 17, 29, 41], captains_chair: [1, 8, 17, 29, 41] };
+const SS_REPS = { pullup: [1, 7, 14, 22, 31], back_ext: [3, 15, 30, 47, 66], hanging_leg_raise: [1, 8, 17, 29, 41], captains_chair: [1, 8, 17, 29, 41], decline_situp: [1, 14, 32, 53, 76] };
 const SS_LV = ['Beginner', 'Novice', 'Intermediate', 'Advanced', 'Elite'];
 const ssLevel = sc => sc >= 100 ? 4 : sc >= 80 ? 3 : sc >= 60 ? 2 : sc >= 40 ? 1 : 0;
 // the five standards for one lift, as estimated 1-rep maxes at this bodyweight
@@ -4686,7 +4727,7 @@ function renderProgress(){
     </section>
     ${scanCardHTML(cis)}`;
   } else if (tab === 'lifts'){
-    const recIds = []; [...MISSIONS, ...V4_MISSIONS, ...V3_MISSIONS, ...V2_MISSIONS, ...LEGACY_MISSIONS].forEach(mm => mm.slots.forEach(sl => [sl.ex, ...sl.alts].forEach(a => { if (G.bests[a] && !recIds.includes(a)) recIds.push(a); })));
+    const recIds = []; [...MISSIONS, ...V5_MISSIONS, ...V4_MISSIONS, ...V3_MISSIONS, ...V2_MISSIONS, ...LEGACY_MISSIONS].forEach(mm => mm.slots.forEach(sl => [sl.ex, ...sl.alts].forEach(a => { if (G.bests[a] && !recIds.includes(a)) recIds.push(a); })));
     const records = recIds.map(id => { const b = G.bests[id]; const e = EX[id]; return `<li><button class="rc-row" data-act="lift-hist" data-ex="${id}" aria-label="${esc(e.n)} history"><span class="rc-n">${esc(e.n)}<small>${shortDate(b.date)}${e.k === 'bw' ? '' : ` · est. max ${fmtKg(Math.round(b.e * 2) / 2)} kg`}</small></span><b class="rc-v">${e.k === 'bw' ? `${b.r} reps${b.w ? ` +${fmtKg(b.w)}` : ''}` : `${fmtKg(b.w)} × ${b.r}`}</b></button></li>`; }).join('');
     const fcl = fcListHTML();
     body = `
