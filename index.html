@@ -694,7 +694,7 @@ details > summary::-webkit-details-marker{display:none}
 
 /* tab bar */
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:26;background:var(--glass);-webkit-backdrop-filter:saturate(1.4) blur(20px);backdrop-filter:saturate(1.4) blur(20px);box-shadow:0 -1px 0 var(--line);padding:0 var(--pad-r) var(--bot) var(--pad)}
-.tabs-in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.tabs-in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
 .tab{display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px 0 8px;text-decoration:none;color:var(--faint);font-size:11px;font-weight:700;letter-spacing:.01em;transition:color .2s;position:relative}
 .tab svg{width:25px;height:25px;transition:transform .3s var(--spring)}
 .tab[aria-current="page"]{color:var(--fg)}
@@ -833,6 +833,43 @@ details > summary::-webkit-details-marker{display:none}
 .scan-more[open] summary::after{transform:rotate(225deg) translate(-2px,-2px)}
 
 /* progress */
+.fd-bar{display:flex;flex-direction:column;gap:10px;margin:16px 0 4px}
+.fd-search{display:flex;align-items:center;gap:10px;height:52px;padding:0 14px;border-radius:14px;background:var(--card-2);transition:background-color .2s,box-shadow .2s}
+.fd-search svg{width:20px;height:20px;color:var(--muted);flex-shrink:0}
+.fd-search input{flex:1;min-width:0;border:0;background:none;font:inherit;font-size:17px;font-weight:600;color:var(--fg);outline:none;-webkit-appearance:none;appearance:none}
+.fd-search input::placeholder{color:var(--faint);font-weight:500}
+.fd-search:focus-within{background:#fff;box-shadow:inset 0 0 0 2px var(--accent)}
+.fd-cats{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+.fd-cats::-webkit-scrollbar{display:none}
+.fd-cats .chip,.fd-quick .chip{border:0;flex-shrink:0;font-family:inherit;cursor:pointer}
+.subseg.fd-sort{position:static;box-shadow:none}
+.fd-h{font-family:var(--f-display);font-weight:900;font-size:26px;line-height:1;margin:24px 0 2px;letter-spacing:.005em}
+.fd-list{list-style:none;margin:0;padding:0}
+.fd-row{border-top:1px solid var(--line)}
+.fd-list .fd-row:first-child{border-top:0}
+.fd-hit{display:grid;grid-template-columns:minmax(0,1fr) 58px 54px;gap:10px;align-items:center;width:100%;padding:12px 0;border:0;background:none;text-align:left;color:var(--fg);font:inherit;cursor:pointer}
+.fd-n{font-weight:650;font-size:16px;line-height:1.25}
+.fd-n small{display:block;font-weight:500;font-size:13.5px;color:var(--muted);margin-top:2px}
+.fd-n .tag{font-size:11px;padding:2px 7px;vertical-align:2px}
+.fd-v{display:flex;flex-direction:column;align-items:flex-end;text-align:right}
+.fd-v b{font-family:var(--f-display);font-weight:900;font-size:24px;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums}
+.fd-v.k b{color:var(--fg)}
+.fd-v b i{font-style:normal;font-size:15px;margin-left:1px}
+.fd-v small{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:3px}
+.fd-row.open .fd-hit{padding-bottom:8px}
+.fd-more{padding:0 0 16px}
+.fd-per{margin:0 0 10px;color:var(--fg-2);font-size:15px}
+.fd-amt{display:flex;align-items:center;gap:8px}
+.fd-step{width:52px;height:52px;border-radius:14px;border:0;background:var(--card-2);font:inherit;font-size:24px;font-weight:700;color:var(--fg);flex-shrink:0;cursor:pointer}
+.fd-in{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;height:52px;border-radius:14px;background:var(--card-2);font-size:20px;font-weight:700}
+.fd-in input{width:90px;border:0;background:none;text-align:right;font:inherit;font-size:20px;font-weight:700;color:var(--fg);outline:none;font-variant-numeric:tabular-nums}
+.fd-in span{color:var(--muted);font-weight:600}
+.fd-quick{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.fd-tot{margin:12px 0 4px;font-size:17px;color:var(--fg-2)}
+.fd-tot b{font-family:var(--f-display);font-weight:900;font-size:28px;color:var(--fg)}
+.fd-note{margin:0;color:var(--muted);font-size:14px;line-height:1.45}
+.fd-foot{font-size:13.5px;margin-top:18px;line-height:1.45}
+.fd-empty{margin-top:16px}
 .subseg{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:3px;padding:3px;background:var(--card-2);border-radius:13px;position:sticky;top:calc(var(--top) + 64px);z-index:5;box-shadow:0 0 0 4px var(--bg)}
 .subseg button{border:0;background:none;border-radius:10px;padding:9px 4px;font-size:14.5px;font-weight:650;color:var(--fg-2);transition:background-color .25s var(--ease),color .2s}
 .subseg button[aria-selected="true"]{background:var(--ink);color:#fff}
@@ -968,6 +1005,7 @@ p,.lede,.meta,.notice{text-wrap:pretty}
     <section class="view" id="v-train" aria-label="Train" hidden></section>
     <section class="view" id="v-plan" aria-label="Plan" hidden></section>
     <section class="view" id="v-progress" aria-label="Progress" hidden></section>
+    <section class="view" id="v-food" aria-label="Food" hidden></section>
     <section class="view" id="v-vault" aria-label="Vault" hidden></section>
   </main>
 </div>
@@ -1793,6 +1831,7 @@ function mulberry32(a){ return function(){ a |= 0; a = (a + 0x6D2B79F5) | 0; let
 const yt = q => 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q);
 
 const I = {
+  food: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7.6c-1.8-1.4-4.6-1.5-6.2.3-1.9 2.1-1.4 6 .4 8.9 1.4 2.3 3.2 3.6 4.4 3.1.6-.2 1-.4 1.4-.4s.8.2 1.4.4c1.2.5 3-.8 4.4-3.1 1.8-2.9 2.3-6.8.4-8.9-1.6-1.8-4.4-1.7-6.2-.3z"/><path d="M12 7.6c0-2 .8-3.6 2.6-4.4"/></svg>',
   today: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/><circle cx="12" cy="15" r="1.9" fill="currentColor" stroke="none"/></svg>',
   train: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M2.5 12h19M5.5 8v8M8.5 6v12M15.5 6v12M18.5 8v8"/></svg>',
   plan: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3.5h10.5a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2z"/><path d="M8.5 8h7M8.5 11.5h7M8.5 15h4.5"/></svg>',
@@ -3074,7 +3113,7 @@ function previewHTML(exId, slotId, from){
 }
 
 /* ---------- app state ---------- */
-const state = { view: 'today', trainM: null, trainFor: null, swapOpen: null, planSwap: null, showAllHist: false, resetArm: false, progTab: 'body', expand: {}, reveal: true };
+const state = { view: 'today', trainM: null, trainFor: null, swapOpen: null, planSwap: null, showAllHist: false, resetArm: false, progTab: 'body', expand: {}, reveal: true, food: { q: '', cat: 'all', sort: 'list', open: null, amt: {} } };
 const caps = { downloads: null, sample: null };
 let G = null;
 let pendingRender = false;
@@ -3391,7 +3430,350 @@ function missionLine(mm, ph, slots){ slots = slots || mm.slots; const sets = slo
 function unlocked(key){ const sk = SKILLS.find(s => s.key === key); return sk && G.level >= sk.lv; }
 
 /* ---------- views ---------- */
-const VIEWS = ['today', 'train', 'plan', 'progress', 'vault'];
+/* ---------- FOOD: protein and calories lookup. Reference only; Chisel sets no food targets. ---------- */
+const FOOD_CATS = [['mine', 'Your orders'], ['meat', 'Meat'], ['fish', 'Fish'], ['dairy', 'Eggs & dairy'], ['plant', 'Beans & tofu'], ['carbs', 'Rice, bread & pasta'], ['fruit', 'Fruit'], ['veg', 'Veg'], ['nuts', 'Nuts & seeds'], ['greek', 'Greek food'], ['out', 'Eating out'], ['sauce', 'Oils & sauces'], ['snack', 'Snacks & sweets'], ['drink', 'Drinks'], ['supp', 'Supplements']];
+// [name, category, serving, grams per serving, kcal, protein, note]
+// With grams: kcal and protein are per 100 g (cooked unless it says raw or dry). With 0 grams: they are per serving.
+const FOOD_RAW = [
+  // your orders and meals (estimates from the dish, not published numbers)
+  ['Anchos Fajita Bowl', 'mine', '1 bowl', 0, 750, 40, 'Estimate: 650–850 kcal, 35–45 g protein. Chipotle mayo is the biggest variable.'],
+  ['Anchos Fajita Bowl, light chipotle mayo', 'mine', '1 bowl', 0, 610, 40, 'Estimate. Light or no mayo saves about 100–180 kcal.'],
+  ['Anchos Fajita Bowl + crispy tortilla nest', 'mine', '1 bowl', 0, 950, 44, 'Estimate. The nest adds about 150–250 kcal.'],
+  ['Chicken shawarma wrap, large', 'mine', '1 wrap (€8.50)', 0, 850, 45, 'Estimate: 750–950 kcal, 40–50 g protein. Arabic pita, chicken, pickles, garlic sauce, spicy sauce. Light garlic sauce saves about 150–200 kcal.'],
+  ['Chicken shawarma wrap, medium', 'mine', '1 wrap', 0, 600, 32, 'Estimate: 530–680 kcal, 28–36 g protein, about 70% of the large.'],
+  ['Extra garlic sauce pot', 'mine', '1 pot', 0, 210, 1, 'Estimate. Garlic sauce (toum) is almost all oil.'],
+  ['Double smash cheeseburger', 'mine', '1 burger, no mustard, onion or pickles', 0, 725, 40, 'Estimate: 650–800 kcal, 35–45 g protein.'],
+  ['Chicken gyros pita with fries and chicken sauce', 'mine', '1 pita', 0, 725, 32, 'Estimate: 650–800 kcal, 30–35 g protein. Tzatziki instead of chicken sauce saves about 80–100 kcal.'],
+  ['Yeiaçaí Max bowl with ISO 100', 'mine', '0.5 L bowl', 0, 950, 32, 'Estimate: 900–1,100 kcal.'],
+  ['Yeiaçaí Max, no peanut butter, granola, coconut, cocoa or honey', 'mine', '0.5 L bowl', 0, 425, 30, 'Estimate: 400–450 kcal, keeps the ISO 100.'],
+  ['Yeiaçaí bowl with Nutella, Digestives, Oreo and condensed milk', 'mine', '0.5 L bowl', 0, 750, 10, 'Estimate: 650–850 kcal, 8–12 g protein.'],
+  ['Creamy Tuscan chicken pasta (meal prep)', 'mine', '1 box', 0, 720, 50, 'From the Sunday meal-prep recipe, 1 of 7 boxes.'],
+
+  // meat
+  ['Chicken breast, grilled', 'meat', '1 breast', 150, 165, 31],
+  ['Chicken breast, raw', 'meat', '1 breast', 200, 120, 22.5],
+  ['Chicken thigh, skinless, cooked', 'meat', '2 thighs', 150, 209, 26],
+  ['Chicken thigh, skinless, raw', 'meat', '2 thighs', 200, 121, 19.7],
+  ['Chicken wings, with skin', 'meat', '5 wings, meat only', 150, 290, 27],
+  ['Rotisserie chicken, with skin', 'meat', '1 portion', 150, 215, 25],
+  ['Chicken nuggets', 'meat', '6 pieces', 100, 296, 15],
+  ['Turkey breast, cooked', 'meat', '1 portion', 150, 147, 30],
+  ['Turkey slices (deli)', 'meat', '4 slices', 50, 104, 18],
+  ['Beef mince 5% fat, cooked', 'meat', '1 portion', 150, 165, 26],
+  ['Beef mince 15% fat, cooked', 'meat', '1 portion', 150, 250, 26],
+  ['Beef mince 20% fat, cooked', 'meat', '1 portion', 150, 270, 25],
+  ['Sirloin steak, grilled', 'meat', '1 steak', 200, 200, 30],
+  ['Ribeye steak, grilled', 'meat', '1 steak', 250, 291, 24],
+  ['Pork tenderloin, cooked', 'meat', '1 portion', 150, 143, 26],
+  ['Pork chop, grilled', 'meat', '1 chop', 150, 230, 27],
+  ['Lamb leg, roasted', 'meat', '1 portion', 150, 258, 26],
+  ['Lamb chops, grilled', 'meat', '3 chops, meat only', 120, 294, 25],
+  ['Bacon, cooked', 'meat', '3 rashers', 25, 541, 37],
+  ['Ham, sliced', 'meat', '3 slices', 45, 120, 18],
+  ['Salami', 'meat', '6 slices', 30, 380, 22],
+  ['Pork sausages, cooked', 'meat', '2 sausages', 100, 325, 18],
+  ['Beef jerky', 'meat', '1 bag', 30, 410, 33],
+  ['Beef liver, cooked', 'meat', '1 portion', 100, 175, 27],
+
+  // fish
+  ['Salmon, cooked', 'fish', '1 fillet', 150, 206, 22],
+  ['Smoked salmon', 'fish', '3 slices', 50, 117, 18],
+  ['Tuna in water, drained', 'fish', '1 can', 110, 116, 26],
+  ['Tuna in oil, drained', 'fish', '1 can', 110, 198, 29],
+  ['Tuna steak, cooked', 'fish', '1 steak', 150, 130, 29],
+  ['Cod, cooked', 'fish', '1 fillet', 150, 105, 23],
+  ['Sea bass or sea bream, grilled', 'fish', '1 fish, flesh only', 200, 130, 24],
+  ['Shrimp / prawns, cooked', 'fish', '1 portion', 100, 99, 24],
+  ['Squid, grilled', 'fish', '1 portion', 150, 110, 18],
+  ['Calamari, fried', 'fish', '1 portion', 150, 175, 18],
+  ['Octopus, grilled', 'fish', '1 portion', 100, 164, 30],
+  ['Sardines in oil, drained', 'fish', '1 tin', 90, 208, 25],
+  ['Mackerel, cooked', 'fish', '1 fillet', 120, 262, 24],
+  ['Mussels, cooked', 'fish', '1 portion, shelled', 100, 172, 24],
+
+  // eggs and dairy
+  ['Egg, whole', 'dairy', '1 large egg', 50, 143, 12.6],
+  ['Egg white', 'dairy', '1 large white', 33, 52, 10.9],
+  ['Egg, fried', 'dairy', '1 egg', 46, 196, 13.6],
+  ['Scrambled eggs', 'dairy', '2 eggs', 120, 149, 10],
+  ['Greek yogurt 0% (Fage)', 'dairy', '1 pot', 170, 54, 10.3],
+  ['Greek yogurt 2% (Fage)', 'dairy', '1 pot', 170, 73, 9.9],
+  ['Greek yogurt 5%', 'dairy', '1 pot', 170, 96, 9],
+  ['Skyr', 'dairy', '1 pot', 150, 63, 11],
+  ['Cottage cheese', 'dairy', 'half a tub', 125, 90, 11],
+  ['High-protein pudding', 'dairy', '1 pot', 200, 75, 10],
+  ['Milk, whole 3.5%', 'dairy', '1 glass', 250, 64, 3.3],
+  ['Milk, semi-skimmed 1.5%', 'dairy', '1 glass', 250, 47, 3.4],
+  ['Milk, skimmed', 'dairy', '1 glass', 250, 35, 3.4],
+  ['High-protein milk drink', 'dairy', '1 bottle', 330, 60, 7.5],
+  ['Chocolate milk', 'dairy', '1 glass', 250, 80, 3.4],
+  ['Kefir', 'dairy', '1 glass', 250, 55, 3.4],
+  ['Feta', 'dairy', '1 slice', 40, 264, 14],
+  ['Halloumi', 'dairy', '2 slices', 50, 321, 21],
+  ['Mozzarella', 'dairy', 'half a ball', 60, 250, 18],
+  ['Cheddar', 'dairy', '1 slice', 30, 403, 25],
+  ['Gouda / Edam', 'dairy', '1 slice', 20, 356, 25],
+  ['Graviera', 'dairy', '1 slice', 30, 400, 27],
+  ['Kasseri', 'dairy', '1 slice', 30, 380, 25],
+  ['Parmesan', 'dairy', '1 tbsp grated', 10, 431, 38],
+  ['Cream cheese', 'dairy', '1 tbsp', 30, 342, 6],
+  ['Butter', 'dairy', '1 tsp', 10, 717, 0.9],
+  ['Ice cream, vanilla', 'dairy', '2 scoops', 100, 207, 3.5],
+
+  // beans and tofu
+  ['Lentils, cooked', 'plant', '1 cup', 200, 116, 9],
+  ['Chickpeas, cooked', 'plant', 'half a can', 150, 164, 8.9],
+  ['Black beans, cooked', 'plant', 'half a can', 150, 132, 8.9],
+  ['Kidney beans, cooked', 'plant', 'half a can', 150, 127, 8.7],
+  ['Butter beans, cooked', 'plant', '1 portion', 150, 115, 7.8],
+  ['Edamame', 'plant', '1 bowl', 100, 121, 12],
+  ['Tofu, firm', 'plant', '1 portion', 100, 144, 17],
+  ['Tempeh', 'plant', '1 portion', 100, 192, 20],
+  ['Hummus', 'plant', '2 tbsp', 50, 166, 7.9],
+  ['Falafel', 'plant', '4 balls', 100, 333, 13],
+
+  // rice, bread and pasta
+  ['White rice, cooked', 'carbs', '1 plate', 200, 130, 2.7],
+  ['Brown rice, cooked', 'carbs', '1 plate', 200, 123, 2.7],
+  ['Rice, dry', 'carbs', '1 portion', 75, 360, 7],
+  ['Pasta, cooked', 'carbs', '1 plate', 200, 158, 5.8],
+  ['Pasta, dry', 'carbs', '1 portion', 80, 371, 13],
+  ['Wholewheat pasta, cooked', 'carbs', '1 plate', 200, 149, 6],
+  ['Oats, dry', 'carbs', '1 bowl', 50, 379, 13.2],
+  ['Quinoa, cooked', 'carbs', '1 cup', 150, 120, 4.4],
+  ['Couscous, cooked', 'carbs', '1 cup', 150, 112, 3.8],
+  ['Bulgur, cooked', 'carbs', '1 cup', 150, 83, 3.1],
+  ['Potato, boiled', 'carbs', '1 large', 200, 87, 1.9],
+  ['Sweet potato, baked', 'carbs', '1 medium', 200, 90, 2],
+  ['Mashed potato', 'carbs', '1 portion', 200, 113, 2],
+  ['French fries', 'carbs', '1 portion', 120, 312, 3.4],
+  ['White bread', 'carbs', '1 slice', 30, 265, 9],
+  ['Wholegrain bread', 'carbs', '1 slice', 35, 247, 13],
+  ['Sourdough bread', 'carbs', '1 slice', 40, 270, 10],
+  ['Greek pita (souvlaki pita)', 'carbs', '1 pita', 80, 290, 8],
+  ['Arabic pita', 'carbs', '1 large', 65, 275, 9],
+  ['Flour tortilla wrap', 'carbs', '1 large', 64, 312, 8.3],
+  ['Bagel', 'carbs', '1 bagel', 90, 257, 10],
+  ['Croissant', 'carbs', '1 croissant', 60, 406, 8],
+  ['Koulouri (sesame bread ring)', 'carbs', '1 koulouri', 95, 300, 9.5],
+  ['Cornflakes', 'carbs', '1 bowl, no milk', 40, 357, 7.5],
+  ['Granola', 'carbs', '1 bowl, no milk', 45, 471, 10],
+  ['Rice cakes', 'carbs', '1 cake', 9, 387, 8],
+
+  // fruit
+  ['Banana', 'fruit', '1 medium, peeled', 120, 89, 1.1],
+  ['Apple', 'fruit', '1 medium', 180, 52, 0.3],
+  ['Orange', 'fruit', '1 medium, peeled', 150, 47, 0.9],
+  ['Mandarin', 'fruit', '1 mandarin, peeled', 80, 53, 0.8],
+  ['Strawberries', 'fruit', '1 cup', 150, 32, 0.7],
+  ['Blueberries', 'fruit', '1 handful', 100, 57, 0.7],
+  ['Raspberries', 'fruit', '1 handful', 100, 52, 1.2],
+  ['Grapes', 'fruit', '1 bunch', 150, 69, 0.7],
+  ['Watermelon', 'fruit', '1 slice', 300, 30, 0.6],
+  ['Melon', 'fruit', '1 slice', 200, 34, 0.8],
+  ['Pineapple', 'fruit', '1 cup', 150, 50, 0.5],
+  ['Mango', 'fruit', '1 mango, peeled', 200, 60, 0.8],
+  ['Kiwi', 'fruit', '1 kiwi', 75, 61, 1.1],
+  ['Pear', 'fruit', '1 medium', 180, 57, 0.4],
+  ['Peach', 'fruit', '1 medium', 150, 39, 0.9],
+  ['Apricot', 'fruit', '1 apricot', 35, 48, 1.4],
+  ['Plum', 'fruit', '1 plum', 70, 46, 0.7],
+  ['Cherries', 'fruit', '1 cup', 150, 63, 1.1],
+  ['Pomegranate seeds', 'fruit', 'half a cup', 100, 83, 1.7],
+  ['Fig, fresh', 'fruit', '1 fig', 50, 74, 0.8],
+  ['Grapefruit', 'fruit', 'half a grapefruit', 120, 42, 0.8],
+  ['Avocado', 'fruit', 'half an avocado', 75, 160, 2],
+  ['Dates (Medjool)', 'fruit', '1 date', 24, 277, 1.8],
+  ['Raisins', 'fruit', '1 small box', 30, 299, 3.1],
+  ['Dried apricots', 'fruit', '1 handful', 30, 241, 3.4],
+  ['Açaí pulp, unsweetened', 'fruit', '1 pack', 100, 70, 1],
+
+  // veg
+  ['Broccoli', 'veg', '1 portion', 150, 34, 2.8],
+  ['Spinach', 'veg', '2 handfuls', 50, 23, 2.9],
+  ['Green peas', 'veg', '1 portion', 100, 81, 5.4],
+  ['Sweetcorn', 'veg', '1 portion', 100, 86, 3.3],
+  ['Mushrooms', 'veg', '1 portion', 100, 22, 3.1],
+  ['Brussels sprouts', 'veg', '1 portion', 100, 43, 3.4],
+  ['Asparagus', 'veg', '1 bunch', 100, 20, 2.2],
+  ['Kale', 'veg', '2 handfuls', 50, 35, 2.9],
+  ['Green beans', 'veg', '1 portion', 150, 31, 1.8],
+  ['Cauliflower', 'veg', '1 portion', 150, 25, 1.9],
+  ['Carrot', 'veg', '1 medium', 60, 41, 0.9],
+  ['Tomato', 'veg', '1 medium', 120, 18, 0.9],
+  ['Cucumber', 'veg', 'half a cucumber', 150, 15, 0.7],
+  ['Bell pepper', 'veg', '1 pepper', 120, 31, 1],
+  ['Onion', 'veg', '1 medium', 100, 40, 1.1],
+  ['Zucchini', 'veg', '1 zucchini', 200, 17, 1.2],
+  ['Aubergine', 'veg', 'half an aubergine', 200, 25, 1],
+  ['Cabbage', 'veg', '1 portion', 100, 25, 1.3],
+  ['Lettuce / salad leaves', 'veg', '1 bowl', 50, 15, 1.4],
+
+  // nuts and seeds
+  ['Almonds', 'nuts', '1 handful', 30, 579, 21],
+  ['Peanuts', 'nuts', '1 handful', 30, 567, 26],
+  ['Pistachios (shelled)', 'nuts', '1 handful', 30, 560, 20],
+  ['Cashews', 'nuts', '1 handful', 30, 553, 18],
+  ['Walnuts', 'nuts', '1 handful', 30, 654, 15],
+  ['Hazelnuts', 'nuts', '1 handful', 30, 628, 15],
+  ['Mixed nuts', 'nuts', '1 handful', 30, 607, 20],
+  ['Pumpkin seeds', 'nuts', '2 tbsp', 20, 559, 30],
+  ['Sunflower seeds', 'nuts', '2 tbsp', 20, 584, 21],
+  ['Chia seeds', 'nuts', '1 tbsp', 15, 486, 17],
+  ['Peanut butter', 'nuts', '1 tbsp', 16, 588, 25],
+  ['Almond butter', 'nuts', '1 tbsp', 16, 614, 21],
+  ['Tahini', 'nuts', '1 tbsp', 15, 595, 17],
+
+  // greek food
+  ['Chicken souvlaki skewer', 'greek', '1 skewer', 60, 180, 27],
+  ['Pork souvlaki skewer', 'greek', '1 skewer', 60, 240, 26],
+  ['Chicken souvlaki pita', 'greek', '1 pita, with tzatziki', 0, 450, 28, 'Estimate.'],
+  ['Pork souvlaki pita', 'greek', '1 pita, with tzatziki', 0, 520, 26, 'Estimate.'],
+  ['Chicken gyros pita (tzatziki, fries)', 'greek', '1 pita', 0, 580, 30, 'Estimate.'],
+  ['Pork gyros pita (tzatziki, fries)', 'greek', '1 pita', 0, 700, 28, 'Estimate.'],
+  ['Chicken gyros meat', 'greek', '1 portion', 100, 190, 22],
+  ['Pork gyros meat', 'greek', '1 portion', 100, 280, 20],
+  ['Bifteki (Greek burger patty)', 'greek', '1 patty', 150, 230, 20],
+  ['Keftedes (meatballs)', 'greek', '4 meatballs', 120, 250, 17],
+  ['Greek salad (horiatiki)', 'greek', '1 plate, with feta and oil', 350, 120, 3.1],
+  ['Tzatziki', 'greek', '2 tbsp', 50, 110, 4],
+  ['Moussaka', 'greek', '1 portion', 350, 160, 7],
+  ['Pastitsio', 'greek', '1 portion', 350, 180, 8],
+  ['Gemista (stuffed tomatoes)', 'greek', '2 pieces', 350, 110, 2],
+  ['Fasolada (bean soup)', 'greek', '1 bowl', 350, 90, 4.5],
+  ['Fakes (lentil soup)', 'greek', '1 bowl', 350, 85, 5],
+  ['Gigantes plaki', 'greek', '1 portion', 250, 140, 6],
+  ['Fava (split pea purée)', 'greek', '1 portion', 150, 150, 7],
+  ['Dolmadakia', 'greek', '6 pieces', 120, 150, 3],
+  ['Spanakopita', 'greek', '1 piece', 150, 270, 7],
+  ['Tiropita', 'greek', '1 piece', 150, 330, 10],
+  ['Bougatsa with cream', 'greek', '1 portion', 200, 260, 5],
+  ['Baklava', 'greek', '1 piece', 60, 428, 6.7],
+  ['Galaktoboureko', 'greek', '1 piece', 150, 250, 5],
+  ['Loukoumades with honey', 'greek', '1 portion', 120, 330, 5],
+  ['Rizogalo (rice pudding)', 'greek', '1 pot', 150, 120, 3.5],
+  ['Freddo cappuccino, no sugar', 'greek', '1 cup', 0, 70, 4, 'Estimate, with semi-skimmed milk foam.'],
+
+  // eating out
+  ['Big Mac', 'out', '1 burger', 0, 508, 26, 'Typical published value; varies by country.'],
+  ['Cheeseburger (McDonald’s)', 'out', '1 burger', 0, 300, 15, 'Typical published value.'],
+  ['McChicken', 'out', '1 burger', 0, 390, 17, 'Typical published value.'],
+  ['Chicken McNuggets', 'out', '6 pieces', 0, 259, 15, 'Typical published value.'],
+  ['McDonald’s fries, medium', 'out', '1 medium', 0, 337, 3.4, 'Typical published value.'],
+  ['Chicken burrito', 'out', '1 burrito, with rice, beans and cheese', 0, 1000, 55, 'Estimate.'],
+  ['Chicken poke bowl', 'out', '1 bowl', 0, 600, 35, 'Estimate.'],
+  ['Salmon poke bowl', 'out', '1 bowl', 0, 650, 30, 'Estimate.'],
+  ['Margherita pizza', 'out', '1 slice (large pizza)', 110, 250, 11],
+  ['Pepperoni pizza', 'out', '1 slice (large pizza)', 110, 270, 12],
+  ['Salmon nigiri', 'out', '2 pieces', 80, 145, 6],
+  ['California roll', 'out', '8 pieces', 230, 113, 4],
+  ['Chicken Caesar salad', 'out', '1 bowl', 0, 550, 35, 'Estimate.'],
+  ['Club sandwich', 'out', '1 sandwich', 0, 600, 32, 'Estimate.'],
+
+  // oils and sauces
+  ['Olive oil', 'sauce', '1 tbsp', 14, 884, 0],
+  ['Mayonnaise', 'sauce', '1 tbsp', 15, 680, 1],
+  ['Garlic sauce (toum)', 'sauce', '1 tbsp', 15, 700, 1],
+  ['Chipotle mayo', 'sauce', '1 tbsp', 15, 600, 1],
+  ['Caesar dressing', 'sauce', '2 tbsp', 30, 450, 2],
+  ['Pesto', 'sauce', '2 tbsp', 30, 450, 5],
+  ['Guacamole', 'sauce', '2 tbsp', 50, 155, 2],
+  ['Salsa', 'sauce', '2 tbsp', 50, 36, 1.5],
+  ['Ketchup', 'sauce', '1 tbsp', 17, 101, 1],
+  ['BBQ sauce', 'sauce', '2 tbsp', 30, 172, 0.8],
+  ['Mustard', 'sauce', '1 tsp', 10, 66, 4],
+  ['Soy sauce', 'sauce', '1 tbsp', 15, 53, 8],
+  ['Honey', 'sauce', '1 tbsp', 21, 304, 0.3],
+  ['Jam', 'sauce', '1 tbsp', 20, 250, 0.4],
+  ['Nutella', 'sauce', '1 tbsp', 15, 539, 6.3],
+  ['Sugar', 'sauce', '1 tsp', 4, 387, 0],
+
+  // snacks and sweets
+  ['Protein bar', 'snack', '1 bar', 60, 350, 33],
+  ['Dark chocolate 70%', 'snack', '2 squares', 20, 598, 7.8],
+  ['Milk chocolate', 'snack', '1 small bar', 25, 535, 7.7],
+  ['Crisps', 'snack', '1 small bag', 30, 536, 7],
+  ['Popcorn, plain', 'snack', '1 bowl', 20, 387, 13],
+  ['Oreo', 'snack', '1 cookie', 11, 480, 5],
+  ['Digestive biscuit', 'snack', '1 biscuit', 15, 480, 7],
+  ['Granola bar', 'snack', '1 bar', 30, 450, 7],
+  ['Gummy bears', 'snack', '1 handful', 30, 343, 6.9],
+  ['Glazed doughnut', 'snack', '1 doughnut', 60, 421, 5],
+  ['Brownie', 'snack', '1 piece', 60, 466, 6],
+  ['Cheesecake', 'snack', '1 slice', 100, 321, 5.5],
+
+  // drinks
+  ['Coca-Cola', 'drink', '1 can', 330, 42, 0],
+  ['Coke Zero', 'drink', '1 can', 330, 0.3, 0],
+  ['Orange juice', 'drink', '1 glass', 250, 45, 0.7],
+  ['Fruit smoothie', 'drink', '1 bottle', 300, 55, 0.7],
+  ['Latte, whole milk', 'drink', '1 large', 350, 54, 2.9],
+  ['Cappuccino, whole milk', 'drink', '1 cup', 240, 46, 2.5],
+  ['Oat milk (barista)', 'drink', '1 glass', 250, 59, 1],
+  ['Almond milk, unsweetened', 'drink', '1 glass', 250, 13, 0.4],
+  ['Soy milk, unsweetened', 'drink', '1 glass', 250, 33, 3.3],
+  ['Energy drink (Red Bull)', 'drink', '1 can', 250, 46, 0],
+  ['Beer', 'drink', '1 bottle', 330, 43, 0.5],
+  ['Red wine', 'drink', '1 glass', 150, 85, 0.1],
+
+  // supplements
+  ['Whey protein', 'supp', '1 scoop', 30, 400, 80],
+  ['Whey isolate (ISO 100)', 'supp', '1 scoop', 30, 367, 83],
+  ['Casein protein', 'supp', '1 scoop', 33, 364, 73],
+];
+const FOODS = FOOD_RAW.map(([n, c, s, g, k, p, note], i) => ({ i, n, c, s, g, k, p, note: note || '', est: !!note, q: `${n} ${s} ${(FOOD_CATS.find(x => x[0] === c) || [])[1] || ''}`.toLowerCase() }));
+const foodAt = (f, amt) => f.g ? { k: f.k * amt / 100, p: f.p * amt / 100 } : { k: f.k * amt, p: f.p * amt };
+const foodAmt = f => { const a = state.food.amt[f.i]; return a != null ? a : (f.g || 1); };
+const fmtP = v => v >= 10 ? String(Math.round(v)) : String(Math.round(v * 10) / 10);
+function foodRowHTML(f){
+  const open = state.food.open === f.i; const one = foodAt(f, f.g || 1);
+  let detail = '';
+  if (open){
+    const amt = foodAmt(f); const r = foodAt(f, amt); const per100k = f.g ? f.k : null;
+    const lean = one.k > 0 ? one.p / one.k * 100 : 0;
+    detail = `<div class="fd-more">
+      ${f.g ? `<p class="fd-per">Per 100 g: <b>${Math.round(f.k)} kcal</b> · <b>${fmtP(f.p)} g protein</b></p>
+      <div class="fd-amt"><button class="fd-step" data-act="fd-step" data-i="${f.i}" data-d="-1" aria-label="Less">−</button><label class="fd-in"><input class="fd-g" data-i="${f.i}" inputmode="decimal" value="${Math.round(amt)}" aria-label="Amount in grams"><span>g</span></label><button class="fd-step" data-act="fd-step" data-i="${f.i}" data-d="1" aria-label="More">+</button></div>
+      <div class="fd-quick">${[[f.g, `1 serving`], [100, '100 g'], [f.g * 2, '2 servings']].filter((x, k, a) => a.findIndex(y => y[0] === x[0]) === k).map(([v, l]) => `<button class="chip${Math.round(amt) === v ? ' focus' : ''}" data-act="fd-set" data-i="${f.i}" data-v="${v}">${l}</button>`).join('')}</div>`
+      : `<div class="fd-amt"><button class="fd-step" data-act="fd-step" data-i="${f.i}" data-d="-1" aria-label="Less">−</button><span class="fd-in"><b>${fmtP(amt)}</b><span>×</span></span><button class="fd-step" data-act="fd-step" data-i="${f.i}" data-d="1" aria-label="More">+</button></div>`}
+      <p class="fd-tot" id="fdTot${f.i}"><b>${Math.round(r.k)}</b> kcal · <b>${fmtP(r.p)}</b> g protein</p>
+      <p class="fd-note">${lean ? `${fmtP(lean)} g protein per 100 kcal. ` : ''}${f.note ? esc(f.note) : ''}</p>
+    </div>`;
+  }
+  return `<li class="fd-row${open ? ' open' : ''}"><button class="fd-hit" data-act="fd-open" data-i="${f.i}" aria-expanded="${open}"><span class="fd-n">${esc(f.n)}${f.est ? ' <span class="tag">est.</span>' : ''}<small>${esc(f.s)}${f.g ? ` · ${f.g} g` : ''}</small></span><span class="fd-v"><b>${fmtP(one.p)}<i>g</i></b><small>protein</small></span><span class="fd-v k"><b>${Math.round(one.k)}</b><small>kcal</small></span></button>${detail}</li>`;
+}
+function foodListHTML(){
+  const F = state.food; const q = F.q.trim().toLowerCase();
+  const words = q.split(/\s+/).filter(Boolean);
+  let list = FOODS.filter(f => (F.cat === 'all' || f.c === F.cat) && words.every(w => f.q.includes(w)));
+  const lean = f => { const o = foodAt(f, f.g || 1); return o.k > 0 ? o.p / o.k : 0; };
+  if (F.sort === 'protein') list.sort((a, b) => foodAt(b, b.g || 1).p - foodAt(a, a.g || 1).p);
+  else if (F.sort === 'lean') list.sort((a, b) => lean(b) - lean(a));
+  if (!list.length) return `<p class="lede fd-empty">Nothing matches “${esc(F.q.trim())}”. Try another word, or ask Claude to add it.</p>`;
+  if (F.sort === 'list' && F.cat === 'all' && !words.length){
+    return FOOD_CATS.map(([c, l]) => { const xs = list.filter(f => f.c === c); return xs.length ? `<h2 class="fd-h">${esc(l)}</h2><ul class="fd-list">${xs.map(foodRowHTML).join('')}</ul>` : ''; }).join('');
+  }
+  return `<ul class="fd-list">${list.map(foodRowHTML).join('')}</ul>`;
+}
+function renderFood(){
+  const el = $('#v-food'); const F = state.food;
+  el.innerHTML = `
+    <header><h1 class="h1">Food</h1><p class="lede">Protein and calories in ${FOODS.length} foods. Tap one to change the amount.</p></header>
+    <div class="fd-bar">
+      <label class="fd-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg><input type="search" class="fd-q" placeholder="Search chicken, eggs, rice…" value="${esc(F.q)}" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" aria-label="Search foods"></label>
+      <div class="fd-cats" role="tablist" aria-label="Food groups">${[['all', 'All'], ...FOOD_CATS].map(([c, l]) => `<button role="tab" class="chip${F.cat === c ? ' focus' : ''}" data-act="fd-cat" data-c="${c}" aria-selected="${F.cat === c}">${esc(l)}</button>`).join('')}</div>
+      <div class="subseg fd-sort" role="tablist" aria-label="Sort">${[['list', 'By group'], ['protein', 'Most protein'], ['lean', 'Protein/kcal']].map(([s, l]) => `<button role="tab" data-act="fd-sort" data-s="${s}" aria-selected="${F.sort === s}">${l}</button>`).join('')}</div>
+    </div>
+    <div id="fdList">${foodListHTML()}</div>
+    <p class="muted fd-foot">Numbers are typical values per serving shown. Meat, fish, rice and pasta are cooked weight unless it says raw or dry. Anything marked est. is an estimate from the dish, not a published number.</p>`;
+}
+function refreshFoodList(){ const l = $('#fdList'); if (l) l.innerHTML = foodListHTML(); }
+function updateFoodTotal(i){
+  const f = FOODS[i]; const t = $('#fdTot' + i); if (!f || !t) return;
+  const r = foodAt(f, foodAmt(f)); t.innerHTML = `<b>${Math.round(r.k)}</b> kcal · <b>${fmtP(r.p)}</b> g protein`;
+}
+
+const VIEWS = ['today', 'train', 'plan', 'progress', 'food', 'vault'];
 const ALIASES = { statue: 'progress', fuel: 'today' };
 function routeFromHash(){ let h = (location.hash || '').replace('#', ''); h = ALIASES[h] || h; return VIEWS.includes(h) ? h : 'today'; }
 function showView(v, keepScroll){
@@ -3412,7 +3794,7 @@ function showView(v, keepScroll){
 function onScroll(){ document.documentElement.classList.toggle('scrolled', window.scrollY > 6); }
 function renderView(v){
   pendingRender = false;
-  ({ today: renderToday, train: renderTrain, plan: renderPlan, progress: renderProgress, vault: renderVault })[v || state.view]();
+  ({ today: renderToday, train: renderTrain, plan: renderPlan, progress: renderProgress, food: renderFood, vault: renderVault })[v || state.view]();
   renderHeader();
 }
 function isEditing(){ const a = document.activeElement; return !!(a && a.closest && a.closest('#main') && a.matches('input,textarea,select')); }
@@ -5075,6 +5457,13 @@ const actions = {
   pswap: a => { state.planSwap = state.planSwap === a.dataset.slot ? null : a.dataset.slot; const y = window.scrollY; renderPlan(); window.scrollTo(0, y); if (state.planSwap){ const sel = $('#psw-' + state.planSwap); if (sel) sel.focus(); } },
   addset: a => { const t = todayStr(); const s = ensureSession(t, state.trainM); const sl = slotById(a.dataset.slot, s); if (!sl) return; const rec = slotRec(s, a.dataset.slot); const p = plannedSets(sl, PHASES[s.ph] ? s.ph : phaseOf(weekNum(t))); while (rec.s.length < p) rec.s.push({}); rec.s.push({}); touch(monthId(t)); const y = window.scrollY; renderTrain(); window.scrollTo(0, y); },
   finish: () => { const t = todayStr(); const s = getSession(t, state.trainM); const i = s && G.info[s.id]; if (!i || i.empty){ toast('Log at least one set first.'); return; } if (!s.fin){ s.fin = Date.now(); touch(monthId(t)); } stopRest(); showSummary(s.id, false, true); },
+  'fd-open': a => { const i = +a.dataset.i; state.food.open = state.food.open === i ? null : i; haptic.tap(); refreshFoodList(); },
+  'fd-cat': a => { if (state.food.cat === a.dataset.c) return; state.food.cat = a.dataset.c; state.food.open = null; haptic.tap(); renderFood(); const c = $('#v-food .fd-cats .chip.focus'); if (c) c.scrollIntoView({ inline: 'center', block: 'nearest' }); },
+  'fd-sort': a => { if (state.food.sort === a.dataset.s) return; state.food.sort = a.dataset.s; haptic.tap(); renderFood(); },
+  'fd-step': a => { const f = FOODS[+a.dataset.i]; if (!f) return; const d = +a.dataset.d; const cur = foodAmt(f); let v;
+    if (f.g){ const st = f.g >= 150 ? 25 : f.g >= 50 ? 10 : 5; v = Math.max(st, Math.round(cur / st) * st + d * st); } else v = Math.max(0.5, Math.round(cur * 2) / 2 + d * 0.5);
+    state.food.amt[f.i] = v; haptic.tap(); refreshFoodList(); },
+  'fd-set': a => { const f = FOODS[+a.dataset.i]; if (!f) return; state.food.amt[f.i] = +a.dataset.v; haptic.tap(); refreshFoodList(); },
   summary: a => showSummary(a.dataset.sid, false),
   'save-checkin': () => saveCheckin(),
   'hist-all': () => { state.showAllHist = !state.showAllHist; renderProgress(); },
@@ -5123,6 +5512,8 @@ document.addEventListener('click', e => {
 document.addEventListener('input', e => {
   const el = e.target;
   if (el.matches('.in-w, .in-r')) onSetInput(el);
+  else if (el.matches('.fd-q')){ state.food.q = el.value.slice(0, 60); state.food.open = null; refreshFoodList(); }
+  else if (el.matches('.fd-g')){ const f = FOODS[+el.dataset.i]; const v = parseNum(el.value); if (f && v > 0){ state.food.amt[f.i] = Math.min(v, 5000); updateFoodTotal(f.i); } }
   else if (el.matches('input[data-p]:not([type="checkbox"]):not([type="date"])')) onProfileInput(el);
 });
 document.addEventListener('change', e => {
@@ -5138,6 +5529,7 @@ document.addEventListener('keydown', e => {
   if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && vctx && !$('#overlay').hidden && !(e.target.matches && e.target.matches('input,textarea,select'))){ e.preventDefault(); stepViewer(e.key === 'ArrowRight' ? 1 : -1); }
   if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('.viz[role="button"]')){ e.preventDefault(); Viz.play(e.target); }
   if (e.key === 'Enter' && e.target.matches && e.target.matches('.in-r')){ const btn = e.target.closest('.set').querySelector('.chk'); if (btn && btn.getAttribute('aria-pressed') !== 'true'){ e.preventDefault(); e.target.blur(); onCheck(btn); } }
+  if (e.key === 'Enter' && e.target.matches && e.target.matches('.fd-q, .fd-g')){ e.preventDefault(); e.target.blur(); }
   if (e.key === 'Enter' && e.target.matches && e.target.matches('.in-w')){ e.preventDefault(); const r = e.target.closest('.set').querySelector('.in-r'); if (r) r.focus(); }
 });
 document.addEventListener('focusout', () => setTimeout(() => { if (pendingRender && !isEditing()) renderView(state.view); }, 0));
@@ -5225,7 +5617,7 @@ function maybeWelcome(){
   }, 1500);
 }
 function buildChrome(){
-  $('#tabsIn').innerHTML = [['today', 'Today'], ['train', 'Train'], ['plan', 'Program'], ['progress', 'Progress']].map(([v, l]) => `<a class="tab" href="#${v}" data-v="${v}">${I[v]}<span>${l}</span></a>`).join('');
+  $('#tabsIn').innerHTML = [['today', 'Today'], ['train', 'Train'], ['plan', 'Program'], ['progress', 'Progress'], ['food', 'Food']].map(([v, l]) => `<a class="tab" href="#${v}" data-v="${v}">${I[v]}<span>${l}</span></a>`).join('');
   $('#vaultBtn').innerHTML = I.gear;
 }
 async function initCaps(){
