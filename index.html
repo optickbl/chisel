@@ -3996,7 +3996,7 @@ setInterval(() => { if (state.view === 'train' || !$('#restBar').hidden) paintSe
    Beginner 20 · Novice 40 · Intermediate 60 · Advanced 80 · Elite 100. Muscle score = average of its lifts,
    overall = the middle (median) of the muscle scores. Smith and plate-loaded machines compare what you log.
    Borrowed standards: incline machine = chest press, reverse pec-deck = 2 × dumbbell reverse fly,
-   rope hammer = cable curl, machine crunch = cable crunch, Smith lifts = their barbell twin. */
+   rope hammer = cable curl, machine crunch = cable crunch, captain's chair = hanging leg raise, Smith lifts = their barbell twin. */
 const SS_STD = {
   bench: [47, 64, 85, 110, 136], smith_bench: [45, 62, 84, 108, 134], chest_press: [33, 53, 80, 112, 147], incline_machine: [33, 53, 80, 112, 147],
   incline_bb: [41, 56, 75, 96, 119], incline_smith: [41, 56, 75, 96, 119], pec_deck: [36, 55, 79, 107, 139], cable_fly: [6, 16, 31, 52, 77],
@@ -4010,7 +4010,7 @@ const SS_STD = {
   squat: [62, 86, 116, 149, 185], hack_squat: [52, 88, 135, 193, 257], rdl: [54, 79, 110, 145, 184], smith_rdl: [54, 79, 110, 145, 184], leg_press: [90, 139, 202, 277, 359],
   leg_curl: [25, 40, 59, 82, 107], seated_leg_curl: [34, 52, 76, 103, 134], leg_ext: [42, 65, 95, 130, 169], calf_raise: [40, 76, 126, 189, 260], lp_calf: [40, 76, 126, 189, 260]
 };
-const SS_REPS = { pullup: [1, 7, 14, 22, 31], back_ext: [3, 15, 30, 47, 66], hanging_leg_raise: [1, 8, 17, 29, 41] };
+const SS_REPS = { pullup: [1, 7, 14, 22, 31], back_ext: [3, 15, 30, 47, 66], hanging_leg_raise: [1, 8, 17, 29, 41], captains_chair: [1, 8, 17, 29, 41] };
 const SS_LV = ['Beginner', 'Novice', 'Intermediate', 'Advanced', 'Elite'];
 const ssLevel = sc => sc >= 100 ? 4 : sc >= 80 ? 3 : sc >= 60 ? 2 : sc >= 40 ? 1 : 0;
 // the five standards for one lift, as estimated 1-rep maxes at this bodyweight
