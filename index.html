@@ -4791,55 +4791,11 @@ function scanCardHTML(cis){
       <p class="sp-note mt10">Rescan every 8–12 weeks the same way: fasted weigh-in, same light, phone at chest height about 2 m away, front, side and back.</p>
     </section>`;
 }
-/* edit a past session: fill in sets you did but forgot to tick. Today's session is edited in Train, never here. */
-function findSessionById(sid){ for (const id of monthIds()){ const md = docs[id]; if (md && md.sessions && md.sessions[sid]) return { s: md.sessions[sid], mid: id }; } return null; }
-function editPast(sid){
-  const f = findSessionById(sid); if (!f || f.s.date === todayStr()) return;
-  const s = f.s; const ph = PHASES[s.ph] ? s.ph : phaseOf(weekNum(s.date));
-  const blocks = slotsOf(s).map(sl => {
-    const exId = currentEx(sl.id, s); const ex = EX[exId]; const rec = s.sets && s.sets[sl.id];
-    const rows = Math.max(plannedSets(sl, ph), ((rec && rec.s) || []).length);
-    const ds = doneSets(rec); const last = ds[ds.length - 1];
-    let html = '';
-    for (let i = 0; i < rows; i++){
-      const x = rec && rec.s && rec.s[i]; const on = !!(x && x.d && +x.r > 0);
-      const w = on ? (x.w ?? '') : '', r = on ? x.r : '';
-      html += `<div class="set pe-row" data-slot="${sl.id}" data-i="${i}" style="grid-template-columns:28px minmax(0,1fr) minmax(0,1fr)"><span class="muted">${i + 1}</span><input class="pe-w" inputmode="decimal" placeholder="${last ? esc(String(last.w ?? '')) : 'kg'}" value="${esc(String(w))}" aria-label="${esc(ex.n)} set ${i + 1} kg"><input class="pe-r" inputmode="numeric" placeholder="${last ? esc(String(last.r)) : 'reps'}" value="${esc(String(r))}" aria-label="${esc(ex.n)} set ${i + 1} reps"></div>`;
-    }
-    return `<div style="margin:16px 0 6px"><b>${esc(ex.n)}</b></div><div class="sets">${html}</div>`;
-  }).join('');
-  openSheet(`<h2 class="h2">${esc(prettyDate(s.date))} · Mission ${s.m}</h2><p class="lede">Fill in sets you did but didn’t tick. Leave both boxes empty to remove a set. Grey numbers are your last set of that exercise; tap the box and type them in.</p>${blocks}<div class="btn-row mt10"><button class="btn btn-gold" data-act="past-save" data-sid="${sid}">Save</button><button class="btn" data-act="close">Cancel</button></div>`);
-}
-function savePast(sid){
-  const f = findSessionById(sid); if (!f || f.s.date === todayStr()) return;
-  const s = f.s; const sh = $('#sheet'); let bad = null;
-  const edits = [];
-  for (const row of sh.querySelectorAll('.pe-row')){
-    const slotId = row.dataset.slot, i = +row.dataset.i; const wIn = row.querySelector('.pe-w'), rIn = row.querySelector('.pe-r');
-    const ex = EX[currentEx(slotId, s)];
-    const w = parseNum(wIn.value), r = parseNum(rIn.value);
-    if (!wIn.value.trim() && !rIn.value.trim()){ edits.push({ slotId, i, x: null }); continue; }
-    if (!(r > 0)){ bad = rIn; break; }
-    if (ex.k !== 'bw' && !(w >= 0)){ bad = wIn; break; }
-    edits.push({ slotId, i, x: { w: Number.isNaN(w) ? 0 : Math.round(w * 100) / 100, r: Math.round(r), d: 1 } });
-  }
-  if (bad){ bad.classList.remove('shake'); void bad.offsetWidth; bad.classList.add('shake'); bad.focus(); toast('Enter weight and reps, or leave both empty.'); return; }
-  s.sets = s.sets || {};
-  for (const e of edits){
-    const old = s.sets[e.slotId] && s.sets[e.slotId].s && s.sets[e.slotId].s[e.i];
-    if (!e.x){ if (old && old.d){ old.d = 0; } continue; }
-    const rec = slotRec(s, e.slotId); for (let k = 0; k <= e.i; k++) if (!rec.s[k]) rec.s[k] = {};
-    rec.s[e.i] = { ...e.x, t: (old && old.t) || 0 };
-  }
-  touch(f.mid); closeSheet();
-  const prev = G; G = compute(); renderView(state.view); afterChange(prev);
-  const i = G.info[s.id]; toast(i ? `Saved · ${i.done}/${i.planned} sets${i.complete ? ' · mission complete' : ''}` : 'Saved');
-}
 function historyItem(s){
   const i = G.info[s.id]; const mm = MISSION_BY_ID[s.m];
   const lines = slotsOf(s).map(sl => { const rec = s.sets && s.sets[sl.id]; const ds = doneSets(rec); if (!ds.length) return ''; const e = EX[EX[rec.ex] ? rec.ex : sl.ex]; return `<div><b>${esc(e.n)}</b> · ${ds.map(x => e.k === 'bw' ? `${x.r}${+x.w ? ` (+${fmtKg(x.w)})` : ''}` : `${fmtKg(x.w)}×${x.r}`).join(', ')}</div>`; }).join('');
   return `<li><details><summary><span class="h-t">${prettyDate(s.date)} · Mission ${s.m}<small>${i.done}/${i.planned} sets${sessDurMin(s) ? ` · ${sessDurMin(s)} min` : ''}${i.prs.length ? ` · ${i.prs.length} PR${i.prs.length > 1 ? 's' : ''}` : ''}${i.earning ? '' : ' · bonus, no XP'}</small></span><span class="h-xp">+${fmt(i.xp)}</span></summary>
-    <div class="h-body">${lines}<div class="btn-row mt6"><button class="btn btn-sm" data-act="summary" data-sid="${s.id}">Summary</button>${s.date !== todayStr() ? `<button class="btn btn-sm" data-act="edit-past" data-sid="${s.id}">Edit sets</button>` : ''}<button class="btn btn-sm btn-danger" data-act="del-session" data-sid="${s.id}">Delete</button></div></div></details></li>`;
+    <div class="h-body">${lines}<div class="btn-row mt6"><button class="btn btn-sm" data-act="summary" data-sid="${s.id}">Summary</button><button class="btn btn-sm btn-danger" data-act="del-session" data-sid="${s.id}">Delete</button></div></div></details></li>`;
 }
 function niceTicks(lo, hi, n){
   const raw = (hi - lo) / Math.max(1, n - 1); const mag = Math.pow(10, Math.floor(Math.log10(raw))); const norm = raw / mag;
@@ -5120,8 +5076,6 @@ const actions = {
   addset: a => { const t = todayStr(); const s = ensureSession(t, state.trainM); const sl = slotById(a.dataset.slot, s); if (!sl) return; const rec = slotRec(s, a.dataset.slot); const p = plannedSets(sl, PHASES[s.ph] ? s.ph : phaseOf(weekNum(t))); while (rec.s.length < p) rec.s.push({}); rec.s.push({}); touch(monthId(t)); const y = window.scrollY; renderTrain(); window.scrollTo(0, y); },
   finish: () => { const t = todayStr(); const s = getSession(t, state.trainM); const i = s && G.info[s.id]; if (!i || i.empty){ toast('Log at least one set first.'); return; } if (!s.fin){ s.fin = Date.now(); touch(monthId(t)); } stopRest(); showSummary(s.id, false, true); },
   summary: a => showSummary(a.dataset.sid, false),
-  'edit-past': a => editPast(a.dataset.sid),
-  'past-save': a => savePast(a.dataset.sid),
   'save-checkin': () => saveCheckin(),
   'hist-all': () => { state.showAllHist = !state.showAllHist; renderProgress(); },
   'del-session': a => { const sid = a.dataset.sid; confirmSheet({ title: 'Delete this session?', body: 'Its sets, records and XP are removed. This can’t be undone.', ok: 'Delete session', danger: true, onOk: () => { for (const id of monthIds()){ const md = docs[id]; if (md.sessions && md.sessions[sid]){ delete md.sessions[sid]; touch(id); } } const prev = G; G = compute(); renderView(state.view); afterChange(prev); toast('Session deleted'); } }); },
