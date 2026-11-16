@@ -1424,11 +1424,16 @@ const V5_MISSIONS = [
 ];
 // the plan from 14 Nov 2026: the same as plan 5, except Saturday's abs (C7) are decline sit-ups.
 // The captain's chair is gone; the hanging leg raise stays as the swap.
-const MISSIONS = V5_MISSIONS.map(m => ({ ...m, focus: m.focus.map(f => [...f]),
+const V6_MISSIONS = V5_MISSIONS.map(m => ({ ...m, focus: m.focus.map(f => [...f]),
   slots: m.slots.map(sl => sl.id === 'C7' ? { ...sl, ex: 'decline_situp', alts: ['hanging_leg_raise'] } : { ...sl, alts: [...sl.alts] }) }));
+// the plan from 16 Nov 2026: Thursday's first lift (B1) is the flat barbell bench instead of the incline barbell,
+// so bench is trained twice a week. Incline pressing stays first on Monday.
+const MISSIONS = V6_MISSIONS.map(m => ({ ...m,
+  focus: m.focus.map(f => m.id === 'B' && f[0] === 'Upper chest' ? ['Chest', f[1]] : [...f]),
+  slots: m.slots.map(sl => sl.id === 'B1' ? { ...sl, ex: 'bench', alts: ['smith_bench', 'chest_press'] } : { ...sl, alts: [...sl.alts] }) }));
 // every plan Chisel has used. A session carries pv (its plan version); sessions without one are plan 1.
-const PLANS = { 1: LEGACY_MISSIONS, 2: V2_MISSIONS, 3: V3_MISSIONS, 4: V4_MISSIONS, 5: V5_MISSIONS, 6: MISSIONS };
-const PLAN_V = 6;
+const PLANS = { 1: LEGACY_MISSIONS, 2: V2_MISSIONS, 3: V3_MISSIONS, 4: V4_MISSIONS, 5: V5_MISSIONS, 6: V6_MISSIONS, 7: MISSIONS };
+const PLAN_V = 7;
 const PLAN_M = {}, PLAN_S = {};
 for (const [v, list] of Object.entries(PLANS)){ PLAN_M[v] = {}; PLAN_S[v] = {}; list.forEach(m => { PLAN_M[v][m.id] = m; m.slots.forEach(s => { s.mission = m.id; PLAN_S[v][s.id] = s; }); }); }
 const MISSION_BY_ID = PLAN_M[PLAN_V], SLOT_BY_ID = PLAN_S[PLAN_V];
@@ -1543,7 +1548,7 @@ const TIPS = [
   'Sharp or joint pain means stop. Muscle burn is fine.',
   'Missed a day? Do the next mission on your next free day and keep the order.',
   'Triceps are about two-thirds of your upper arm. Big arms need both sides.',
-  'Upper chest fills out a T-shirt. That’s why incline pressing comes first on Monday and Thursday.',
+  'Upper chest fills out a T-shirt. That’s why incline pressing comes first on Monday.',
   'Lateral raises live at 10–15 reps. Light and strict beats heavy and swung: the side delt does the work only when nothing else helps.',
   'Check in at the same time each week, ideally first thing in the morning.',
   'Progress photos every 4 weeks: same light, phone at chest height about 2 m away, front, side and back. The mirror lies day to day.',
@@ -1575,6 +1580,7 @@ function P(){
 // Plan 4: Saturday's leg press swap became the leg extension, and C4 is now the rope pushdown.
 // Plan 5: Saturday gained a lat pulldown as C3, so C3–C6 moved down to C4–C7.
 // Plan 6: C7 is the decline sit-up; any C7 swap (captain's chair, leg raise) is dropped.
+// Plan 7: B1 is the flat barbell bench; any B1 swap (incline Smith, incline machine) is dropped.
 function migratePlan(){
   const p = P(); const from = p.plan >= 2 ? p.plan : 1; if (from >= PLAN_V) return false;
   // a brand-new profile has nothing to move, and must not be marked as changed or it would overwrite the cloud copy
@@ -1595,6 +1601,16 @@ function migratePlan(){
       if (x.date !== t || planOf(x) !== 5) continue;
       const r7 = x.sets && x.sets.C7; if (r7 && doneSets(r7).length) continue;
       if (r7) delete x.sets.C7; x.pv = 6; touch(monthId(t));
+    }
+  }
+  if (from < 7){
+    delete sw.B1;
+    // a Thursday session started today on plan 6 picks up the bench, as long as B1 hasn't been logged in it
+    const t = todayStr(); const md = docs[monthId(t)];
+    for (const x of Object.values((md && md.sessions) || {})){
+      if (x.date !== t || planOf(x) !== 6 || x.m !== 'B') continue;
+      const r1 = x.sets && x.sets.B1; if (r1 && doneSets(r1).length) continue;
+      if (r1) delete x.sets.B1; x.pv = 7; touch(monthId(t));
     }
   }
   p.swaps = sw; p.plan = PLAN_V;
@@ -5560,7 +5576,7 @@ function renderPlan(){
     </div></details>
     <details class="acc"><summary>Why this plan works for the look</summary><div class="acc-b prose"><ul>
       <li><b>Side delts, 3× a week.</b> Shoulder width is the top of the V and the biggest upgrade in a T-shirt. Your scan showed front delts ahead of side delts, so lateral raises run every session at 10–15 strict reps.</li>
-      <li><b>Upper chest, 2× a week.</b> Your lower chest line is already there; the top is flat. Incline pressing comes first on Monday and Thursday while you’re fresh.</li>
+      <li><b>Upper chest first on Monday.</b> Your lower chest line is already there; the top is flat. Incline pressing comes first on Monday while you’re fresh.</li>
       <li><b>Arms, every session.</b> Biceps 3× and triceps 2× a week. Triceps make up about two-thirds of upper-arm size.</li>
       <li><b>Lats, 3× a week.</b> Your 8 Nov video: the V comes from your delts alone, and under your arms you’re no wider than your hips. Lat width is the missing half of the V, and it makes your waist look smaller.</li>
       <li><b>Abs, 2× a week.</b> Weighted crunches and leg raises build thicker abs that show more clearly.</li>
