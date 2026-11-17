@@ -1206,6 +1206,7 @@ const EX = {
   rope_pushdown:   { n: 'Triceps rope pushdown', m: 'triceps', k: 'cb', inc: 2.5, cue: 'Elbows pinned to your sides. Push down and split the rope at the bottom.', q: 'tricep rope pushdown form' },
   bar_pushdown:    { n: 'Straight-bar pushdown', m: 'triceps', k: 'cb', inc: 2.5, cue: 'Elbows pinned to your sides, push the bar down to your thighs.', q: 'straight bar tricep pushdown form' },
   dips:            { n: 'Dips', m: 'triceps', k: 'bw', inc: 2.5, cue: 'Stay fairly upright with a slight forward lean, elbows going back, not out. Lower until your upper arms are level with the bars, then press to straight arms. Under 6 reps? Do what you can and add one each week. 8 on both sets? Add weight with a dip belt.', q: 'parallel bar dips triceps form' },
+  machine_dip:     { n: 'Seated dip machine', m: 'triceps', k: 'mc', inc: 2.5, cue: 'Sit tall, chest up, handles at your sides. Push down until your arms are straight, then let the handles rise slowly until your elbows are past 90°. Elbows go back, not out.', q: 'technogym pure strength seated dip machine' },
   smith_cgbp:      { n: 'Close-grip Smith bench press', m: 'triceps', k: 'mc', inc: 2.5, cue: 'Hands about shoulder-width, elbows tucked at 45°. Lower the bar to your lower chest, press to straight arms.', q: 'close grip smith machine bench press form' },
   hammer_curl:     { n: 'Dumbbell hammer curl', m: 'biceps', k: 'db', inc: 2, cue: 'Thumbs up, elbows still. Builds the arm and forearm thickness you see from the front.', q: 'dumbbell hammer curl form' },
   rope_hammer:     { n: 'Cable rope hammer curl', m: 'biceps', k: 'cb', inc: 2.5, cue: 'Thumbs up on the rope, elbows still at your sides.', q: 'cable rope hammer curl form' },
@@ -1435,7 +1436,7 @@ const V7_MISSIONS = V6_MISSIONS.map(m => ({ ...m,
   slots: m.slots.map(sl => sl.id === 'B1' ? { ...sl, ex: 'bench', alts: ['smith_bench', 'chest_press'] } : { ...sl, alts: [...sl.alts] }) }));
 // the plan from 17 Nov 2026 (plan 8): 9 exercises a day, about 65 minutes, every set 3 minutes apart, 2 sets each.
 // Weekly sets follow the 7 Nov scan's priorities: side delts 10, chest 10 with the upper chest twice a week, biceps 8,
-// triceps 8 (dips are new), lats 8, rear delts 2, abs 4, legs 4. Front delts were already ahead and get plenty from
+// triceps 8 (the seated dip machine is new), lats 8, rear delts 2, abs 4, legs 4. Front delts were already ahead and get plenty from
 // bench and incline, so Monday's shoulder press became a machine lateral raise (the press stays as its swap).
 // Lateral raises, the rear-delt fly and abs use 10–15 reps, where lighter weight keeps the form strict; the rest 6–8.
 const MISSIONS = [
@@ -1458,7 +1459,7 @@ const MISSIONS = [
       { id: 'B1', ex: 'bench', alts: ['smith_bench', 'chest_press'], sets: 2, lo: 6, hi: 8, rest: 180 },
       { id: 'B2', ex: 'close_pulldown', alts: ['lat_pulldown', 'pullup'], sets: 2, lo: 6, hi: 8, rest: 180 },
       { id: 'B3', ex: 'machine_row', alts: ['bb_row', 'cable_row'], sets: 2, lo: 6, hi: 8, rest: 180 },
-      { id: 'B4', ex: 'dips', alts: ['smith_cgbp'], sets: 2, lo: 6, hi: 8, rest: 180 },
+      { id: 'B4', ex: 'machine_dip', alts: ['smith_cgbp', 'dips'], sets: 2, lo: 6, hi: 8, rest: 180 },
       { id: 'B5', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 180, pair: 'B6' },
       { id: 'B6', ex: 'reverse_pec', alts: ['face_pull'], sets: 2, lo: 10, hi: 15, rest: 180, pair: 'B5' },
       { id: 'B7', ex: 'ez_curl', alts: ['bb_curl', 'cable_curl'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'B8', tech: 'myo' },
@@ -1544,7 +1545,7 @@ const stageImg = n => `statue-${clamp(n, 1, 10)}.webp`;
 
 const PHASES = {
   cal:   { n: 'Calibration', rir: 'Stop every set with 2–3 reps left in the tank.', note: 'Learn the lifts and find your working weights. Strength climbs fast in these weeks.' },
-  build: { n: 'Build', rir: 'First set: stop 1 rep short of failure. Last set: go to failure, except on barbell presses, dips and the hack squat, where you stop 1 rep short.', note: 'Beat the logbook: one more rep or a little more weight than last time.' },
+  build: { n: 'Build', rir: 'First set: stop 1 rep short of failure. Last set: go to failure, except on barbell presses and the hack squat, where you stop 1 rep short.', note: 'Beat the logbook: one more rep or a little more weight than last time.' },
   rec:   { n: 'Recovery', rir: 'Half the sets, same weights, about 3 reps left in the tank.', note: 'A deload. Joints and nerves catch up and you come back stronger.' },
   od:    { n: 'Overdrive', rir: 'Build effort, plus your unlocked techniques on the last set.', note: 'Recovery week reset you. Push hard for three weeks.' }
 };
@@ -1613,7 +1614,7 @@ const TIPS = [
   'Exercises marked “Pair with” alternate sets. Each muscle gets about 7 minutes before its next set, so you get more reps.',
   'Only 2 sets each, so make them count: the last set ends when you can’t do another clean rep.',
   'No shoulder press on purpose: bench and incline already work your front delts. Lateral raises build the width.',
-  'Dips: under 6 reps, add one a week. 8 on both sets, add 2.5 kg on a dip belt.'
+  'Seated dip machine: keep your chest up and push straight down. It’s the heaviest triceps work in the plan, so load it.'
 ];
 
 /* ---------- state ---------- */
@@ -1637,7 +1638,7 @@ function P(){
 // Plan 5: Saturday gained a lat pulldown as C3, so C3–C6 moved down to C4–C7.
 // Plan 6: C7 is the decline sit-up; any C7 swap (captain's chair, leg raise) is dropped.
 // Plan 7: B1 is the flat barbell bench; any B1 swap (incline Smith, incline machine) is dropped.
-// Plan 8: A4 is the machine lateral raise (its old shoulder-press swap is dropped) and A9 is new. Thursday gains dips (B4) and
+// Plan 8: A4 is the machine lateral raise (its old shoulder-press swap is dropped) and A9 is new. Thursday gains the seated dip machine (B4) and
 // straight-bar pushdowns (B8), so B4–B7 move to B5, B6, B7 and B9. Saturday gains the incline Smith press (C1) and machine
 // lateral raises (C5), so C1–C7 move to C2, C3, C4, C6, C7, C8 and C9.
 function migratePlan(){
@@ -1897,7 +1898,7 @@ const FC_TAU = 26;
 const FC_RIR = { cal: 2.5, build: 1, od: 1, rec: 3 };
 const FC_WORK_RIR = 1;
 const FC_LOWER = new Set(['squat', 'hack_squat', 'rdl', 'smith_rdl', 'leg_press']);
-const FC_COMPOUND = new Set(['bench', 'smith_bench', 'chest_press', 'incline_machine', 'incline_bb', 'incline_smith', 'lat_pulldown', 'pullup', 'close_pulldown', 'machine_row', 'bb_row', 'cable_row', 'shoulder_press', 'smith_ohp', 'dips', 'smith_cgbp', ...FC_LOWER]);
+const FC_COMPOUND = new Set(['bench', 'smith_bench', 'chest_press', 'incline_machine', 'incline_bb', 'incline_smith', 'lat_pulldown', 'pullup', 'close_pulldown', 'machine_row', 'bb_row', 'cable_row', 'shoulder_press', 'smith_ohp', 'dips', 'machine_dip', 'smith_cgbp', ...FC_LOWER]);
 const FC_PLATES = new Set(['bench', 'incline_bb', 'squat', 'rdl', 'bb_row']);
 function fcBaseRate(exId){ return FC_LOWER.has(exId) ? .025 : FC_COMPOUND.has(exId) ? .018 : .013; }
 const e1rm = (load, reps, rir) => load * (1 + (reps + rir) / 30);
@@ -2067,7 +2068,7 @@ const VIZ = {
   shoulder_press: { p: 'ohp' }, smith_ohp: { p: 'ohp', v: 'smith' },
   cable_lateral: { p: 'lateral', v: 'cable' }, machine_lateral: { p: 'lateral', v: 'machine' },
   pec_deck: { p: 'fly' }, cable_fly: { p: 'fly', v: 'cable' }, reverse_pec: { p: 'revfly' }, face_pull: { p: 'facepull' },
-  rope_pushdown: { p: 'pushdown', v: 'rope' }, bar_pushdown: { p: 'pushdown', v: 'bar' }, dips: { p: 'dip' }, smith_cgbp: { p: 'press', smith: 1, v: 'close' }, overhead_ext: { p: 'ohext' }, db_overhead_ext: { p: 'ohext', v: 'db' }, skullcrusher: { p: 'skull' },
+  rope_pushdown: { p: 'pushdown', v: 'rope' }, bar_pushdown: { p: 'pushdown', v: 'bar' }, dips: { p: 'dip' }, machine_dip: { p: 'mdip' }, smith_cgbp: { p: 'press', smith: 1, v: 'close' }, overhead_ext: { p: 'ohext' }, db_overhead_ext: { p: 'ohext', v: 'db' }, skullcrusher: { p: 'skull' },
   hammer_curl: { p: 'curl', v: 'hammer' }, ez_curl: { p: 'curl', v: 'ez' }, bb_curl: { p: 'curl', v: 'bb' }, cable_curl: { p: 'curl', v: 'cable' }, rope_hammer: { p: 'curl', v: 'rope' },
   incline_db_curl: { p: 'inclinecurl' }, preacher_curl: { p: 'preacher' },
   cable_crunch: { p: 'crunch' }, machine_crunch: { p: 'crunch', v: 'machine' },
@@ -2108,7 +2109,7 @@ const WORKS = {
   cable_lateral: W(['sideDelts'], ['traps']), machine_lateral: W(['sideDelts'], ['traps']),
   pec_deck: W(['chest'], ['frontDelts']), cable_fly: W(['chest'], ['frontDelts']),
   face_pull: W(['rearDelts'], ['upperBack', 'traps']), reverse_pec: W(['rearDelts'], ['upperBack', 'traps']),
-  rope_pushdown: W(['triceps']), bar_pushdown: W(['triceps']), dips: W(['triceps', 'chest'], ['frontDelts']), smith_cgbp: W(['triceps', 'chest'], ['frontDelts']), overhead_ext: W(['triceps']), db_overhead_ext: W(['triceps']), skullcrusher: W(['triceps']),
+  rope_pushdown: W(['triceps']), bar_pushdown: W(['triceps']), dips: W(['triceps', 'chest'], ['frontDelts']), machine_dip: W(['triceps', 'chest'], ['frontDelts']), smith_cgbp: W(['triceps', 'chest'], ['frontDelts']), overhead_ext: W(['triceps']), db_overhead_ext: W(['triceps']), skullcrusher: W(['triceps']),
   hammer_curl: W(['biceps', 'forearms']), rope_hammer: W(['biceps', 'forearms']),
   ez_curl: W(['biceps'], ['forearms']), bb_curl: W(['biceps'], ['forearms']), cable_curl: W(['biceps'], ['forearms']), incline_db_curl: W(['biceps'], ['forearms']), preacher_curl: W(['biceps'], ['forearms']),
   cable_crunch: W(['abs'], ['obliques']), machine_crunch: W(['abs'], ['obliques']),
@@ -3070,6 +3071,27 @@ const Viz = (() => {
         build(c){ c.box([0, .05, .2], [.6, .1, .2]); const stk = c.stack(0, -.5, 2.5); return { stk, pads: [c.dynBox([.13, .07, .2]), c.dynBox([.13, .07, .2])], beam: c.dynRod(.03), yoke: c.dynRod(.025), arm: [c.dynRod(.02), c.dynRod(.02)] }; },
         pose(p){ const g = mix(22, -36, p) * D; const fd = V(0, Math.sin(g), Math.cos(g)); const ank = sym(.12, .175, .13).map(x => x.addScaledVector(fd, -.15)); const P = V(0, ank[0].y + .865, ank[0].z - .01); return { P, U: V(0, 1, 0), F: V(0, 0, 1), hands: sym(.3, P.y + .5, .1), ePole: sym(.6, P.y + .1, -.1), feet: ank, kPole: sym(.16, .55, 1.2), fDir: [fd, fd] }; },
         update(p, b, d){ const y = b.S[0].y + .1; for (let i = 0; i < 2; i++){ d.pads[i].set(b.S[i].clone().add(V(0, .1, 0)), V(1, 0, 0), V(0, 1, 0), V(0, 0, 1)); d.arm[i].set(b.S[i].clone().add(V(0, .1, -.1)), V(b.S[i].x, y, -.16)); } d.yoke.set(V(.19, y, -.16), V(-.19, y, -.16)); d.beam.set(V(0, y, -.47), V(0, y, -.16)); if (base == null) base = b.P.y; d.stk.set((b.P.y - base) * 1.5); } };
+    },
+    mdip(){
+      // pivots at the front uprights; the levers run back to handles beside the hips, and a horn past each pivot,
+      // angled down toward the floor, holds the plates, which rise as the handles are pushed down
+      const P = V(0, .55, 0), U = NV(0, 1, .1), F = NV(0, -.1, 1);
+      const xg = .29, L = lever(V(0, .72, -.12), V(0, .47, -.053), [0, 1], 0, { z: .75 });
+      const pv = (sg, x) => V(sg * (x || .36), L.pivot[0], L.pivot[1]);
+      const horn = q => { const ang = Math.atan2(L.pivot[0] - q.attach[0], L.pivot[1] - q.attach[1]) - .75; return [L.pivot[0] + .46 * Math.sin(ang), L.pivot[1] + .46 * Math.cos(ang)]; };
+      return { cam: { az: 118, el: 14, d: 4.3, t: [0, .72, .3] }, thumbP: .35, tempo: ['Push down', 'Let it rise'],
+        build(c){
+          c.box([0, .41, .02], [.42, .08, .4], M.pad); c.box([0, .2, .02], [.1, .36, .1]);
+          c.box([0, .03, .1], [.84, .06, .1]); c.box([0, .03, 1.2], [.84, .06, .1]);
+          for (const x of [.4, -.4]){ c.box([x, .03, .65], [.08, .06, 1.2]); c.rod([x, .05, .45], [x, L.pivot[0], L.pivot[1]], .035, M.frame); c.rod([x, .05, 1.1], [x, L.pivot[0], L.pivot[1]], .035, M.frame); }
+          c.rod(pv(1, .44), pv(-1, .44), .03, M.metal);
+          return { l: [c.dynRod(.04, M.pad), c.dynRod(.04, M.pad)], h: [c.dynRod(.035, M.pad), c.dynRod(.035, M.pad)], pin: [c.dynRod(.02, M.metal), c.dynRod(.02, M.metal)], pl: [c.dynRod(.2, M.plate), c.dynRod(.2, M.plate)], g: [c.grip(), c.grip()] };
+        },
+        pose(p){ const q = L.at(p); return { P, U, F, hands: [V(xg, q.hand[0], q.hand[1]), V(-xg, q.hand[0], q.hand[1])], grip: V(0, q.g[0], q.g[1]), ePole: sym(.3, .72, -.75), feet: sym(.17, .075, .42), kPole: sym(.22, 1.0, .9), q }; },
+        update(p, b, d, s){ const q = s.q, g = V(0, q.g[0], q.g[1]), hn = horn(q);
+          for (let i = 0; i < 2; i++){ const sg = i ? -1 : 1, x = sg * xg, a = V(x, q.attach[0], q.attach[1]), lx = sg * .36;
+            d.g[i].set(a, g, .16); d.l[i].set(V(lx, q.attach[0] + .02, q.attach[1] + .1), pv(sg)); d.h[i].set(pv(sg), V(lx, hn[0], hn[1]));
+            d.pin[i].set(V(lx, hn[0], hn[1]), V(sg * .6, hn[0], hn[1])); d.pl[i].set(V(sg * .47, hn[0], hn[1]), V(sg * .52, hn[0], hn[1])); } } };
     },
     // parallel-bar dip: hands stay on the bars while the body sinks until the upper arms are about level with them,
     // shoulders travelling forward of the hands and elbows back, then presses up to nearly straight arms.
@@ -5531,7 +5553,7 @@ function hmDay(a){
 
 /* plate calculator: barbell lifts count the bar in the logged weight; plate-loaded machines count plates only */
 const PLATE_EX = { bench: 20, incline_bb: 20, bb_row: 20, bb_curl: 20, squat: 20, rdl: 20, ez_curl: 10, skullcrusher: 10,
-  hack_squat: 0, leg_press: 0, lp_calf: 0, smith_bench: 0, incline_smith: 0, smith_ohp: 0, smith_rdl: 0, incline_machine: 0, smith_cgbp: 0 };
+  hack_squat: 0, leg_press: 0, lp_calf: 0, smith_bench: 0, incline_smith: 0, smith_ohp: 0, smith_rdl: 0, incline_machine: 0, smith_cgbp: 0, machine_dip: 0 };
 const PLATES = [25, 20, 15, 10, 5, 2.5, 1.25];
 const PLATE_LOOK = { 25: ['#E2231A', 108, 15], 20: ['#1C55C4', 108, 13], 15: ['#F5C400', 96, 12], 10: ['#129C48', 82, 10], 5: ['#F9F9F7', 62, 8], 2.5: ['#0D0D0D', 50, 6], 1.25: ['#9C9C97', 40, 5] };
 const BAR_OPTS = [[20, '20 kg', 'bar'], [15, '15 kg', 'bar'], [10, '10 kg', 'EZ bar'], [0, 'Plates', 'only']];
@@ -5664,8 +5686,8 @@ function renderPlan(){
     <section class="card"><div class="sec-h"><h2 class="h3">Your week</h2></div><ul class="sched">${sched}</ul></section>
     ${missionsHTML}
     <details class="acc"><summary>How to train</summary><div class="acc-b prose">
-      <p><b>Effort.</b> With 2 sets per exercise, every set has to count. Reps in reserve means how many more clean reps you could have done. In Build weeks the first set ends 1 rep short and the last set goes to failure, except barbell presses, dips and the hack squat, which stop 1 short. Your phase tells you how close to go.</p>
-      <p><b>Progression.</b> Every exercise has a rep range: 6–8 on most; 10–15 on lateral raises, the rear-delt fly and abs, where a lighter weight keeps the form strict. Keep the same weight until you hit the top of the range on every set, then add the smallest step: 2.5 kg on most lifts, 5 kg on hack squats and the leg press, the next dumbbell for curls. On dips, add reps until you get 8 on both sets, then add 2.5 kg on a dip belt. The Train tab does this math for you.</p>
+      <p><b>Effort.</b> With 2 sets per exercise, every set has to count. Reps in reserve means how many more clean reps you could have done. In Build weeks the first set ends 1 rep short and the last set goes to failure, except barbell presses and the hack squat, which stop 1 short. Your phase tells you how close to go.</p>
+      <p><b>Progression.</b> Every exercise has a rep range: 6–8 on most; 10–15 on lateral raises, the rear-delt fly and abs, where a lighter weight keeps the form strict. Keep the same weight until you hit the top of the range on every set, then add the smallest step: 2.5 kg on most lifts, 5 kg on hack squats and the leg press, the next dumbbell for curls. The Train tab does this math for you.</p>
       <p><b>Warm-up.</b> 5 minutes of easy cardio, 2–3 ramp-up sets on the first lift, then one lighter feeler set before the first exercise for each new muscle.</p>
       <p><b>Form.</b> About 2 seconds down, full range, no bouncing. If form breaks, the set is over. Watch the 3D demo before any new exercise.</p>
       <p><b>Rest.</b> 3 minutes between every set, paired exercises included. The timer starts when you log a set.</p>
@@ -5678,7 +5700,7 @@ function renderPlan(){
     <details class="acc"><summary>Why this plan works for the look</summary><div class="acc-b prose"><ul>
       <li><b>Side delts, 10 sets a week.</b> Shoulder width is the top of the V and the biggest upgrade in a T-shirt. Your scan showed front delts ahead of side delts, so lateral raises run every session, twice on Monday and Saturday, at 10–15 strict reps. Bench and incline already work your front delts hard, so there’s no shoulder press.</li>
       <li><b>Upper chest, 2× a week.</b> Your lower chest line is already there; the top is flat. Incline pressing opens Monday and Saturday while you’re fresh, and you bench on Monday and Thursday.</li>
-      <li><b>Arms, 16 sets a week.</b> Biceps and triceps get 8 sets each, spread over all three days. Triceps make up about two-thirds of upper-arm size, so Thursday adds dips, the heaviest triceps work in the plan.</li>
+      <li><b>Arms, 16 sets a week.</b> Biceps and triceps get 8 sets each, spread over all three days. Triceps make up about two-thirds of upper-arm size, so Thursday adds the seated dip machine, the heaviest triceps work in the plan.</li>
       <li><b>Lats, 3× a week.</b> Your 8 Nov video: the V comes from your delts alone, and under your arms you’re no wider than your hips. Lat width is the missing half of the V, and it makes your waist look smaller.</li>
       <li><b>Rear delts, a strict fly.</b> The reverse pec-deck keeps the work on the back of the shoulder; face pulls share it with your traps. Shoulders look round from the side when all three heads are built.</li>
       <li><b>Abs, 2× a week.</b> Cable crunches and decline sit-ups at 10–15 reps build thicker abs that show more clearly as you lean out.</li>
@@ -6063,7 +6085,7 @@ function planDocHTML(){
 <div class="box"><b>Schedule:</b> Monday Mission A · Thursday Mission B · Saturday Mission C. Rest on the other days. Missed a day? Do the next mission on your next free day and keep the order.</div>
 ${missions}
 <h2>Phases</h2><ul><li><b>Weeks 1–2 · Calibration:</b> ${e(PHASES.cal.rir)}</li><li><b>Weeks 3–8 · Build:</b> ${e(PHASES.build.rir)}</li><li><b>Week 9 · Recovery:</b> ${e(PHASES.rec.rir)}</li><li><b>Weeks 10–12 · Overdrive:</b> ${e(PHASES.od.rir)}</li><li>After week 12 the cycle repeats: 6 Build, 1 Recovery, 3 Overdrive.</li></ul>
-<h2>Rules</h2><ul><li><b>Effort:</b> 2 sets per exercise. First set 1 rep short of failure; last set to failure, or 1 short on barbell presses, dips and the hack squat.</li><li><b>Progression:</b> same weight until every set hits the top of the rep range, then add the smallest step (2.5 kg; 5 kg on hack squats and the leg press). Dips: add reps up to 8 on both sets, then 2.5 kg on a dip belt.</li><li><b>Form:</b> about 2 seconds down, full range, no bouncing.</li><li><b>Warm-up:</b> 5 minutes easy cardio, 2–3 lighter sets of your first lift, then one feeler set before the first exercise for each new muscle.</li><li><b>Pain:</b> sharp or joint pain means stop and swap the exercise.</li></ul>
+<h2>Rules</h2><ul><li><b>Effort:</b> 2 sets per exercise. First set 1 rep short of failure; last set to failure, or 1 short on barbell presses and the hack squat.</li><li><b>Progression:</b> same weight until every set hits the top of the rep range, then add the smallest step (2.5 kg; 5 kg on hack squats and the leg press).</li><li><b>Form:</b> about 2 seconds down, full range, no bouncing.</li><li><b>Warm-up:</b> 5 minutes easy cardio, 2–3 lighter sets of your first lift, then one feeler set before the first exercise for each new muscle.</li><li><b>Pain:</b> sharp or joint pain means stop and swap the exercise.</li></ul>
 <h2>Weekly check-in</h2><p>Same time each week, ideally first thing in the morning. Weight, waist at the navel, shoulders at the widest point. Track shoulders ÷ waist toward the classical 1.618.</p>
 </body></html>`;
 }
