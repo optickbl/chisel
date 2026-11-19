@@ -1201,6 +1201,7 @@ const EX = {
   smith_ohp:       { n: 'Smith machine seated shoulder press', m: 'delts', k: 'mc', inc: 2.5, cue: 'Bench upright. Lower the bar to chin level and press.', q: 'smith machine seated shoulder press form' },
   cable_lateral:   { n: 'Cable lateral raise', m: 'delts', k: 'cb', inc: 1.25, cue: 'Lead with your elbow out to the side, stop at shoulder height, lower slowly. This is the width muscle.', q: 'cable lateral raise form' },
   machine_lateral: { n: 'Machine lateral raise', m: 'delts', k: 'mc', inc: 2.5, cue: 'Pads on the outside of your elbows. Raise to shoulder height, lower slowly.', q: 'machine lateral raise form' },
+  flight_lateral:  { n: 'Multi Flight lateral raise', m: 'delts', k: 'mc', inc: 2.5, cue: 'Set the arms so their pivots sit level with your shoulders. Stand tall facing the machine, handles at your sides. Lead with your elbows out to the side, stop at shoulder height, lower slowly. The 2.5 kg plate on top of the stack is your small step.', q: 'technogym multi flight lateral raise' },
   pec_deck:        { n: 'Pec-deck fly', m: 'chest', k: 'mc', inc: 2.5, cue: 'Slight bend in the elbows. Hug the handles together, slow on the way back.', q: 'pec deck fly form' },
   cable_fly:       { n: 'Cable fly', m: 'chest', k: 'cb', inc: 1.25, cue: 'Step forward, soft elbows, bring your hands together in front of your chest.', q: 'cable chest fly form' },
   rope_pushdown:   { n: 'Triceps rope pushdown', m: 'triceps', k: 'cb', inc: 2.5, cue: 'Elbows pinned to your sides. Push down and split the rope at the bottom.', q: 'tricep rope pushdown form' },
@@ -1439,6 +1440,8 @@ const V7_MISSIONS = V6_MISSIONS.map(m => ({ ...m,
 // triceps 8 (the seated dip machine is new), lats 8, rear delts 2, abs 4, legs 4. Front delts were already ahead and get plenty from
 // bench and incline, so Monday's shoulder press became a machine lateral raise (the press stays as its swap).
 // Lateral raises, the rear-delt fly and abs use 10–15 reps, where lighter weight keeps the form strict; the rest 6–8.
+// From 19 Nov 2026 the gym's new standing lateral raise machine (Technogym Multi Flight) takes the cable lateral raise's
+// slots (A5, B5, C8); the cable stays as their swap. Logged sets keep their own exercise, so history doesn't change.
 const MISSIONS = [
   { id: 'A', dow: 1, day: 'Monday', code: 'Upper A', short: 'Chest', name: 'Chest & Shoulders', mins: 65,
     focus: [['Upper chest', 1], ['Side delts', 1], ['Biceps', 1], ['Chest', 0], ['Lats', 0], ['Triceps', 0]],
@@ -1447,7 +1450,7 @@ const MISSIONS = [
       { id: 'A2', ex: 'bench', alts: ['smith_bench', 'chest_press'], sets: 2, lo: 6, hi: 8, rest: 180 },
       { id: 'A3', ex: 'lat_pulldown', alts: ['pullup', 'close_pulldown'], sets: 2, lo: 6, hi: 8, rest: 180 },
       { id: 'A4', ex: 'machine_lateral', alts: ['cable_lateral', 'shoulder_press'], sets: 2, lo: 10, hi: 15, rest: 180 },
-      { id: 'A5', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 180, tech: 'drop' },
+      { id: 'A5', ex: 'flight_lateral', alts: ['cable_lateral', 'machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 180, tech: 'drop' },
       { id: 'A6', ex: 'pec_deck', alts: ['cable_fly'], sets: 2, lo: 6, hi: 8, rest: 180 },
       { id: 'A7', ex: 'rope_pushdown', alts: ['bar_pushdown'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'A8', tech: 'drop' },
       { id: 'A8', ex: 'hammer_curl', alts: ['rope_hammer'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'A7' },
@@ -1460,7 +1463,7 @@ const MISSIONS = [
       { id: 'B2', ex: 'close_pulldown', alts: ['lat_pulldown', 'pullup'], sets: 2, lo: 6, hi: 8, rest: 180 },
       { id: 'B3', ex: 'machine_row', alts: ['bb_row', 'cable_row'], sets: 2, lo: 6, hi: 8, rest: 180 },
       { id: 'B4', ex: 'machine_dip', alts: ['smith_cgbp', 'dips'], sets: 2, lo: 6, hi: 8, rest: 180 },
-      { id: 'B5', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 180, pair: 'B6' },
+      { id: 'B5', ex: 'flight_lateral', alts: ['cable_lateral', 'machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 180, pair: 'B6' },
       { id: 'B6', ex: 'reverse_pec', alts: ['face_pull'], sets: 2, lo: 10, hi: 15, rest: 180, pair: 'B5' },
       { id: 'B7', ex: 'ez_curl', alts: ['bb_curl', 'cable_curl'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'B8', tech: 'myo' },
       { id: 'B8', ex: 'bar_pushdown', alts: ['rope_pushdown'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'B7' },
@@ -1476,7 +1479,7 @@ const MISSIONS = [
       { id: 'C5', ex: 'machine_lateral', alts: ['cable_lateral'], sets: 2, lo: 10, hi: 15, rest: 180 },
       { id: 'C6', ex: 'incline_db_curl', alts: ['preacher_curl'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'C7', tech: 'myo' },
       { id: 'C7', ex: 'rope_pushdown', alts: ['bar_pushdown', 'db_overhead_ext'], sets: 2, lo: 6, hi: 8, rest: 180, pair: 'C6' },
-      { id: 'C8', ex: 'cable_lateral', alts: ['machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 180, pair: 'C9', tech: 'partials' },
+      { id: 'C8', ex: 'flight_lateral', alts: ['cable_lateral', 'machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 180, pair: 'C9', tech: 'partials' },
       { id: 'C9', ex: 'decline_situp', alts: ['hanging_leg_raise'], sets: 2, lo: 10, hi: 15, rest: 180, pair: 'C8' }
     ] }
 ];
@@ -2066,7 +2069,7 @@ const VIZ = {
   lat_pulldown: { p: 'pulldown' }, close_pulldown: { p: 'pulldown', v: 'close' }, pullup: { p: 'pullup' },
   machine_row: { p: 'row', v: 'chest' }, cable_row: { p: 'row', v: 'cable' }, bb_row: { p: 'row', v: 'barbell' },
   shoulder_press: { p: 'ohp' }, smith_ohp: { p: 'ohp', v: 'smith' },
-  cable_lateral: { p: 'lateral', v: 'cable' }, machine_lateral: { p: 'lateral', v: 'machine' },
+  cable_lateral: { p: 'lateral', v: 'cable' }, machine_lateral: { p: 'lateral', v: 'machine' }, flight_lateral: { p: 'lateral', v: 'flight' },
   pec_deck: { p: 'fly' }, cable_fly: { p: 'fly', v: 'cable' }, reverse_pec: { p: 'revfly' }, face_pull: { p: 'facepull' },
   rope_pushdown: { p: 'pushdown', v: 'rope' }, bar_pushdown: { p: 'pushdown', v: 'bar' }, dips: { p: 'dip' }, machine_dip: { p: 'mdip' }, smith_cgbp: { p: 'press', smith: 1, v: 'close' }, overhead_ext: { p: 'ohext' }, db_overhead_ext: { p: 'ohext', v: 'db' }, skullcrusher: { p: 'skull' },
   hammer_curl: { p: 'curl', v: 'hammer' }, ez_curl: { p: 'curl', v: 'ez' }, bb_curl: { p: 'curl', v: 'bb' }, cable_curl: { p: 'curl', v: 'cable' }, rope_hammer: { p: 'curl', v: 'rope' },
@@ -2106,7 +2109,7 @@ const WORKS = {
   lat_pulldown: W(['lats'], ['upperBack', 'biceps', 'rearDelts']), close_pulldown: W(['lats'], ['upperBack', 'biceps']), pullup: W(['lats'], ['upperBack', 'biceps', 'forearms']),
   machine_row: W(['upperBack', 'lats'], ['rearDelts', 'biceps']), cable_row: W(['upperBack', 'lats'], ['rearDelts', 'biceps']), bb_row: W(['upperBack', 'lats'], ['rearDelts', 'biceps', 'lowerBack']),
   shoulder_press: W(['frontDelts', 'sideDelts'], ['triceps', 'traps']), smith_ohp: W(['frontDelts', 'sideDelts'], ['triceps', 'traps']),
-  cable_lateral: W(['sideDelts'], ['traps']), machine_lateral: W(['sideDelts'], ['traps']),
+  cable_lateral: W(['sideDelts'], ['traps']), machine_lateral: W(['sideDelts'], ['traps']), flight_lateral: W(['sideDelts'], ['traps']),
   pec_deck: W(['chest'], ['frontDelts']), cable_fly: W(['chest'], ['frontDelts']),
   face_pull: W(['rearDelts'], ['upperBack', 'traps']), reverse_pec: W(['rearDelts'], ['upperBack', 'traps']),
   rope_pushdown: W(['triceps']), bar_pushdown: W(['triceps']), dips: W(['triceps', 'chest'], ['frontDelts']), machine_dip: W(['triceps', 'chest'], ['frontDelts']), smith_cgbp: W(['triceps', 'chest'], ['frontDelts']), overhead_ext: W(['triceps']), db_overhead_ext: W(['triceps']), skullcrusher: W(['triceps']),
@@ -2192,7 +2195,7 @@ const Viz = (() => {
         const std = (c, r, m, map) => new T.MeshStandardMaterial({ color: C(c), roughness: r, metalness: m || 0, map: map || null });
         M = {
           marble, plinth: std('#D6CABD', .6, 0, marble),
-          frame: std('#6E6567', .45, .35), metal: std('#BDB6B3', .26, .6), pad: std('#2B2225', .82, 0), plate: std('#221B1D', .5, .3), cable: std('#5E5355', .6, .1)
+          frame: std('#6E6567', .45, .35), metal: std('#BDB6B3', .26, .6), pad: std('#2B2225', .82, 0), plate: std('#221B1D', .5, .3), cable: std('#5E5355', .6, .1), accent: std('#E2C400', .5, 0)
         };
         const bc = document.createElement('canvas'); bc.width = 4; bc.height = 256; const g3 = bc.getContext('2d');
         const lin = g3.createLinearGradient(0, 0, 0, 256); lin.addColorStop(0, '#F4F4F1'); lin.addColorStop(.55, '#E4E4E0'); lin.addColorStop(1, '#CFCFC9'); g3.fillStyle = lin; g3.fillRect(0, 0, 4, 256);
@@ -2860,6 +2863,27 @@ const Viz = (() => {
         update(p, b, d, s){ const q = s.q, g = V(0, q.g[0], q.g[1]); for (let i = 0; i < 2; i++){ const x = i ? -xg : xg; d.g[i].set(V(x, q.hand[0], q.hand[1]), g); d.l[i].set(piv[i], V(x, q.attach[0], q.attach[1])); } d.stk.set(p * .22); } };
     },
     lateral(o){
+      if (o.v === 'flight'){
+        // Technogym Multi Flight: standing on the footplate, facing the machine. Each arm turns on a hub level with the
+        // shoulder whose axle points at him, so the handle sweeps out to the side; the hubs ride a height-adjustable
+        // carriage on two guide rods, with the weight stack behind them
+        const h = .04, P = V(0, .94 + h, 0), yp = P.y + .45, xp = .16, zf = .34, zh = .1, R = .5;
+        const at = (i, p, z) => { const th = mix(12, 86, p) * D, s = i ? -1 : 1; return V(s * (xp + Math.sin(th) * R), yp - Math.cos(th) * R, z); };
+        return { cam: { az: 150, el: 14, d: 4.4, t: [0, 1.15, .25] }, thumbP: .8, tempo: ['Raise', 'Lower'],
+          build(c){
+            c.box([0, h / 2, .02], [.84, h, .84], M.pad); c.box([0, .03, .72], [.92, .06, .14]);
+            for (const x of [.42, -.42]){ c.box([x, .97, .72], [.07, 1.94, .07]); c.box([x, .03, .62], [.07, .06, .3]); }
+            c.box([0, 1.92, .72], [.91, .07, .07]);
+            for (const x of [.3, -.3]) c.rod([x, .06, .6], [x, 1.89, .6], .016, M.metal);
+            c.box([0, yp, .6], [.66, .3, .1]);
+            const stk = c.stack(0, .86, 1.85);
+            for (const s of [1, -1]){ c.rod([s * xp, yp, zf], [s * xp, yp, .56], .1, M.pad); c.rod([s * xp, yp, zf - .01], [s * xp, yp, zf], .04, M.accent); }
+            c.rod([0, 1.95, .7], [0, 2.0, .68], .012); c.box([0, 2.05, .67], [.17, .11, .02], M.pad);
+            return { stk, arm: [c.dynRod(.026, M.pad), c.dynRod(.026, M.pad)], fwd: [c.dynRod(.022, M.pad), c.dynRod(.022, M.pad)], g: [c.grip(), c.grip()] };
+          },
+          pose(p){ const H = [at(0, p, zh), at(1, p, zh)]; return { P, U: V(0, 1, 0), F: V(0, 0, 1), hands: H, grip: V(0, 0, 1), ePole: sym(.85, 1.55, -.3), feet: sym(.15, .075 + h, .02), kPole: sym(.16, .55 + h, 1.2), H }; },
+          update(p, b, d, s){ for (let i = 0; i < 2; i++){ const a = at(i, p, zf), hd = s.H[i]; d.arm[i].set(V(i ? -xp : xp, yp, zf), a); d.fwd[i].set(a, hd.clone().add(V(0, 0, .07))); d.g[i].set(hd, V(0, 0, 1), .14); } d.stk.set(p * .22); } };
+      }
       if (o.v === 'machine'){
         const P = V(0, .55, 0), U = V(0, 1, 0), F = V(0, 0, 1), S = [V(.19, 1.0, 0), V(-.19, 1.0, 0)];
         const elb = (i, p) => { const th = mix(12, 86, p) * D, s = i ? -1 : 1; return S[i].clone().add(V(s * Math.sin(th) * .29, -Math.cos(th) * .29, 0)); };
@@ -5016,13 +5040,13 @@ setInterval(() => { if (state.view === 'train' || !$('#restBar').hidden) paintSe
    Beginner 20 · Novice 40 · Intermediate 60 · Advanced 80 · Elite 100. Muscle score = average of its lifts,
    overall = the middle (median) of the muscle scores. Smith and plate-loaded machines compare what you log.
    Borrowed standards: incline machine = chest press, reverse pec-deck = 2 × dumbbell reverse fly,
-   rope hammer = cable curl, machine crunch = cable crunch, captain's chair = hanging leg raise, Smith lifts = their barbell twin,
+   Multi Flight lateral raise = machine lateral raise, rope hammer = cable curl, machine crunch = cable crunch, captain's chair = hanging leg raise, Smith lifts = their barbell twin,
    close-grip Smith bench = 90% of the bench standard. */
 const SS_STD = {
   bench: [47, 64, 85, 110, 136], smith_bench: [45, 62, 84, 108, 134], chest_press: [33, 53, 80, 112, 147], incline_machine: [33, 53, 80, 112, 147],
   incline_bb: [41, 56, 75, 96, 119], incline_smith: [41, 56, 75, 96, 119], pec_deck: [36, 55, 79, 107, 139], cable_fly: [6, 16, 31, 52, 77],
   lat_pulldown: [42, 57, 77, 99, 123], close_pulldown: [42, 57, 77, 99, 123], machine_row: [39, 62, 92, 128, 168], bb_row: [40, 56, 77, 101, 127], cable_row: [40, 57, 78, 102, 128],
-  shoulder_press: [23, 42, 66, 97, 131], smith_ohp: [23, 42, 66, 97, 131], cable_lateral: [2, 7, 14, 25, 37], machine_lateral: [20, 34, 53, 75, 100],
+  shoulder_press: [23, 42, 66, 97, 131], smith_ohp: [23, 42, 66, 97, 131], cable_lateral: [2, 7, 14, 25, 37], machine_lateral: [20, 34, 53, 75, 100], flight_lateral: [20, 34, 53, 75, 100],
   face_pull: [13, 25, 42, 63, 88], reverse_pec: [4, 14, 30, 52, 78],
   rope_pushdown: [14, 26, 41, 60, 82], bar_pushdown: [18, 31, 50, 73, 98], smith_cgbp: [42, 58, 77, 99, 122], overhead_ext: [11, 22, 37, 57, 79], db_overhead_ext: [5, 10, 19, 30, 42], skullcrusher: [16, 25, 38, 52, 68],
   hammer_curl: [9, 14, 21, 29, 39], rope_hammer: [17, 29, 46, 67, 91], ez_curl: [21, 31, 42, 55, 69], bb_curl: [18, 28, 41, 57, 74], cable_curl: [17, 29, 46, 67, 91],
