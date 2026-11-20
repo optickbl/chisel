@@ -1442,7 +1442,7 @@ const V7_MISSIONS = V6_MISSIONS.map(m => ({ ...m,
 // Lateral raises, the rear-delt fly and abs use 10–15 reps, where lighter weight keeps the form strict; the rest 6–8.
 // From 19 Nov 2026 the gym's new standing lateral raise machine (Technogym Multi Flight) takes the cable lateral raise's
 // slots (A5, B5, C8); the cable stays as their swap. Logged sets keep their own exercise, so history doesn't change.
-const MISSIONS = [
+const V8_MISSIONS = [
   { id: 'A', dow: 1, day: 'Monday', code: 'Upper A', short: 'Chest', name: 'Chest & Shoulders', mins: 65,
     focus: [['Upper chest', 1], ['Side delts', 1], ['Biceps', 1], ['Chest', 0], ['Lats', 0], ['Triceps', 0]],
     slots: [
@@ -1483,9 +1483,25 @@ const MISSIONS = [
       { id: 'C9', ex: 'decline_situp', alts: ['hanging_leg_raise'], sets: 2, lo: 10, hi: 15, rest: 180, pair: 'C8' }
     ] }
 ];
+// the plan from 20 Nov 2026 (plan 9): Saturday becomes a real leg day. The lat pulldown (C4) and rope pushdown (C7) come off,
+// since Monday and Thursday already train both, and the leg press, leg extension, seated leg curl and calf raise go in.
+// Still 9 exercises, 2 sets each, 3 minutes between sets. Monday and Thursday don't change.
+const MISSIONS = V8_MISSIONS.map(m => m.id !== 'C' ? m : { ...m, code: 'Lower', short: 'Legs', name: 'Legs & Shoulders',
+  focus: [['Legs', 1], ['Upper chest', 1], ['Side delts', 1], ['Biceps', 0], ['Abs', 0]],
+  slots: [
+    { id: 'C1', ex: 'incline_smith', alts: ['incline_bb', 'incline_machine'], sets: 2, lo: 6, hi: 8, rest: 180 },
+    { id: 'C2', ex: 'leg_press', alts: ['hack_squat', 'squat'], sets: 2, lo: 6, hi: 8, rest: 180 },
+    { id: 'C3', ex: 'leg_ext', alts: ['hack_squat'], sets: 2, lo: 6, hi: 8, rest: 180 },
+    { id: 'C4', ex: 'seated_leg_curl', alts: ['leg_curl'], sets: 2, lo: 6, hi: 8, rest: 180 },
+    { id: 'C5', ex: 'calf_raise', alts: ['lp_calf'], sets: 2, lo: 10, hi: 15, rest: 180 },
+    { id: 'C6', ex: 'machine_lateral', alts: ['cable_lateral'], sets: 2, lo: 10, hi: 15, rest: 180 },
+    { id: 'C7', ex: 'incline_db_curl', alts: ['preacher_curl'], sets: 2, lo: 6, hi: 8, rest: 180, tech: 'myo' },
+    { id: 'C8', ex: 'flight_lateral', alts: ['cable_lateral', 'machine_lateral'], sets: 2, lo: 10, hi: 15, rest: 180, pair: 'C9', tech: 'partials' },
+    { id: 'C9', ex: 'decline_situp', alts: ['hanging_leg_raise'], sets: 2, lo: 10, hi: 15, rest: 180, pair: 'C8' }
+  ] });
 // every plan Chisel has used. A session carries pv (its plan version); sessions without one are plan 1.
-const PLANS = { 1: LEGACY_MISSIONS, 2: V2_MISSIONS, 3: V3_MISSIONS, 4: V4_MISSIONS, 5: V5_MISSIONS, 6: V6_MISSIONS, 7: V7_MISSIONS, 8: MISSIONS };
-const PLAN_V = 8;
+const PLANS = { 1: LEGACY_MISSIONS, 2: V2_MISSIONS, 3: V3_MISSIONS, 4: V4_MISSIONS, 5: V5_MISSIONS, 6: V6_MISSIONS, 7: V7_MISSIONS, 8: V8_MISSIONS, 9: MISSIONS };
+const PLAN_V = 9;
 const PLAN_M = {}, PLAN_S = {};
 for (const [v, list] of Object.entries(PLANS)){ PLAN_M[v] = {}; PLAN_S[v] = {}; list.forEach(m => { PLAN_M[v][m.id] = m; m.slots.forEach(s => { s.mission = m.id; PLAN_S[v][s.id] = s; }); }); }
 const MISSION_BY_ID = PLAN_M[PLAN_V], SLOT_BY_ID = PLAN_S[PLAN_V];
@@ -1644,6 +1660,8 @@ function P(){
 // Plan 8: A4 is the machine lateral raise (its old shoulder-press swap is dropped) and A9 is new. Thursday gains the seated dip machine (B4) and
 // straight-bar pushdowns (B8), so B4–B7 move to B5, B6, B7 and B9. Saturday gains the incline Smith press (C1) and machine
 // lateral raises (C5), so C1–C7 move to C2, C3, C4, C6, C7, C8 and C9.
+// Plan 9: Saturday is legs. C2–C5 are the leg press, leg extension, seated leg curl and calf raise; machine laterals move to C6
+// and the incline curl to C7. The lat pulldown and rope pushdown leave Saturday.
 function migratePlan(){
   const p = P(); const from = p.plan >= 2 ? p.plan : 1; if (from >= PLAN_V) return false;
   // a brand-new profile has nothing to move, and must not be marked as changed or it would overwrite the cloud copy
@@ -1695,6 +1713,28 @@ function migratePlan(){
       if (x.date !== t || planOf(x) !== 7) continue;
       if (Object.values(x.sets || {}).some(r => doneSets(r).length)) continue;
       x.sets = {}; delete x.ord; x.pv = 8; touch(monthId(t));
+    }
+  }
+  if (from < 9){
+    // Saturday's leg extension and seated leg curl have their own slots now, so the old C2/C3 swaps go; the lat pulldown (C4)
+    // and rope pushdown (C7) are gone; the incline curl moves from C6 to C7. Lateral raises (C5 → C6) and C8/C9 keep their swaps.
+    const old = sw; sw = {};
+    for (const [k, v] of Object.entries(old)){
+      if (k.charAt(0) !== 'C'){ sw[k] = v; continue; }
+      if (k === 'C1' || k === 'C8' || k === 'C9') sw[k] = v;
+      else if (k === 'C5') sw.C6 = v;
+      else if (k === 'C6') sw.C7 = v;
+    }
+    for (const m of MISSIONS) for (const sl of m.slots){
+      const v = sw[sl.id]; if (!v) continue;
+      if (v === sl.ex || m.slots.some(o => o.id !== sl.id && (sw[o.id] || o.ex) === v)) delete sw[sl.id];
+    }
+    // a Saturday session started today on plan 8 with nothing logged yet switches to plan 9
+    const t = todayStr(); const md = docs[monthId(t)];
+    for (const x of Object.values((md && md.sessions) || {})){
+      if (x.date !== t || planOf(x) !== 8 || x.m !== 'C') continue;
+      if (Object.values(x.sets || {}).some(r => doneSets(r).length)) continue;
+      x.sets = {}; delete x.ord; x.pv = 9; touch(monthId(t));
     }
   }
   p.swaps = sw; p.plan = PLAN_V;
@@ -5724,12 +5764,12 @@ function renderPlan(){
     <details class="acc"><summary>Why this plan works for the look</summary><div class="acc-b prose"><ul>
       <li><b>Side delts, 10 sets a week.</b> Shoulder width is the top of the V and the biggest upgrade in a T-shirt. Your scan showed front delts ahead of side delts, so lateral raises run every session, twice on Monday and Saturday, at 10–15 strict reps. Bench and incline already work your front delts hard, so there’s no shoulder press.</li>
       <li><b>Upper chest, 2× a week.</b> Your lower chest line is already there; the top is flat. Incline pressing opens Monday and Saturday while you’re fresh, and you bench on Monday and Thursday.</li>
-      <li><b>Arms, 16 sets a week.</b> Biceps and triceps get 8 sets each, spread over all three days. Triceps make up about two-thirds of upper-arm size, so Thursday adds the seated dip machine, the heaviest triceps work in the plan.</li>
-      <li><b>Lats, 3× a week.</b> Your 8 Nov video: the V comes from your delts alone, and under your arms you’re no wider than your hips. Lat width is the missing half of the V, and it makes your waist look smaller.</li>
+      <li><b>Arms, 14 sets a week.</b> Biceps get 8 sets over all three days, triceps 6 on Monday and Thursday. Triceps make up about two-thirds of upper-arm size, so Thursday has the seated dip machine, the heaviest triceps work in the plan.</li>
+      <li><b>Lats, 2× a week.</b> Your 8 Nov video: the V comes from your delts alone, and under your arms you’re no wider than your hips. Lat width is the missing half of the V, and it makes your waist look smaller.</li>
       <li><b>Rear delts, a strict fly.</b> The reverse pec-deck keeps the work on the back of the shoulder; face pulls share it with your traps. Shoulders look round from the side when all three heads are built.</li>
       <li><b>Abs, 2× a week.</b> Cable crunches and decline sit-ups at 10–15 reps build thicker abs that show more clearly as you lean out.</li>
       <li><b>Two hard sets, many angles.</b> Each exercise gets 2 sets taken close to failure, and each muscle gets 2–5 different exercises a week, so it’s trained from several angles with every set fresh.</li>
-      <li><b>Legs, once a week, hard.</b> Keeps you in proportion.</li>
+      <li><b>Legs, a full day.</b> Saturday is leg press, leg extension, seated leg curl and calf raises, 8 sets. Keeps you in proportion.</li>
       <li><b>Three days, not six.</b> You noticed it yourself: you grow more with more rest. Training creates the signal, recovery builds the muscle.</li>
     </ul></div></details>
     <details class="acc"><summary>Your goal photo vs. the timeline</summary><div class="acc-b"><div class="prose">
